@@ -1349,6 +1349,7 @@ while mimo == "Y":
                             if len(gtndrekeningenlijst) == 1:
                                 print("%sJe kunt niet de huidige rekening verbergen%s" % (colslecht,ResetAll))
                                 os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                                break
                             else:
                                 print("%sGetoonde%s rekeningen:" % (colgoed,ResetAll))
                                 reking = 1
