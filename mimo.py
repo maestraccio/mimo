@@ -2,7 +2,6 @@
 import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
-Taal = "EN"
 
 versie = """
 versie: 1.3
@@ -320,6 +319,14 @@ def rknngnlst():
     return rekeningenlijst
 
 def rek():
+    try:
+        if Taal == "EN":
+            pass
+        #Taal = updatetaal()
+    except(Exception) as error:
+        #print(error)
+        Taal = "EN"
+    os.chdir(basismap)
     rek = "N"
     while rek == "N":
         if Taal == "EN":
@@ -398,11 +405,11 @@ def alt():
 
 def nieuwerekening():
     try:
-        if Taal == "EN":
-            pass
+        Taal = updatetaal()
     except(Exception) as error:
         #print(error)
         Taal = "EN"
+    os.chdir(basismap)
     nieuw = "Y"
     while nieuw == "Y":
         if Taal == "EN":
@@ -447,10 +454,7 @@ def nieuwerekening():
         nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie'}
         with open("header","w") as f:
             print(nieuwheader, file = f, end = "")
-        if Taal == "EN":
-            nieuwalternatievenamenlijst = {'A':'funds & income','B':'fixed costs','C':'groceries','D':'travel & stay','E':'loans','O':'other'}
-        else:
-            nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
+        nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
         with open("alternatievenamen","w") as g:
             print(nieuwalternatievenamenlijst, file = g, end = "")
         for k,v in nieuwalternatievenamenlijst.items():
@@ -458,8 +462,8 @@ def nieuwerekening():
                 print([0.0], file = h, end = "")
         with open("A","w") as w:
             print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
-        os.chdir(basismap)
         nieuw = "N"
+    os.chdir(basismap)
 
 
 ##### Eerst moet je een rekening selecteren of aanmaken #####
@@ -467,33 +471,39 @@ def nieuwerekening():
 print()
 rekeningenlijst = rknngnlst()
 print()
-if len(rekeningenlijst) == 0:
-    nieuwerekening = nieuwerekening()
-    if nieuwerekening == "afgebroken":
-        exit()
-    rekeningenlijst = rknngnlst()
-    ibanjaar = rek()
-    iban = ibanjaar[0]
-    jaar = ibanjaar[1]
-    header = ibanjaar[2]
-    alternatievenamenlijst = ibanjaar[3]
-elif len(rekeningenlijst) == 1:
-    werkmap = str(pathlib.Path().absolute())+str(os.path.sep)+(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1])+str(os.path.sep)
-    iban = rekeningenlijst[0][0]
-    jaar = rekeningenlijst[0][1]
-    os.chdir(werkmap)
-    with open("header","r") as f:
-        header = ast.literal_eval(f.read())
-else:
-    ibanjaar = rek()
-    iban = ibanjaar[0]
-    jaar = ibanjaar[1]
-    header = ibanjaar[2]
-    werkmap = ibanjaar[3]
-kleur = updatekleur()
-Kleuren = kleur[0]
-globals().update(Kleuren)
-catcol = kleur[1]
+try:
+    if len(rekeningenlijst) == 0:
+        nieuwerekening = nieuwerekening()
+        if nieuwerekening == "afgebroken":
+            exit()
+        rekeningenlijst = rknngnlst()
+        ibanjaar = rek()
+        iban = ibanjaar[0]
+        jaar = ibanjaar[1]
+        header = ibanjaar[2]
+        alternatievenamenlijst = ibanjaar[3]
+        os.chdir(basismap)
+    if len(rekeningenlijst) == 1:
+        werkmap = str(pathlib.Path().absolute())+str(os.path.sep)+(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1])+str(os.path.sep)
+        iban = rekeningenlijst[0][0]
+        jaar = rekeningenlijst[0][1]
+        os.chdir(werkmap)
+        with open("header","r") as f:
+            header = ast.literal_eval(f.read())
+    else:
+        ibanjaar = rek()
+        iban = ibanjaar[0]
+        jaar = ibanjaar[1]
+        header = ibanjaar[2]
+        werkmap = ibanjaar[3]
+    Taal = updatetaal()
+    kleur = updatekleur()
+    Kleuren = kleur[0]
+    globals().update(Kleuren)
+    catcol = kleur[1]
+except(Exception) as error:
+    #print(error)
+    exit()
 
 ##### Hier worden de standaarwaarden overschreven met de aangepaste waarden in header
 
@@ -1836,7 +1846,6 @@ while mimo == "Y":
                     globals().update(Kleuren)
                     catcol = kleur[1]
             elif keuze2 == "5":
-                os.chdir(basismap)
                 nieuwerekening()
                 rekeningenlijst = rknngnlst()
                 ibanjaar = rek()
