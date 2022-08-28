@@ -319,20 +319,10 @@ def rknngnlst():
     return rekeningenlijst
 
 def rek():
-    try:
-        if Taal == "EN":
-            pass
-        #Taal = updatetaal()
-    except(Exception) as error:
-        #print(error)
-        Taal = "EN"
     os.chdir(basismap)
     rek = "N"
     while rek == "N":
-        if Taal == "EN":
-            rekening = input("Choose an %saccount%s to use\n%s  : %s" % (colgoed,ResetAll,colslecht,colgoed))
-        else:
-            rekening = input("Kies een %srekening%s om te gebruiken\n%s  : %s" % (colgoed,ResetAll,colslecht,colgoed))
+        rekening = input("%s  : %s" % (colslecht,colgoed))
         print(ResetAll, end = "")
         if rekening.upper() in afsluitlijst:
             exit()
@@ -404,11 +394,7 @@ def alt():
         pass
 
 def nieuwerekening():
-    try:
-        Taal = updatetaal()
-    except(Exception) as error:
-        #print(error)
-        Taal = "EN"
+    Taal = updatetaal()
     os.chdir(basismap)
     nieuw = "Y"
     while nieuw == "Y":
@@ -418,7 +404,7 @@ def nieuwerekening():
             nieuwetaal = input("Kies de taal\n >1 NL\n  2 EN\n  : %s" % (colgoed))
         print(ResetAll, end = "")
         if nieuwetaal.upper() in afsluitlijst:
-            return "afgebroken"
+            break
         elif nieuwetaal == "2":
             Taal = "EN"
         else:
@@ -446,9 +432,9 @@ def nieuwerekening():
             #print(error)
             nieuwjaar = strnu[:4]
         if Taal == "EN":
-            print("New account: %s@%s" % (nieuwiban,nieuwjaar))
+            print("New account: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
         else:
-            print("Nieuwe rekening: %s@%s" % (nieuwiban,nieuwjaar))
+            print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
         os.mkdir(nieuwiban+"@"+nieuwjaar)
         os.chdir(nieuwiban+"@"+nieuwjaar)
         nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie'}
@@ -471,39 +457,74 @@ def nieuwerekening():
 print()
 rekeningenlijst = rknngnlst()
 print()
-try:
-    if len(rekeningenlijst) == 0:
-        nieuwerekening = nieuwerekening()
-        if nieuwerekening == "afgebroken":
-            exit()
-        rekeningenlijst = rknngnlst()
-        ibanjaar = rek()
-        iban = ibanjaar[0]
-        jaar = ibanjaar[1]
-        header = ibanjaar[2]
-        alternatievenamenlijst = ibanjaar[3]
-        os.chdir(basismap)
-    if len(rekeningenlijst) == 1:
-        werkmap = str(pathlib.Path().absolute())+str(os.path.sep)+(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1])+str(os.path.sep)
-        iban = rekeningenlijst[0][0]
-        jaar = rekeningenlijst[0][1]
-        os.chdir(werkmap)
-        with open("header","r") as f:
-            header = ast.literal_eval(f.read())
+if len(rekeningenlijst) == 0:
+    nieuwetaal = input("Choose your language\n >1 NL\n  2 EN\n  : %s" % (colgoed))
+    print(ResetAll, end = "")
+    if nieuwetaal.upper() in afsluitlijst:
+        exit()
+    elif nieuwetaal == "2":
+        Taal = "EN"
     else:
-        ibanjaar = rek()
-        iban = ibanjaar[0]
-        jaar = ibanjaar[1]
-        header = ibanjaar[2]
-        werkmap = ibanjaar[3]
+        Taal = "NL"
+    if Taal == "EN":
+        nieuwiban = input("Enter the %saccount number%s (%sIBAN%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
+    else:
+        nieuwiban = input("Geef het %srekeningnummer%s (%sIBAN%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
+    print(ResetAll, end = "")
+    if nieuwiban.upper() in afsluitlijst:
+        exit()
+    if Taal == "EN":
+        nieuwjaar = input("Enter the %syear%s (%s\"YYYY\"%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
+    else:
+        nieuwjaar = input("Geef het %sjaar%s (%s\"JJJJ\"%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
+    print(ResetAll, end = "")
+    if nieuwjaar.upper() in afsluitlijst:
+        exit()
+    try:
+        if int(nieuwjaar) < 1000 or int(nieuwjaar) > 9999:
+            nieuwjaar = strnu[:4]
+    except(Exception) as error:
+        #print(error)
+        nieuwjaar = strnu[:4]
+    if Taal == "EN":
+        print("New account: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
+    else:
+        print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
+    os.mkdir(nieuwiban+"@"+nieuwjaar)
+    os.chdir(nieuwiban+"@"+nieuwjaar)
+    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie'}
+    with open("header","w") as f:
+        print(nieuwheader, file = f, end = "")
+    nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
+    with open("alternatievenamen","w") as g:
+        print(nieuwalternatievenamenlijst, file = g, end = "")
+    for k,v in nieuwalternatievenamenlijst.items():
+        with open(k,"w") as h:
+            print([0.0], file = h, end = "")
+    with open("A","w") as w:
+        print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+    rekeningenlijst = [[nieuwiban,nieuwjaar]]
+if len(rekeningenlijst) == 1:
+    os.chdir(basismap)
+    for d in os.listdir():
+        if "@" in d:
+            werkmap = os.path.join(basismap,d)
+    iban = rekeningenlijst[0][0]
+    jaar = rekeningenlijst[0][1]
+    os.chdir(werkmap)
+    with open("header","r") as f:
+        header = ast.literal_eval(f.read())
+else:
+    ibanjaar = rek()
+    iban = ibanjaar[0]
+    jaar = ibanjaar[1]
+    header = ibanjaar[2]
+    werkmap = ibanjaar[3]
     Taal = updatetaal()
     kleur = updatekleur()
     Kleuren = kleur[0]
     globals().update(Kleuren)
     catcol = kleur[1]
-except(Exception) as error:
-    #print(error)
-    exit()
 
 ##### Hier worden de standaarwaarden overschreven met de aangepaste waarden in header
 
@@ -1742,6 +1763,8 @@ while mimo == "Y":
                                     os.chdir(os.path.join(basismap,viban+"@"+vjaar))
                                     with open("header","r") as h:
                                         header = ast.literal_eval(h.read())
+                                    iban = viban
+                                    jaar = vjaar
                                     hoe = header["Beschrijving"]
                                     wie = header["Rekeninghouder"]
                                     waar = header["Plaats"]
