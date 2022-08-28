@@ -23,7 +23,7 @@ Iedere rekeningmap bestaat uit een rekeningnummer en een jaartal. In
 opzet bevat een map één kalenderjaar, hoewel het mogelijk is onbeperkt
 door te schrijven; dit is door de gebruiker vrij te bepalen. In de
 rekeningmap worden standaard de volgende bestanden aangemaakt:
-    "alternatievenamen": de categorienamen bij de letters
+    "alternatievenamen": de Nederlandse categorienamen bij de letters
     "header": rekeninggegevens en rekeninggebonden weergaveopties
     zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
 
@@ -54,17 +54,17 @@ Every account folder is formed by an account number and a year. It is
 intended for details of one calendar year, although the user can
 decide otherwise and continue adding details to the same folder. In
 this account folder the following files are created by default:
-    "alternatievenamen": the category names to the letters
+    "alternatievenamen": the Dutch category names to the letters
     "header": account details and account related interface options
     six category files "A"-"E" and "O" with financial mutations
 
-6 categories (expandable and adjustable):
-A: saldo & inkomen: intentionally positive amounts, budget negative
-B: vaste lasten   : expected and repeated expenses
-C: boodschappen   : daily variable expenses
-D: reis & verblijf: traveling costs, fuel, hotel stays, etc.
-E: leningen       : expenses that are to be returned and vice versa
-O: overig         : other mutations
+6 categories (expandable and adjustable, Dutch names in file):
+A: funds & income : intentionally positive amounts, budget negative
+B: fixed costs    : expected and repeated expenses
+C: groceries      : daily variable expenses
+D: travel & stay  : traveling costs, fuel, hotel stays, etc.
+E: loans          : expenses to be returned and vice versa
+O: other          : other mutations
 Other categories can be added by adding a new mutation or making a
 copy and assigning it to a new to be made category.
 
@@ -388,6 +388,8 @@ def alt():
                     else:
                         lencat = "items: "+forr5(str(len(lengte)-1))
                     col = catcol[k]
+                    if Taal == "EN":
+                        v = v.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                     print(col+forc70(k+": "+forc17(v)+lencat)+ResetAll)
                     alternatievenamenlijst[k] = v
     except(Exception) as error:
@@ -445,7 +447,10 @@ def nieuwerekening():
         nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie'}
         with open("header","w") as f:
             print(nieuwheader, file = f, end = "")
-        nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
+        if Taal == "EN":
+            nieuwalternatievenamenlijst = {'A':'funds & income','B':'fixed costs','C':'groceries','D':'travel & stay','E':'loans','O':'other'}
+        else:
+            nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
         with open("alternatievenamen","w") as g:
             print(nieuwalternatievenamenlijst, file = g, end = "")
         for k,v in nieuwalternatievenamenlijst.items():
@@ -945,9 +950,9 @@ while mimo == "Y":
                 else:
                     sel3 = ""
                     if Taal == "EN":
-                        kop = ", all"
+                        kop = ""
                     else:
-                        kop = ", alles"
+                        kop = ""
                     ID = 0
                     for i in seldat:
                         vier = i[4]+str(ID)
@@ -1032,6 +1037,7 @@ while mimo == "Y":
                                             else:
                                                 colsaldo = colslecht
                                             if Taal == "EN":
+                                                v = v.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                                 print(col+k,forc17(v),"bud %s" % (Valuta),fornum(budget),"Total %s" % (Valuta),fornum(maandtotaallijst[k])," Rest", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
                                             else:
                                                 print(col+k,forc17(v),"bud %s" % (Valuta),fornum(budget),"Totaal %s" % (Valuta),fornum(maandtotaallijst[k])," Rest", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
