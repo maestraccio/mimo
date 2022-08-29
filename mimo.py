@@ -4,17 +4,17 @@ from time import sleep
 from datetime import datetime, date, timedelta
 
 versie = """
-versie: 1.3
+versie: 1.31
 Auteur: Maestraccio
 Contact: maestraccio@musician.org
-Catania 20220828
+Catania 20220829
 
 +-----"""
 versieEN = """
-version: 1.3
+version: 1.31
 Writer: Maestraccio
 Contact: maestraccio@musician.org
-Catania 20220828
+Catania 20220829
 
 +-----"""
 info1 = """
@@ -814,14 +814,15 @@ while mimo == "Y":
                         colmtot = colslecht
                         mtot = colmtot+Valuta+fornum(mtot)+ResetAll
                     maandtotaallijst = {}
+                    if Nulregels == "Ja":
+                        for k in alternatievenamenlijst:
+                            maandtotaallijst[k] = 0.0
                     for i in lijst:
                         j1 = 0
                         for j in seldat:
                             if i in j[-1]:
                                 j1 = j1 + j[1]
                                 maandtotaallijst[i] = round(j1,2)
-                            elif Nulregels == "Ja":
-                                maandtotaallijst[i] = 0.0
 
                 if Taal == "EN":
                     print("%sCategory selection \"?\" or exclusion \"-?\"%s" % (col1,ResetAll))
@@ -1763,8 +1764,6 @@ while mimo == "Y":
                                     os.chdir(os.path.join(basismap,viban+"@"+vjaar))
                                     with open("header","r") as h:
                                         header = ast.literal_eval(h.read())
-                                    iban = viban
-                                    jaar = vjaar
                                     hoe = header["Beschrijving"]
                                     wie = header["Rekeninghouder"]
                                     waar = header["Plaats"]
@@ -1778,6 +1777,8 @@ while mimo == "Y":
                                     Kleuren = kleur[0]
                                     globals().update(Kleuren)
                                     catcol = kleur[1]
+                                    iban = viban
+                                    jaar = vjaar
                                     break
                                 except(Exception) as error:
                                     os.chdir(os.path.join(basismap,iban+"@"+jaar))
