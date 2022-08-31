@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.4"
-hardedatum = "20220830"
+bouw = "1.41"
+hardedatum = "20220831"
 
 versie = """
 Versie: %s
@@ -53,10 +53,9 @@ toe te voegen of te wijzigen en toe te wijzen aan de nieuwe categorie.
 4: Taal
 5: Valuta (standaard "€")
 6: Nulregels (standaard "Nee")
-7: Ondermarkering (standaard "-100")
-8: Bovenmarkering (standaard "100")
-9: Kleur (standaard "Categorie")
-0: Datumformaat (standaard "JJJJMMDD")
+7: Markering Laag >< Hoog (standaard "-100 >< 100")
+8: Kleur (standaard "Categorie")
+9: Datumformaat (standaard "JJJJMMDD")
 
 +-----"""
 info1EN = """
@@ -85,10 +84,9 @@ copy and assigning it to a new to be made category.
 4: Language
 5: Currency (default "€")
 6: Zero lines (default "No")
-7: Lower marking (default "-100")
-8: Upper marking (default "100")
-9: Colour (default "Category")
-0: Date formatting (default "YYYYMMDD")
+7: Marking Low >< High (default "-100 >< 100")
+8: Colour (default "Category")
+9: Date formatting (default "YYYYMMDD")
 
 +-----"""
 info1IT = """
@@ -121,10 +119,9 @@ tre:
 4: Lingua
 5: Valuta (predefinito "€")
 6: Linee a zero (predefinito "No")
-7: Indicatore inferiore (predefinito "-100")
-8: Indicatore superiore (predefinito "100")
-9: Colore (predefinito "Categoria")
-0: Formato data (predefinito "AAAAMMGG")
+7: Indicazione Inferiore >< Superiore (predefinito "-100 >< 100")
+8: Colore (predefinito "Categoria")
+9: Formato data (predefinito "AAAAMMGG")
 
 +-----"""
 info2 = """
@@ -143,9 +140,9 @@ PROGRAMMASTRUCTUUR:
         4 Taal (standaard = "NL")
         5 Valuta (standaard = "€")
         6 Nulregels (standaard "Nee")
-        7 Ondermarkering (standaard omkering van Bovenmarkering)
-        8 Bovenmarkering (standaard omkering van Ondermarkering)
-        9 Kleur (standaard = "Categorie")
+        7 Markering Laag >< Hoog (Laag standaard omkering van Hoog)
+        8 Kleur (standaard = "Categorie")
+        9 Datumformaat (standaard = "JJJJMMDD")
     3 Toon of verberg rekening
     4 Wissel van rekening
     5 Nieuwe rekening toevoegen
@@ -182,9 +179,9 @@ PROGRAM STRUCTURE:
         4 Language (default "NL")
         5 Currency (default "€")
         6 Zero lines (default "No")
-        7 Lower marking (default opposite to Upper marking)
-        8 Upper marking (default opposite to Lower marking)
-        9 Colour (default = "Category")
+        7 Marking Lower >< Upper (Lower default opposite to Upper)
+        8 Colour (default = "Category")
+        9 Date formatting (default = "YYYYMMDD")
     3 Show or hide account
     4 Switch account (!)
     5 Add new account
@@ -221,10 +218,9 @@ STRUTTURA DEL PROGRAMMA:
         4 Lingua (predefinito "NL")
         5 Valuta (predefinito "€")
         6 Linee a zero (predefinito "No")
-        7 Indicatore inferiore (predefinito opposto ad Ind.superiore)
-        8 Indicatore superiore (predefinito opposto ad Ind.inferiore)
-        9 Colore (predefinito = "Categoria")
-        0 Formato data (predefinito "AAAAMMGG")
+        7 Indicazione Inf. >< Sup. (Inf. predefinito opposto a Sup.)
+        8 Colore (predefinito = "Categoria")
+        9 Formato data (predefinito "AAAAMMGG")
     3 Mostrare o nascondere conto
     4 Passare ad un altro conto
     5 Aggiungere un nuovo conto
@@ -447,27 +443,32 @@ def rek():
 def printheaderall():
     for k,v in header.items():
         if Taal == "EN":
-            if "mark" in k:
-                v = header["Valuta"]+fornum(v)
-            print(colslecht+for15(k.replace("Beschrijving","Description").replace("Rekeninghouder","Account holder").replace("Plaats","City").replace("Taal","Language").replace("Valuta","Currency").replace("Nulregels","Zero lines").replace("Ondermarkering","Lower marking").replace("Bovenmarkering","Upper marking").replace("Kleur","Colour").replace("Datumformaat","Date formatting")),colonbepaald+":",colgoed+v+ResetAll)
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+ResetAll+" >< "+colgoed+header["Valuta"]+fornum(v[1])
+            print(colslecht+for15(k.replace("Beschrijving","Description").replace("Rekeninghouder","Account holder").replace("Plaats","City").replace("Taal","Language").replace("Valuta","Currency").replace("Nulregels","Zero lines").replace("Markering L><H","Marking L><U").replace("Kleur","Colour").replace("Datumformaat","Date formatting")),colonbepaald+":",colgoed+v+ResetAll)
         elif Taal == "IT":
-            if "mark" in k:
-                v = header["Valuta"]+fornum(v)
-            print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Ondermarkering","Indic.inferiore").replace("Bovenmarkering","Indic.superiore").replace("Kleur","Colore").replace("Datumformaat","Formato data")),colonbepaald+":",colgoed+v+ResetAll)
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+ResetAll+" >< "+colgoed+header["Valuta"]+fornum(v[1])
+            print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Markering L><H","Indicaz. I><S").replace("Kleur","Colore").replace("Datumformaat","Formato data")),colonbepaald+":",colgoed+v+ResetAll)
         else:
-            if "mark" in k:
-                v = header["Valuta"]+fornum(v)
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+ResetAll+" >< "+colgoed+header["Valuta"]+fornum(v[1])
             print(colslecht+for15(k),colonbepaald+":",colgoed+v+ResetAll)
-#        print(colslecht+for15(k),colonbepaald+":",colgoed+str(v)+ResetAll)
 
 def printheader():
     regel = 0
     for k,v in header.items():
         if Taal == "EN":
-            print(colslecht+for15(k.replace("Beschrijving","Description").replace("Rekeninghouder","Account holder").replace("Plaats","City").replace("Taal","Language").replace("Valuta","Currency").replace("Nulregels","Zero lines").replace("Ondermarkering","Lower marking").replace("Bovenmarkering","Upper marking").replace("Kleur","Colour").replace("Datumformaat","Date formatting")),colonbepaald+":",colgoed+v+ResetAll)
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+" >< "+header["Valuta"]+fornum(v[1])
+            print(colslecht+for15(k.replace("Beschrijving","Description").replace("Rekeninghouder","Account holder").replace("Plaats","City").replace("Taal","Language").replace("Valuta","Currency").replace("Nulregels","Zero lines").replace("Markering L><H","Marking L><U").replace("Kleur","Colour").replace("Datumformaat","Date formatting")),colonbepaald+":",colgoed+v+ResetAll)
         elif Taal == "IT":
-            print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Ondermarkering","Indic.inferiore").replace("Bovenmarkering","Indic.superiore").replace("Kleur","Colore").replace("Datumformaat","Formato data")),colonbepaald+":",colgoed+v+ResetAll)
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+" >< "+header["Valuta"]+fornum(v[1])
+            print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Markering L><H","Indicaz. I><S").replace("Kleur","Colore").replace("Datumformaat","Formato data")),colonbepaald+":",colgoed+v+ResetAll)
         else:
+            if k == "Markering L><H":
+                v = header["Valuta"]+fornum(v[0])+" >< "+header["Valuta"]+fornum(v[1])
             print(colslecht+for15(k),colonbepaald+":",colgoed+v+ResetAll)
         regel += 1
         if regel == 3:
@@ -556,7 +557,7 @@ def nieuwerekening():
             print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
         os.mkdir(nieuwiban+"@"+nieuwjaar)
         os.chdir(nieuwiban+"@"+nieuwjaar)
-        nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
+        nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Markering L><H': [-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
         with open("header","w") as f:
             print(nieuwheader, file = f, end = "")
         nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
@@ -634,7 +635,7 @@ if len(rekeningenlijst) == 0:
         print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
     os.mkdir(nieuwiban+"@"+nieuwjaar)
     os.chdir(nieuwiban+"@"+nieuwjaar)
-    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
+    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Markering L><H': [-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
     with open("header","w") as f:
         print(nieuwheader, file = f, end = "")
     nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
@@ -678,7 +679,7 @@ try:
     globals().update(header)
 except(Exception) as error:
     #print(error)
-    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':'NL','Valuta':'€', 'Nulregels':'Nee','Ondermarkering':-100,'Bovenmarkering':100,'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
+    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':'NL','Valuta':'€', 'Nulregels':'Nee','Markering L><H': [-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD'}
     with open("header","w") as f:
         print(nieuwheader, file = f, end = "")
     with open("header","r") as h:
@@ -1221,29 +1222,37 @@ while mimo == "Y":
                     print("|"+col1+forc10("Datum")+ResetAll+"|"+col1+forc12("Bedrag")+ResetAll+"|"+col1+forc17("Wederpartij")+ResetAll+"|"+col1+forc20("Betreft")+ResetAll+"|"+col1+forc5("ID")+ResetAll+"|")
                 print(pluslijn)
                 for i in sel:
-                    if i[1] < header['Ondermarkering']:
+                    if i[1] <= header['Markering L><H'][0]:
                         colc = colslecht+Omkeren
-                    elif header['Ondermarkering'] <= i[1] < 0:
+                    elif header['Markering L><H'][0] <= i[1] < 0:
                         colc = colslecht
-                    elif 0 <= i[1] < header['Bovenmarkering']:
+                    elif 0 <= i[1] < header['Markering L><H'][1]:
                         colc = colgoed
                     else:
                         colc = colgoed+Omkeren
                     col = catcol[i[4][0]]
+                    yymd = i[0]
                     if Datumformaat == "DDMMYYYY":
-                        i[0] = str(i[0])[6:]+str(i[0])[4:6]+str(i[0])[:4]
+                        yymd = str(yymd)[6:]+str(yymd)[4:6]+str(yymd)[:4]
                     elif Datumformaat == "DD-MM-YY":
-                        i[0] = str(i[0])[6:]+"-"+str(i[0])[4:6]+"-"+str(i[0])[2:4]
+                        yymd = str(yymd)[6:]+"-"+str(yymd)[4:6]+"-"+str(yymd)[2:4]
                     elif Datumformaat == "DD/MM/YY":
-                        i[0] = str(i[0])[6:]+"/"+str(i[0])[4:6]+"/"+str(i[0])[2:4]
+                        yymd = str(yymd)[6:]+"/"+str(yymd)[4:6]+"/"+str(yymd)[2:4]
+                    elif Datumformaat == "DD-mmmYY":
+                        if Taal == "EN":
+                            yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+str(yymd)[2:4]
+                        elif Taal == "IT":
+                            yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+str(yymd)[2:4]
+                        else:
+                            yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+str(yymd)[2:4]
                     elif Datumformaat == "DDmmm\'YY":
                         if Taal == "EN":
-                            i[0] = str(i[0])[6:]+str(i[0])[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+str(i[0])[2:4]
+                            yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+str(yymd)[2:4]
                         elif Taal == "IT":
-                            i[0] = str(i[0])[6:]+str(i[0])[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(i[0])[2:4]
+                            yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(yymd)[2:4]
                         else:
-                            i[0] = str(i[0])[6:]+str(i[0])[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(i[0])[2:4]
-                    print("|",for8(str(i[0])),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+                            yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
+                    print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
                 print(pluslijn)
                 try:
                     mon = str(sel[0][0])[:6]
@@ -1873,8 +1882,7 @@ while mimo == "Y":
                         Taal = header["Taal"]
                         Valuta = header["Valuta"]
                         Nulregels = header["Nulregels"]
-                        Ondermarkering = header["Ondermarkering"]
-                        Bovenmarkering = header["Bovenmarkering"]
+                        MarkeringLH = header["Markering L><H"]
                         Kleur = header["Kleur"]
                         Datumformaat = header["Datumformaat"]
                         if Taal == "EN":
@@ -1884,11 +1892,11 @@ while mimo == "Y":
                             Nulregels = Nulregels.replace("Ja","Sì").replace("Nee","No")
                             Kleur = Kleur.replace("Alle","Tutti").replace("Categorie","Categoria").replace("Mono","Mono").replace("Regenboog","Arcobaleno")
                         if Taal == "EN":
-                            wat = input("Choose what you want to alter\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  0 %s\n  : " % ( colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Lower marking")+ResetAll+colgoed+Valuta+fornum(Ondermarkering)+ResetAll, colslecht+for15("Upper marking")+ResetAll+colgoed+Valuta+fornum(Bovenmarkering)+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                            wat = input("Choose what you want to alter\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
                         elif Taal == "IT":
-                            wat = input("Scegli cosa vuoi modificare\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  0 %s\n  : " % ( colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicat. sotto")+ResetAll+colgoed+Valuta+fornum(Ondermarkering)+ResetAll, colslecht+for15("Indicat. sopra")+ResetAll+colgoed+Valuta+fornum(Bovenmarkering)+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                            wat = input("Scegli cosa vuoi modificare\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
                         else:
-                            wat = input("Kies wat je wilt wijzigen\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  0 %s\n  : " % ( colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Ondermarkering")+ResetAll+colgoed+Valuta+fornum(Ondermarkering)+ResetAll, colslecht+for15("Bovenmarkering")+ResetAll+colgoed+Valuta+fornum(Bovenmarkering)+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                            wat = input("Kies wat je wilt wijzigen\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
                         if wat.upper() in afsluitlijst:
                             break
                         elif wat == "1":
@@ -1976,14 +1984,15 @@ while mimo == "Y":
                             print(ResetAll, end = "")
                             if Ondermarkering.upper() in afsluitlijst:
                                 break
+                            elif Ondermarkering == "":
+                                Ondermarkering = header["Markering L><H"][0]
                             else:
                                 try:
-                                    Ondermarkering = float(Ondermarkering)
+                                    Ondermarkering = round(float(Ondermarkering),2)
                                 except(Exception) as error:
                                     #print(error)
-                                    Ondermarkering = header["Bovenmarkering"] * -1
-                            header["Ondermarkering"] = Ondermarkering
-                        elif wat == "8":
+                                    Ondermarkering = header["Markering L><H"][1] * -1
+                            header["Markering L><H"][0] = Ondermarkering
                             if Taal == "EN":
                                 Bovenmarkering = input("Upper limit for marking %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
                             elif Taal == "IT":
@@ -1993,14 +2002,16 @@ while mimo == "Y":
                             print(ResetAll, end = "")
                             if Bovenmarkering.upper() in afsluitlijst:
                                 break
+                            elif Bovenmarkering == "":
+                                Bovenmarkering = header["Markering L><H"][1]
                             else:
                                 try:
-                                    Bovenmarkering = float(Bovenmarkering)
+                                    Bovenmarkering = round(float(Bovenmarkering),2)
                                 except(Exception) as error:
                                     #print(error)
-                                    Bovenmarkering = header["Ondermarkering"] * -1
-                            header["Bovenmarkering"] = Bovenmarkering
-                        elif wat == "9":
+                                    Bovenmarkering = header["Markering L><H"][0] * -1
+                            header["Markering L><H"][1] = Bovenmarkering
+                        elif wat == "8":
                             if Taal == "EN":
                                 Koeleur = input("Colour\n%s  1 All%s\n%s  2 Category%s\n  3 Mono\n%s  4 %sR%sa%si%sn%sb%so%sw%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[0m",colgoed))
                             elif Taal == "IT":
@@ -2018,13 +2029,13 @@ while mimo == "Y":
                                 header["Kleur"] = "Mono"
                             elif Koeleur.upper() == "4":
                                 header["Kleur"] = "Regenboog"
-                        elif wat == "0":
+                        elif wat == "9":
                             if Taal == "EN":
-                                formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm'YY\n  :%s" % (colgoed))
+                                formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
                             elif Taal == "IT":
-                                formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm'YY\n  :%s" % (colgoed))
+                                formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
                             else:
-                                formaat = input("Kies je voorkeursdatumopmaak\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm'YY\n  :%s" % (colgoed))
+                                formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
                             print(ResetAll, end = "")
                             if formaat == "1":
                                 header["Datumformaat"] = "DDMMYYYY"
@@ -2034,6 +2045,8 @@ while mimo == "Y":
                                 header["Datumformaat"] = "DD/MM/YY"
                             elif formaat == "4":
                                 header["Datumformaat"] = "DDmmm\'YY"
+                            elif formaat == "5":
+                                header["Datumformaat"] = "DD-mmmYY"
                             else:
                                 header["Datumformaat"] = "YYYYMMDD"
                         with open("header","w") as f:
@@ -2144,8 +2157,7 @@ while mimo == "Y":
                                     Taal = header["Taal"]
                                     Valuta = header["Valuta"]
                                     Nulregels = header["Nulregels"]
-                                    Ondermarkering = header["Ondermarkering"]
-                                    Bovenmarkering = header["Bovenmarkering"]
+                                    MarkeringLH = header["Markering L><H"]
                                     Kleur = header["Kleur"]
                                     kleur = updatekleur()
                                     Kleuren = kleur[0]
@@ -2250,8 +2262,7 @@ while mimo == "Y":
                     Taal = header["Taal"]
                     Valuta = header["Valuta"]
                     Nulregels = header["Nulregels"]
-                    Ondermarkering = header["Ondermarkering"]
-                    Bovenmarkering = header["Bovenmarkering"]
+                    MarkeringLH = header["Markering L><H"]
                     Kleur = header["Kleur"]
                     kleur = updatekleur()
                     Kleuren = kleur[0]
@@ -2271,8 +2282,7 @@ while mimo == "Y":
                 Taal = header["Taal"]
                 Valuta = header["Valuta"]
                 Nulregels = header["Nulregels"]
-                Ondermarkering = header["Ondermarkering"]
-                Bovenmarkering = header["Bovenmarkering"]
+                MarkeringLH = header["Markering L><H"]
                 Kleur = header["Kleur"]
                 kleur = updatekleur()
                 Kleuren = kleur[0]
