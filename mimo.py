@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.41"
-hardedatum = "20220831"
+bouw = "1.42"
+hardedatum = "20220901"
 
 versie = """
 Versie: %s
@@ -352,6 +352,8 @@ forr19 = "{:>19}".format
 for20 = "{:20}".format
 forc20 = "{:^20}".format
 for25 = "{:25}".format
+for60 = "{:<60}".format
+forc60 = "{:^60}".format
 forc68 = "{:^68}".format
 forc70 = "{:^70}".format
 forc80 = "{:^80}".format # alleen als er een kleur en een ResetAll in zit
@@ -872,7 +874,7 @@ while mimo == "Y":
                             einddatum = int(str(datetime.strptime(bereik[9:],"%Y%m%d"))[:10].replace("-",""))
                             print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                         except(Exception) as error:
-                            startdatum = 11111111
+                            startdatum = 11111112
                             einddatum = 99999999
                             #print(error)
                 elif keuze2 == "5":
@@ -1315,6 +1317,25 @@ while mimo == "Y":
                                                 print(col+k,forc17(v),"bud. %s" % (Valuta),fornum(budget),"Tot. %s" % (Valuta),fornum(maandtotaallijst[k])," Rest.", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
                                             else:
                                                 print(col+k,forc17(v),"bud %s" % (Valuta),fornum(budget),"Totaal %s" % (Valuta),fornum(maandtotaallijst[k])," Rest", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
+                                            try:
+                                                if k == "A":
+                                                    colpos = colslecht
+                                                    colneg = colgoed
+                                                else:
+                                                    colpos = colgoed
+                                                    colneg = colslecht
+                                                if int(round(maandtotaallijst[k]/budget*-60,0)) > 60:
+                                                    print(col+"#"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
+                                                else:
+                                                    print(col+forc60("#"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos   + " - " + str(int(round(100-maandtotaallijst[k]/budget*-100,0)  ))+"%"+ResetAll)
+                                            except(Exception) as error:
+                                                #print(error)
+                                                if Taal == "EN":
+                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
+                                                elif Taal == "IT":
+                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
+                                                else:
+                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
                         if mcount == 1:
                             if Taal == "EN":
                                 regels = "line"
