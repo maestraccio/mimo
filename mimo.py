@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.42"
-hardedatum = "20220901"
+bouw = "1.43"
+hardedatum = "20220902"
 
 versie = """
 Versie: %s
@@ -337,8 +337,10 @@ forc5 = "{:^5}".format
 forr5 = "{:>5}".format
 forc7 = "{:^7}".format
 for8 = "{:8}".format
+forc9 = "{:^9}".format
 for10 = "{:10}".format
 forc10 = "{:^10}".format
+forl10 = "{:<10}".format
 forr10 = "{:>10}".format
 for12 = "{:12}".format
 forc12 = "{:^12}".format
@@ -352,6 +354,8 @@ forr19 = "{:>19}".format
 for20 = "{:20}".format
 forc20 = "{:^20}".format
 for25 = "{:25}".format
+forl25 = "{:<25}".format
+forr25 = "{:>25}".format
 for60 = "{:<60}".format
 forc60 = "{:^60}".format
 forc68 = "{:^68}".format
@@ -991,16 +995,16 @@ while mimo == "Y":
                 if budgetcheck == "Y":
                     maanddat = seldat
                     mcount = 0
-                    mtot = 0.0
+                    mndtot = 0.0
                     for i in maanddat:
                         mcount += 1
-                        mtot += i[1]
-                    if mtot >= 0:
+                        mndtot += i[1]
+                    if mndtot >= 0:
                         colmtot = colgoed
-                        mtot = colmtot+Valuta+fornum(mtot)+ResetAll
+                        mtot = colmtot+Valuta+fornum(mndtot)+ResetAll
                     else:
                         colmtot = colslecht
-                        mtot = colmtot+Valuta+fornum(mtot)+ResetAll
+                        mtot = colmtot+Valuta+fornum(mndtot)+ResetAll
                     maandtotaallijst = {}
                     if Nulregels == "Ja":
                         for k in alternatievenamenlijst:
@@ -1296,6 +1300,7 @@ while mimo == "Y":
                     try:
                         with open("alternatievenamen","r") as f:
                             alternatievenamenlijst = ast.literal_eval(f.read())
+                            totbud = 0
                             for k,v in alternatievenamenlijst.items():
                                 with open(k,"r") as g:
                                     inhoudvancategorie = ast.literal_eval(g.read())
@@ -1325,17 +1330,21 @@ while mimo == "Y":
                                                     colpos = colgoed
                                                     colneg = colslecht
                                                 if int(round(maandtotaallijst[k]/budget*-60,0)) > 60:
-                                                    print(col+"#"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
+                                                    print(col+"+"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
                                                 else:
-                                                    print(col+forc60("#"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos   + " - " + str(int(round(100-maandtotaallijst[k]/budget*-100,0)  ))+"%"+ResetAll)
+                                                    print(col+forc60("-"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos+" - "+str(int(round(100-maandtotaallijst[k]/budget*-100,0)))+"%"+ResetAll)
                                             except(Exception) as error:
-                                                #print(error)
+                                                print(error)
                                                 if Taal == "EN":
-                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
                                                 elif Taal == "IT":
-                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
                                                 else:
-                                                    print(col+"#"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
+                                    #print(budget)
+                                    if budget < 0:
+                                        totbud += budget
+
                         if mcount == 1:
                             if Taal == "EN":
                                 regels = "line"
@@ -1363,6 +1372,14 @@ while mimo == "Y":
                             print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
                         else:
                             print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
+                    totbud = round(float(totbud * -1),2)
+                    mndtot = round(float(mndtot),2)
+                    if mndtot < 0:
+                        print(colslecht+forc9(str(int(round(mndtot/totbud*100,0)))+"%")+forr25("-"*int(round(mndtot/totbud*-25,0)))+"|"+ResetAll+" "*25)
+                    elif mndtot == 0:
+                        print("=")
+                    else:
+                        print(forc9(" ")+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/totbud*25,0)))+forc9("+"+str(int(round(mndtot/totbud*100,0)))+"%")+ResetAll)
                         #print(error)
                 if dagsaldo == "Y":
                     if Taal == "EN":
