@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.43"
+bouw = "1.44"
 hardedatum = "20220902"
 
 versie = """
@@ -700,7 +700,7 @@ print(toplijn)
 print()
 
 ##### HIER BEGINT HET PROGRAMMA #####
-
+sel = []
 mimo = "Y"
 while mimo == "Y":
     Taal = updatetaal()
@@ -728,6 +728,70 @@ while mimo == "Y":
     print()
     
 ##### Hier volgt het eerste keuzemenu #####
+    if sel == []:
+        col1 = LichtGeel
+        dagen = 7
+        startdatum = int(str(datetime.strptime(strnu,"%Y%m%d")-timedelta(days = dagen))[:10].replace("-",""))
+        einddatum = nu
+        index = 0
+        for i in range(len(lijst)):
+            try:
+                with open(lijst[i],"r") as f:
+                    cat = ast.literal_eval(f.read())
+                    cat1 = sorted(cat[1:])
+                    for j in cat1:
+                        if startdatum <= j[0] <= einddatum:
+                            j.append(lijst[i][-1].upper()+str(index))
+                            sel.append(j)
+                            index += 1
+            except(Exception) as error:
+                #print(error)
+                pass
+        print(toplijn)
+        startdatumeinddatum = "%s-%s" % (startdatum,einddatum)
+        print("|"+col1+forc68(startdatumeinddatum)+ResetAll+"|")
+        print(pluslijn)
+        if Taal == "EN":
+            print("|"+col1+forc10("Date")+ResetAll+"|"+col1+forc12("Amount")+ResetAll+"|"+col1+forc17("Other party")+ResetAll+"|"+col1+forc20("About")+ResetAll+"|"+col1+forc5("ID")+ResetAll+"|")
+        elif Taal == "IT":
+            print("|"+col1+forc10("Data")+ResetAll+"|"+col1+forc12("Somma")+ResetAll+"|"+col1+forc17("Controparte")+ResetAll+"|"+col1+forc20("Riguarda")+ResetAll+"|"+col1+forc5("ID")+ResetAll+"|")
+        else:
+            print("|"+col1+forc10("Datum")+ResetAll+"|"+col1+forc12("Bedrag")+ResetAll+"|"+col1+forc17("Wederpartij")+ResetAll+"|"+col1+forc20("Betreft")+ResetAll+"|"+col1+forc5("ID")+ResetAll+"|")
+        print(pluslijn)
+        for i in sel:
+            if i[1] <= header['Markering L><H'][0]:
+                colc = colslecht+Omkeren
+            elif header['Markering L><H'][0] <= i[1] < 0:
+                colc = colslecht
+            elif 0 <= i[1] < header['Markering L><H'][1]:
+                colc = colgoed
+            else:
+                colc = colgoed+Omkeren
+            col = catcol[i[4][0]]
+            yymd = i[0]
+            if Datumformaat == "DDMMYYYY":
+                yymd = str(yymd)[6:]+str(yymd)[4:6]+str(yymd)[:4]
+            elif Datumformaat == "DD-MM-YY":
+                yymd = str(yymd)[6:]+"-"+str(yymd)[4:6]+"-"+str(yymd)[2:4]
+            elif Datumformaat == "DD/MM/YY":
+                yymd = str(yymd)[6:]+"/"+str(yymd)[4:6]+"/"+str(yymd)[2:4]
+            elif Datumformaat == "DD-mmmYY":
+                if Taal == "EN":
+                    yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+str(yymd)[2:4]
+                elif Taal == "IT":
+                    yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+str(yymd)[2:4]
+                else:
+                    yymd = str(yymd)[6:]+"-"+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+str(yymd)[2:4]
+            elif Datumformaat == "DDmmm\'YY":
+                if Taal == "EN":
+                    yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+str(yymd)[2:4]
+                elif Taal == "IT":
+                    yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(yymd)[2:4]
+                else:
+                    yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
+            print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+        print(pluslijn)
+        print()
 
     if Taal == "EN":
         keuze1 = input("Make a choice\n%s  0 Manage%s\n%s >1 View%s\n%s  2 Add%s\n%s  3 Change%s\n%s  4 Remove%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
@@ -1330,17 +1394,17 @@ while mimo == "Y":
                                                     colpos = colgoed
                                                     colneg = colslecht
                                                 if int(round(maandtotaallijst[k]/budget*-60,0)) > 60:
-                                                    print(col+"+"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
+                                                    print(col+"-"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
                                                 else:
-                                                    print(col+forc60("-"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos+" - "+str(int(round(100-maandtotaallijst[k]/budget*-100,0)))+"%"+ResetAll)
+                                                    print(col+forc60("+"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos+" - "+str(int(round(100-maandtotaallijst[k]/budget*-100,0)))+"%"+ResetAll)
                                             except(Exception) as error:
-                                                print(error)
+                                                #print(error)
                                                 if Taal == "EN":
-                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
                                                 elif Taal == "IT":
-                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
                                                 else:
-                                                    print(col+"-"*60+"budget %s 0" % Valuta+ResetAll)
+                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
                                     #print(budget)
                                     if budget < 0:
                                         totbud += budget
