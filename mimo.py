@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.44"
-hardedatum = "20220902"
+bouw = "1.45"
+hardedatum = "20220903"
 
 versie = """
 Versie: %s
@@ -336,6 +336,7 @@ for5 = "{:5}".format
 forc5 = "{:^5}".format
 forr5 = "{:>5}".format
 forc7 = "{:^7}".format
+forr7 = "{:>7}".format
 for8 = "{:8}".format
 forc9 = "{:^9}".format
 for10 = "{:10}".format
@@ -356,6 +357,9 @@ forc20 = "{:^20}".format
 for25 = "{:25}".format
 forl25 = "{:<25}".format
 forr25 = "{:>25}".format
+forl40 = "{:<40}".format
+forc50 = "{:^50}".format
+forl50 = "{:<50}".format
 for60 = "{:<60}".format
 forc60 = "{:^60}".format
 forc68 = "{:^68}".format
@@ -1378,14 +1382,6 @@ while mimo == "Y":
                                                 colsaldo = colonbepaald
                                             else:
                                                 colsaldo = colslecht
-                                            if Taal == "EN":
-                                                v = v.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
-                                                print(col+k,forc17(v),"bud %s" % (Valuta),fornum(budget),"Total %s" % (Valuta),fornum(maandtotaallijst[k])," Rest", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
-                                            elif Taal == "IT":
-                                                v = v.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
-                                                print(col+k,forc17(v),"bud. %s" % (Valuta),fornum(budget),"Tot. %s" % (Valuta),fornum(maandtotaallijst[k])," Rest.", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
-                                            else:
-                                                print(col+k,forc17(v),"bud %s" % (Valuta),fornum(budget),"Totaal %s" % (Valuta),fornum(maandtotaallijst[k])," Rest", colsaldo+Valuta,colsaldo+fornum(budget+maandtotaallijst[k]),ResetAll)
                                             try:
                                                 if k == "A":
                                                     colpos = colslecht
@@ -1393,22 +1389,30 @@ while mimo == "Y":
                                                 else:
                                                     colpos = colgoed
                                                     colneg = colslecht
-                                                if int(round(maandtotaallijst[k]/budget*-60,0)) > 60:
-                                                    print(col+"-"*60+colneg + " + "+ str(int(round(maandtotaallijst[k]/budget*-100,0))-100) + "%"+ResetAll)
+                                                if maandtotaallijst[k]/budget < -1:
+                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+"+"*25+"|+"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
                                                 else:
-                                                    print(col+forc60("+"*int(round(maandtotaallijst[k]/budget*-60,0)))+colpos+" - "+str(int(round(100-maandtotaallijst[k]/budget*-100,0)))+"%"+ResetAll)
+                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("-"*int(round(maandtotaallijst[k]/budget*-25,0)))+"|-"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
                                             except(Exception) as error:
-                                                #print(error)
-                                                if Taal == "EN":
-                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
-                                                elif Taal == "IT":
-                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
+                                                if maandtotaallijst[k] != 0:
+                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|X"+forr7(" ")+" "+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
                                                 else:
-                                                    print(col+"."*60+"budget %s 0" % Valuta+ResetAll)
-                                    #print(budget)
-                                    if budget < 0:
-                                        totbud += budget
-
+                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|="+forr7(" ")+" "+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                        budtot = 0
+                        for i in lijst:
+                            try:
+                                with open(i,"r") as r:
+                                    inhoudvancategorie = ast.literal_eval(r.read())
+                                    if inhoudvancategorie[0] < 0:
+                                        budtot += inhoudvancategorie[0]*-1
+                            except(Exception) as error:
+                                pass
+                        if mndtot < 0:
+                            print(colslecht+for8(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
+                        elif mndtot > 0:
+                            print(colslecht+for8(" ")+"|"+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/budtot*25,0)))+"|"+for8(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+                        else:
+                            print(colgoed+for8(" ")+" "*24+"-=+"+" "*24+for8(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
                         if mcount == 1:
                             if Taal == "EN":
                                 regels = "line"
@@ -1436,15 +1440,6 @@ while mimo == "Y":
                             print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
                         else:
                             print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
-                    totbud = round(float(totbud * -1),2)
-                    mndtot = round(float(mndtot),2)
-                    if mndtot < 0:
-                        print(colslecht+forc9(str(int(round(mndtot/totbud*100,0)))+"%")+forr25("-"*int(round(mndtot/totbud*-25,0)))+"|"+ResetAll+" "*25)
-                    elif mndtot == 0:
-                        print("=")
-                    else:
-                        print(forc9(" ")+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/totbud*25,0)))+forc9("+"+str(int(round(mndtot/totbud*100,0)))+"%")+ResetAll)
-                        #print(error)
                 if dagsaldo == "Y":
                     if Taal == "EN":
                         print(col1+forc70("Day balance on %s: %s %s" % (str(startdatum),Valuta,fornum(moni)))+ResetAll)
