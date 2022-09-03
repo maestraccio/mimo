@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.45"
+bouw = "1.46"
 hardedatum = "20220903"
 
 versie = """
@@ -67,7 +67,7 @@ this account folder the following files are created by default:
     "header": account details and account related interface options
     six category files "A"-"E" and "O" with financial mutations
 
-6 categories (expandable and adjustable, Dutch names in file):
+6 categories (expandable and adjustable, translated from Dutch names):
 A: funds & income : intentionally positive amounts, budget negative
 B: fixed costs    : expected and repeated expenses
 C: groceries      : daily variable expenses
@@ -127,7 +127,7 @@ tre:
 info2 = """
 PROGRAMMASTRUCTUUR:
 
-0 Beheer
+0 Beheer rekeningopties
     0 Print versie en info
     1 Categoriebeheer
         1 Categorienaam wijzigen
@@ -147,18 +147,18 @@ PROGRAMMASTRUCTUUR:
     4 Wissel van rekening
     5 Nieuwe rekening toevoegen
     6 Verwijder rekening
-1 Bekijken
+1 Mutaties bekijken
     Datumselectie -> Categorieselectie -> Subselectie -> Toon + ID
-2 Toevoegen
+2 Mutatie toevoegen
     1 Nieuw
-    2 Kopie (o.b.v. ID uit "1 Bekijken")
-3 Wijzigen (o.b.v. ID uit "1 Bekijken")
+    2 Kopie
+3 Mutatie wijzigen
     1 Datum (standaard = vandaag)
     2 Bedrag (standaard = "0.0", "+" of "-" = omkering)
     3 Wederpartij
     4 Betreft
     5 Categorie
-4 Verwijderen (o.b.v. ID uit "1 Bekijken")
+4 Mutatie verwijderen
 
 Keuzes moeten worden bevestigd met "Enter".
 "Terug" of "Verlaten" met "Q" of "X" en "Enter".
@@ -166,12 +166,12 @@ Keuzes moeten worden bevestigd met "Enter".
 info2EN = """
 PROGRAM STRUCTURE:
 
-0 Manage
+0 Manage account options
     0 Print version and info
     1 Category management
-        1 Alter category name
-        2 Alter month budget
-        3 Delete category
+        1 Modify category name
+        2 Modify month budget
+        3 Remove category
     2 Alter account settings
         1 Description
         2 Account holder
@@ -179,25 +179,25 @@ PROGRAM STRUCTURE:
         4 Language (default "NL")
         5 Currency (default "€")
         6 Zero lines (default "No")
-        7 Marking Lower >< Upper (Lower default opposite to Upper)
+        7 Marking Lower >< Upper (by default one inversion of other)
         8 Colour (default = "Category")
         9 Date formatting (default = "YYYYMMDD")
     3 Show or hide account
     4 Switch account (!)
     5 Add new account
     6 Delete account
-1 View
+1 View mutations
     Date selection -> Category selection -> Subselection -> Show + ID
-2 Add
+2 Add mutation
     1 New
-    2 Copy ("1 View" ID based)
-3 Change ("1 View" ID based)
+    2 Copy
+3 Modify mutation
     1 Date (default = today)
     2 Amount (default = "0.0", "+" or "-" = opposite)
     3 Other party
     4 About
     5 Category
-4 Remove ("1 View" ID based)
+4 Remove mutation
 
 Choices must be confirmed with "Enter".
 "Back" or "Abort" with "Q" or "X" and "Enter".
@@ -205,7 +205,7 @@ Choices must be confirmed with "Enter".
 info2IT = """
 STRUTTURA DEL PROGRAMMA:
 
-0 Gestire
+0 Gestire opzioni del conto
     0 Print versione ed info
     1 Gestione categorie
         1 Modificare nome di categoria
@@ -218,25 +218,25 @@ STRUTTURA DEL PROGRAMMA:
         4 Lingua (predefinito "NL")
         5 Valuta (predefinito "€")
         6 Linee a zero (predefinito "No")
-        7 Indicazione Inf. >< Sup. (Inf. predefinito opposto a Sup.)
+        7 Indicazione Inf. >< Sup. (Inf. predefinito inverso di Sup.)
         8 Colore (predefinito = "Categoria")
         9 Formato data (predefinito "AAAAMMGG")
     3 Mostrare o nascondere conto
     4 Passare ad un altro conto
     5 Aggiungere un nuovo conto
     6 Eliminare conto
-1 Vedere
+1 Vedere mutazioni
     Selezione data > Selezione categoria > Sottoselezione > Mostra+ID
-2 Aggiungere
-    1 Nuovo
-    2 Copia (basato su ID "1 Vedere")
-3 Modificare (basato su ID "1 Vedere")
+2 Aggiungere mutazione
+    1 Nuova
+    2 Copia
+3 Modificare mutazione
     1 Data (impostazione predefinita = oggi)
-    2 Somma (predefinito = "0.0", "+" o "-" = opposto)
+    2 Somma (predefinito = "0.0", "+" o "-" = inversione)
     3 Controparte
     4 Riguarda
     5 Categoria
-4 Cancellare (basato su ID "1 Vedere")
+4 Rimuovere mutazione
 
 Le scelte devono essere confermate con "Invio".
 "Indietro" o "Annulla" con "Q" o "X" e "Invio".
@@ -798,11 +798,11 @@ while mimo == "Y":
         print()
 
     if Taal == "EN":
-        keuze1 = input("Make a choice\n%s  0 Manage%s\n%s >1 View%s\n%s  2 Add%s\n%s  3 Change%s\n%s  4 Remove%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
     elif Taal == "IT":
-        keuze1 = input("Scegli\n%s  0 Gestire%s\n%s >1 Vedere%s\n%s  2 Aggiungere%s\n%s  3 Modificare%s\n%s  4 Cancellare%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
     else:
-        keuze1 = input("Maak een keuze\n%s  0 Beheer%s\n%s >1 Bekijken%s\n%s  2 Toevoegen%s\n%s  3 Wijzigen%s\n%s  4 Verwijderen%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
     if keuze1.upper() in afsluitlijst:
         print()
         print(toplijn)
@@ -1116,7 +1116,12 @@ while mimo == "Y":
                         for k in selcat:
                             seldat.remove(k)
                         Katlijst = list(dict.fromkeys(Katlijst))
-                        Kat = ", zonder "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
+                        if Taal == "EN":
+                            Kat = ", without "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
+                        if Taal == "IT":
+                            Kat = ", senza "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
+                        else:
+                            Kat = ", zonder "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
                 except(Exception) as error:
                     #print(error)
                     Kat = ""
@@ -1407,6 +1412,7 @@ while mimo == "Y":
                                         budtot += inhoudvancategorie[0]*-1
                             except(Exception) as error:
                                 pass
+                        print(colonbepaald+" "+for8(" ")+" "*25+"0"+" "*25+for8(" ")+" "+ResetAll)
                         if mndtot < 0:
                             print(colslecht+for8(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
                         elif mndtot > 0:
@@ -1434,12 +1440,7 @@ while mimo == "Y":
                         else:
                             print(col1+forc80("Deze HELE MAAND bevat %s %s voor een totaal van %s" % (str(mcount),regels,mtot))+ResetAll)
                     except(Exception) as error:
-                        if Taal == "EN":
-                            print(colslecht+forc70("No account was selected")+ResetAll)
-                        elif Taal == "IT":
-                            print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
-                        else:
-                            print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
+                        pass
                 if dagsaldo == "Y":
                     if Taal == "EN":
                         print(col1+forc70("Day balance on %s: %s %s" % (str(startdatum),Valuta,fornum(moni)))+ResetAll)
@@ -1454,11 +1455,11 @@ while mimo == "Y":
         print()
         col2 = LichtGroen
         if Taal == "EN":
-            keuze2 = input("%sAdd a new item or make a copy%s\n  1 %sNew%s\n  2 %sCopy%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n  1 %sNew%s\n  2 %sCopy%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         elif Taal == "IT":
-            keuze2 = input("%sAggiungi un nuovo elemento o fai una copia%s\n  1 %sNuovo%s\n  2 %sCopia%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         else:
-            keuze2 = input("%sNieuw item toevoegen of een kopie maken%s\n  1 %sNieuw%s\n  2 %sKopie%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n  1 %sNieuw%s\n  2 %sKopie%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         print(ResetAll, end = "")
         if keuze2.upper() in afsluitlijst:
             pass
@@ -1495,21 +1496,17 @@ while mimo == "Y":
                             for k in sortcat1:
                                 inhoudvancategorie.append(k)
                             if Taal == "EN":
+                                alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col2,i[0],ResetAll,for15("Amount: "),col2,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col2,i[2],ResetAll,for15("About: "),col2,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                             elif Taal == "IT":
+                                alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col2,i[0],ResetAll,for15("Somma: "),col2,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col2,i[2],ResetAll,for15("Riguarda: "),col2,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                             else:
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col2,i[0],ResetAll,for15("Bedrag: "),col2,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col2,i[2],ResetAll,for15("Betreft: "),col2,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
                             with open(tekopieren[0].upper(),"w") as w:
                                 print(inhoudvancategorie, file = w, end = "")
                         except(Exception) as error:
-                            #print(error)
-                            if Taal == "EN":
-                                print("%sYou need an ID from \"%s1 View%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-                            elif Taal == "IT":
-                                print("%sCi vuole un ID da \"%s1 Vedere%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-                            else:
-                                print("%sEr is een ID nodig uit \"%s1 Bekijken%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+                            pass
                     break
                 else:
                     nieuw = []
@@ -1657,7 +1654,7 @@ while mimo == "Y":
             wijzig = "N"
             while wijzig == "N":
                 if Taal == "EN":
-                    tewijzigen = input("Which ID do you want to %schange%s\n  : %s" % (col3, ResetAll,col3))
+                    tewijzigen = input("Which ID do you want to %smodify%s\n  : %s" % (col3, ResetAll,col3))
                 elif Taal == "IT":
                     tewijzigen = input("Quale ID vuoi %modificare%s\n  : %s" % (col3, ResetAll,col3))
                 else:
@@ -1683,8 +1680,10 @@ while mimo == "Y":
                         for i in sel:
                             if i[4] == tewijzigen.upper():
                                 if Taal == "EN":
+                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                     wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                                 elif Taal == "IT":
+                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                     wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                                 else:
                                     wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -1853,8 +1852,10 @@ while mimo == "Y":
                                                 else:
                                                     print("%sHet ID is gewijzigd, genereer nieuwe %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
                                                 if Taal == "EN":
+                                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                                                 elif Taal == "IT":
+                                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                                                 else:
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -1871,13 +1872,7 @@ while mimo == "Y":
                         pass
                     print()
         except(Exception) as error:
-            #print(error)
-            if Taal == "EN":
-                print("%sYou need an ID from \"%s1 View%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-            elif Taal == "IT":
-                print("%sCi vuole un ID da \"%s1 Vedere%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-            else:
-                print("%sEr is een ID nodig uit \"%s1 Bekijken%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+            pass
         print()
         print(toplijn)
         print()
@@ -1891,7 +1886,7 @@ while mimo == "Y":
                 if Taal == "EN":
                     teverwijderen = input("Which ID do you want to %sremove%s\n  : " % (col4, ResetAll))
                 elif Taal == "IT":
-                    teverwijderen = input("Quale ID vuoi %scancellare%s\n  : " % (col4, ResetAll))
+                    teverwijderen = input("Quale ID vuoi %srimuovere%s\n  : " % (col4, ResetAll))
                 else:
                     teverwijderen = input("Welk ID wil je %sverwijderen%s\n  : " % (col4, ResetAll))
                 if teverwijderen.upper() in afsluitlijst:
@@ -1905,8 +1900,10 @@ while mimo == "Y":
                         for i in sel:
                             if i[4] == teverwijderen[0].upper()+teverwijderen[1:]:
                                 if Taal == "EN":
+                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nConfirm\n  : %s" % (for15("Date: "),col4+str(i[0])+ResetAll,for15("Amount: "),col4+Valuta,str(i[1])+ResetAll,for15("Other party: "),col4+i[2]+ResetAll,for15("About: "),col4+i[3]+ResetAll,for15("Category: "),col4+alternatievenaam,ResetAll))
                                 elif Taal == "IT":
+                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nConferma\n  : %s" % (for15("Data: "),col4+str(i[0])+ResetAll,for15("Somma: "),col4+Valuta,str(i[1])+ResetAll,for15("Controparte: "),col4+i[2]+ResetAll,for15("Riguarda: "),col4+i[3]+ResetAll,for15("Categoria: "),col4+alternatievenaam,ResetAll))
                                 else:
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nBevestig\n  : %s" % (for15("Datum: "),col4+str(i[0])+ResetAll,for15("Bedrag: "),col4+Valuta,str(i[1])+ResetAll,for15("Wederpartij: "),col4+i[2]+ResetAll,for15("Betreft: "),col4+i[3]+ResetAll,for15("Categorie: "),col4+alternatievenaam,ResetAll))
@@ -1938,13 +1935,7 @@ while mimo == "Y":
                         #print(error)
                         pass
         except(Exception) as error:
-            #print(error)
-            if Taal == "EN":
-                print("%sYou need an ID from \"%s1 View%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-            elif Taal == "IT":
-                print("%sCi vuole un ID da \"%s1 Vedere%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-            else:
-                print("%sEr is een ID nodig uit \"%s1 Bekijken%s\"%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+            pass
         print()
         print(toplijn)
         print()
@@ -1954,7 +1945,7 @@ while mimo == "Y":
         beheer = "Y"
         while beheer == "Y":
             if Taal == "EN":
-                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sAlter account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
             elif Taal == "IT":
                 keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
             else:
@@ -1962,271 +1953,322 @@ while mimo == "Y":
             if keuze2.upper() in afsluitlijst:
                 break
             elif keuze2 == "2":
-                if os.getcwd() == basismap:
+                headerloop = "Y"
+                while headerloop == "Y":
+                    #printheaderall()
+                    hoe = header["Beschrijving"]
+                    wie = header["Rekeninghouder"]
+                    waar = header["Plaats"]
+                    Taal = header["Taal"]
+                    Valuta = header["Valuta"]
+                    Nulregels = header["Nulregels"]
+                    MarkeringLH = header["Markering L><H"]
+                    Kleur = header["Kleur"]
+                    Datumformaat = header["Datumformaat"]
                     if Taal == "EN":
-                        print(colslecht+forc70("No account selected")+ResetAll)
+                        Nulregels = Nulregels.replace("Ja","Yes").replace("Nee","No")
+                        Kleur = Kleur.replace("Alle","All").replace("Categorie","Category").replace("Mono","Mono").replace("Regenboog","Rainbow")
                     elif Taal == "IT":
-                        print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
+                        Nulregels = Nulregels.replace("Ja","Sì").replace("Nee","No")
+                        Kleur = Kleur.replace("Alle","Tutti").replace("Categorie","Categoria").replace("Mono","Mono").replace("Regenboog","Arcobaleno")
+                    if Taal == "EN":
+                        wat = input("Choose what you want to modify\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                    elif Taal == "IT":
+                        wat = input("Scegli cosa vuoi modificare\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
                     else:
-                        print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
-                else:
-                    headerloop = "Y"
-                    while headerloop == "Y":
-                        #printheaderall()
-                        hoe = header["Beschrijving"]
-                        wie = header["Rekeninghouder"]
-                        waar = header["Plaats"]
-                        Taal = header["Taal"]
-                        Valuta = header["Valuta"]
-                        Nulregels = header["Nulregels"]
-                        MarkeringLH = header["Markering L><H"]
-                        Kleur = header["Kleur"]
-                        Datumformaat = header["Datumformaat"]
+                        wat = input("Kies wat je wilt wijzigen\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                    if wat.upper() in afsluitlijst:
+                        break
+                    elif wat == "1":
                         if Taal == "EN":
-                            Nulregels = Nulregels.replace("Ja","Yes").replace("Nee","No")
-                            Kleur = Kleur.replace("Alle","All").replace("Categorie","Category").replace("Mono","Mono").replace("Regenboog","Rainbow")
+                            hoe = input("Description\n  : %s" % (colgoed))
                         elif Taal == "IT":
-                            Nulregels = Nulregels.replace("Ja","Sì").replace("Nee","No")
-                            Kleur = Kleur.replace("Alle","Tutti").replace("Categorie","Categoria").replace("Mono","Mono").replace("Regenboog","Arcobaleno")
-                        if Taal == "EN":
-                            wat = input("Choose what you want to alter\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
-                        elif Taal == "IT":
-                            wat = input("Scegli cosa vuoi modificare\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                            hoe = input("Descrizione\n  : %s" % (colgoed))
                         else:
-                            wat = input("Kies wat je wilt wijzigen\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
-                        if wat.upper() in afsluitlijst:
+                            hoe = input("Beschrijving\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if hoe.upper() in afsluitlijst:
                             break
-                        elif wat == "1":
-                            if Taal == "EN":
-                                hoe = input("Description\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                hoe = input("Descrizione\n  : %s" % (colgoed))
-                            else:
-                                hoe = input("Beschrijving\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if hoe.upper() in afsluitlijst:
-                                break
-                            header["Beschrijving"] = hoe
-                        elif wat == "2":
-                            if Taal == "EN":
-                                wie = input("Account holder\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                wie = input("Intestatario\n  : %s" % (colgoed))
-                            else:
-                                wie = input("Rekeninghouder\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if wie.upper() in afsluitlijst:
-                                break
-                            header["Rekeninghouder"] = wie
-                        elif wat == "3":
-                            if Taal == "EN":
-                                waar = input("City\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                waar = input("Città\n  : %s" % (colgoed))
-                            else:
-                                waar = input("Plaats\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if waar.upper() in afsluitlijst:
-                                break
-                            header["Plaats"] = waar
-                        elif wat == "4":
-                            if Taal == "EN":
-                                taal = input("Language\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                taal = input("Lingua\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
-                            else:
-                                taal = input("Taal\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if taal.upper() in afsluitlijst:
-                                break
-                            elif taal == "2":
-                                Taal = "EN"
-                            elif taal == "3":
-                                Taal = "IT"
-                            else:
-                                Taal = "NL"
-                            header["Taal"] = Taal
-                        elif wat == "5":
-                            if Taal == "EN":
-                                Valuta = input("Currency\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                Valuta = input("Valuta\n  : %s" % (colgoed))
-                            else:
-                                Valuta = input("Valuta\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if Valuta.upper() in afsluitlijst:
-                                break
-                            header["Valuta"] = Valuta
-                        elif wat == "6":
-                            if Taal == "EN":
-                                nuljanee = input("Zero lines\n  Y Yes\n >N No\n  : %s" % (colgoed))
-                            elif Taal == "IT":
-                                nuljanee = input("Linee a zero\n  S Si\n >N No\n  : %s" % (colgoed))
-                            else:
-                                nuljanee = input("Nulregels\n  J Ja\n >N Nee\n  : %s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if nuljanee.upper() in afsluitlijst:
-                                break
-                            elif nuljanee.upper() in jalijst:
-                                header["Nulregels"] = "Ja"
-                            else:
-                                header["Nulregels"] = "Nee"
-                        elif wat == "7":
-                            if Taal == "EN":
-                                Ondermarkering = input("Lower limit for marking %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
-                            elif Taal == "IT":
-                                Ondermarkering = input("Limite inferiore per indicazione %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
-                            else:
-                                Ondermarkering = input("Ondergrens voor markering %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
-                            print(ResetAll, end = "")
-                            if Ondermarkering.upper() in afsluitlijst:
-                                break
-                            elif Ondermarkering == "":
-                                Ondermarkering = header["Markering L><H"][0]
-                            else:
-                                try:
-                                    Ondermarkering = round(float(Ondermarkering),2)
-                                except(Exception) as error:
-                                    #print(error)
-                                    Ondermarkering = header["Markering L><H"][1] * -1
-                            header["Markering L><H"][0] = Ondermarkering
-                            if Taal == "EN":
-                                Bovenmarkering = input("Upper limit for marking %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
-                            elif Taal == "IT":
-                                Bovenmarkering = input("Limite superiore per indicazione %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
-                            else:
-                                Bovenmarkering = input("Bovengrens voor markering %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
-                            print(ResetAll, end = "")
-                            if Bovenmarkering.upper() in afsluitlijst:
-                                break
-                            elif Bovenmarkering == "":
-                                Bovenmarkering = header["Markering L><H"][1]
-                            else:
-                                try:
-                                    Bovenmarkering = round(float(Bovenmarkering),2)
-                                except(Exception) as error:
-                                    #print(error)
-                                    Bovenmarkering = header["Markering L><H"][0] * -1
-                            header["Markering L><H"][1] = Bovenmarkering
-                        elif wat == "8":
-                            if Taal == "EN":
-                                Koeleur = input("Colour\n%s  1 All%s\n%s  2 Category%s\n  3 Mono\n%s  4 %sR%sa%si%sn%sb%so%sw%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[0m",colgoed))
-                            elif Taal == "IT":
-                                Koeleur = input("Colore\n%s  1 Tutti%s\n%s  2 Categoria%s\n  3 Mono\n%s  4 %sA%sr%sc%so%sb%sa%sl%se%sn%so%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[0m",colgoed))
-                            else:
-                                Koeleur = input("Kleur\n%s  1 Alles%s\n%s  2 Categorie%s\n  3 Mono\n%s  4 %sR%se%sg%se%sn%sb%so%so%sg%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[43m","\033[103m","\033[0m",colgoed))
-                            print(ResetAll, end = "")
-                            if Koeleur.upper() in afsluitlijst:
-                                break
-                            elif Koeleur.upper() == "1":
-                                header["Kleur"] = "Alle"
-                            elif Koeleur.upper() == "2":
-                                header["Kleur"] = "Categorie"
-                            elif Koeleur.upper() == "3":
-                                header["Kleur"] = "Mono"
-                            elif Koeleur.upper() == "4":
-                                header["Kleur"] = "Regenboog"
-                        elif wat == "9":
-                            if Taal == "EN":
-                                formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
-                            elif Taal == "IT":
-                                formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
-                            else:
-                                formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
-                            print(ResetAll, end = "")
-                            if formaat == "1":
-                                header["Datumformaat"] = "DDMMYYYY"
-                            elif formaat == "2":
-                                header["Datumformaat"] = "DD-MM-YY"
-                            elif formaat == "3":
-                                header["Datumformaat"] = "DD/MM/YY"
-                            elif formaat == "4":
-                                header["Datumformaat"] = "DDmmm\'YY"
-                            elif formaat == "5":
-                                header["Datumformaat"] = "DD-mmmYY"
-                            else:
-                                header["Datumformaat"] = "YYYYMMDD"
-                        with open("header","w") as f:
-                            print(header, file = f, end = "")
-                        kleur = updatekleur()
-                        Kleuren = kleur[0]
-                        globals().update(Kleuren)
-                        catcol = kleur[1]
+                        header["Beschrijving"] = hoe
+                    elif wat == "2":
+                        if Taal == "EN":
+                            wie = input("Account holder\n  : %s" % (colgoed))
+                        elif Taal == "IT":
+                            wie = input("Intestatario\n  : %s" % (colgoed))
+                        else:
+                            wie = input("Rekeninghouder\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if wie.upper() in afsluitlijst:
+                            break
+                        header["Rekeninghouder"] = wie
+                    elif wat == "3":
+                        if Taal == "EN":
+                            waar = input("City\n  : %s" % (colgoed))
+                        elif Taal == "IT":
+                            waar = input("Città\n  : %s" % (colgoed))
+                        else:
+                            waar = input("Plaats\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if waar.upper() in afsluitlijst:
+                            break
+                        header["Plaats"] = waar
+                    elif wat == "4":
+                        if Taal == "EN":
+                            taal = input("Language\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
+                        elif Taal == "IT":
+                            taal = input("Lingua\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
+                        else:
+                            taal = input("Taal\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if taal.upper() in afsluitlijst:
+                            break
+                        elif taal == "2":
+                            Taal = "EN"
+                        elif taal == "3":
+                            Taal = "IT"
+                        else:
+                            Taal = "NL"
+                        header["Taal"] = Taal
+                    elif wat == "5":
+                        if Taal == "EN":
+                            Valuta = input("Currency\n  : %s" % (colgoed))
+                        elif Taal == "IT":
+                            Valuta = input("Valuta\n  : %s" % (colgoed))
+                        else:
+                            Valuta = input("Valuta\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if Valuta.upper() in afsluitlijst:
+                            break
+                        header["Valuta"] = Valuta
+                    elif wat == "6":
+                        if Taal == "EN":
+                            nuljanee = input("Zero lines\n  Y Yes\n >N No\n  : %s" % (colgoed))
+                        elif Taal == "IT":
+                            nuljanee = input("Linee a zero\n  S Si\n >N No\n  : %s" % (colgoed))
+                        else:
+                            nuljanee = input("Nulregels\n  J Ja\n >N Nee\n  : %s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if nuljanee.upper() in afsluitlijst:
+                            break
+                        elif nuljanee.upper() in jalijst:
+                            header["Nulregels"] = "Ja"
+                        else:
+                            header["Nulregels"] = "Nee"
+                    elif wat == "7":
+                        if Taal == "EN":
+                            Ondermarkering = input("Lower limit for marking %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
+                        elif Taal == "IT":
+                            Ondermarkering = input("Limite inferiore per indicazione %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
+                        else:
+                            Ondermarkering = input("Ondergrens voor markering %s\n  : %s" % (Omkeren+colslecht+Valuta+ResetAll,colgoed))
+                        print(ResetAll, end = "")
+                        if Ondermarkering.upper() in afsluitlijst:
+                            break
+                        elif Ondermarkering == "":
+                            Ondermarkering = header["Markering L><H"][0]
+                        else:
+                            try:
+                                Ondermarkering = round(float(Ondermarkering),2)
+                            except(Exception) as error:
+                                #print(error)
+                                Ondermarkering = header["Markering L><H"][1] * -1
+                        header["Markering L><H"][0] = Ondermarkering
+                        if Taal == "EN":
+                            Bovenmarkering = input("Upper limit for marking %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
+                        elif Taal == "IT":
+                            Bovenmarkering = input("Limite superiore per indicazione %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
+                        else:
+                            Bovenmarkering = input("Bovengrens voor markering %s\n  : %s" % (Omkeren+colgoed+Valuta+ResetAll,colgoed))
+                        print(ResetAll, end = "")
+                        if Bovenmarkering.upper() in afsluitlijst:
+                            break
+                        elif Bovenmarkering == "":
+                            Bovenmarkering = header["Markering L><H"][1]
+                        else:
+                            try:
+                                Bovenmarkering = round(float(Bovenmarkering),2)
+                            except(Exception) as error:
+                                #print(error)
+                                Bovenmarkering = header["Markering L><H"][0] * -1
+                        header["Markering L><H"][1] = Bovenmarkering
+                    elif wat == "8":
+                        if Taal == "EN":
+                            Koeleur = input("Colour\n%s  1 All%s\n%s  2 Category%s\n  3 Mono\n%s  4 %sR%sa%si%sn%sb%so%sw%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[0m",colgoed))
+                        elif Taal == "IT":
+                            Koeleur = input("Colore\n%s  1 Tutti%s\n%s  2 Categoria%s\n  3 Mono\n%s  4 %sA%sr%sc%so%sb%sa%sl%se%sn%so%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[0m",colgoed))
+                        else:
+                            Koeleur = input("Kleur\n%s  1 Alles%s\n%s  2 Categorie%s\n  3 Mono\n%s  4 %sR%se%sg%se%sn%sb%so%so%sg%s\n  : %s" % ("\033[95m","\033[0m","\033[31m","\033[0m","\033[45m","\033[41m","\033[43m","\033[103m","\033[42m","\033[44m","\033[45m","\033[41m","\033[43m","\033[103m","\033[0m",colgoed))
+                        print(ResetAll, end = "")
+                        if Koeleur.upper() in afsluitlijst:
+                            break
+                        elif Koeleur.upper() == "1":
+                            header["Kleur"] = "Alle"
+                        elif Koeleur.upper() == "2":
+                            header["Kleur"] = "Categorie"
+                        elif Koeleur.upper() == "3":
+                            header["Kleur"] = "Mono"
+                        elif Koeleur.upper() == "4":
+                            header["Kleur"] = "Regenboog"
+                    elif wat == "9":
+                        if Taal == "EN":
+                            formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                        elif Taal == "IT":
+                            formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                        else:
+                            formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                        print(ResetAll, end = "")
+                        if formaat == "1":
+                            header["Datumformaat"] = "DDMMYYYY"
+                        elif formaat == "2":
+                            header["Datumformaat"] = "DD-MM-YY"
+                        elif formaat == "3":
+                            header["Datumformaat"] = "DD/MM/YY"
+                        elif formaat == "4":
+                            header["Datumformaat"] = "DDmmm\'YY"
+                        elif formaat == "5":
+                            header["Datumformaat"] = "DD-mmmYY"
+                        else:
+                            header["Datumformaat"] = "YYYYMMDD"
+                    with open("header","w") as f:
+                        print(header, file = f, end = "")
+                    kleur = updatekleur()
+                    Kleuren = kleur[0]
+                    globals().update(Kleuren)
+                    catcol = kleur[1]
             elif keuze2 == "3":
-                if os.getcwd() == basismap:
+                os.chdir(basismap)
+                gtndrekeningenlijst = []
+                for d in os.listdir():
+                    if "@" in d:
+                        gtndrekeningenlijst.append(d.split("@"))
+                gtndrekeningenlijst = sorted(gtndrekeningenlijst)
+                vrbrgnrekeningenlijst = []
+                for d in os.listdir():
+                    if "_" in d:
+                        vrbrgnrekeningenlijst.append(d.split("_"))
+                vrbrgnrekeningenlijst = sorted(vrbrgnrekeningenlijst)
+                if len(vrbrgnrekeningenlijst) > 0:
                     if Taal == "EN":
-                        print(colslecht+forc70("No account selected")+ResetAll)
+                        print("%sHidden%s accounts:" % (colslecht,ResetAll))
                     elif Taal == "IT":
-                        print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
+                        print("Conti %snascosti%s:" % (colslecht,ResetAll))
                     else:
-                        print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
+                        print("%sVerborgen%s rekeningen:" % (colslecht,ResetAll))
+                    for i in vrbrgnrekeningenlijst:
+                        print("    "+colslecht+for20(i[0])+colonbepaald+i[1]+ResetAll)
+                if len(gtndrekeningenlijst) > 0:
+                    if Taal == "EN":
+                        print("%sShown%s accounts:" % (colgoed,ResetAll))
+                    elif Taal == "IT":
+                        print("Conti %sesposti%s:" % (colgoed,ResetAll))
+                    else:
+                        print("%sGetoonde%s rekeningen:" % (colgoed,ResetAll))
+                    reking = 1
+                    for i in gtndrekeningenlijst:
+                        print("    "+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll)
+                        reking += 1
+                os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                if Taal == "EN":
+                    tov = input("Show a %shidden account%s or hide a %sshown account%s\n  1 %sShow%s and go\n  2 %sHide%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
+                elif Taal == "IT":
+                    tov = input("Esporre un %sconto nascosto%s o nascondere un %sconto esposto%s\n  1 %sEspondi%s e vai\n  2 %sNascondi%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
                 else:
+                    tov = input("Een %sverborgen rekening%s tonen of een %sgetoonde rekening%s verbergen\n  1 %sTonen%s en ga erheen\n  2 %sVerbergen%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
+                print(ResetAll, end = "")
+
+                if tov.upper() in afsluitlijst:
+                    break
+                elif tov == "1":
                     os.chdir(basismap)
-                    gtndrekeningenlijst = []
-                    for d in os.listdir():
-                        if "@" in d:
-                            gtndrekeningenlijst.append(d.split("@"))
-                    gtndrekeningenlijst = sorted(gtndrekeningenlijst)
                     vrbrgnrekeningenlijst = []
                     for d in os.listdir():
                         if "_" in d:
                             vrbrgnrekeningenlijst.append(d.split("_"))
                     vrbrgnrekeningenlijst = sorted(vrbrgnrekeningenlijst)
-                    if len(vrbrgnrekeningenlijst) > 0:
+                    if len(vrbrgnrekeningenlijst) == 0:
+                        if Taal == "EN":
+                            print("%sThere are no accounts hidden%s" % (colslecht,ResetAll))
+                        elif Taal == "IT":
+                            print("%sNon ci son conti nascosti%s" % (colslecht,ResetAll))
+                        else:
+                            print("%sEr zijn geen verborgen rekeningen%s" % (colslecht,ResetAll))
+                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                    else:
                         if Taal == "EN":
                             print("%sHidden%s accounts:" % (colslecht,ResetAll))
                         elif Taal == "IT":
                             print("Conti %snascosti%s:" % (colslecht,ResetAll))
                         else:
                             print("%sVerborgen%s rekeningen:" % (colslecht,ResetAll))
-                        for i in vrbrgnrekeningenlijst:
-                            print("    "+colslecht+for20(i[0])+colonbepaald+i[1]+ResetAll)
-                    if len(gtndrekeningenlijst) > 0:
-                        if Taal == "EN":
-                            print("%sShown%s accounts:" % (colgoed,ResetAll))
-                        elif Taal == "IT":
-                            print("Conti %sesposti%s:" % (colgoed,ResetAll))
-                        else:
-                            print("%sGetoonde%s rekeningen:" % (colgoed,ResetAll))
                         reking = 1
-                        for i in gtndrekeningenlijst:
-                            print("    "+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll)
+                        for i in vrbrgnrekeningenlijst:
+                            print("  "+colslecht+for3(str(reking))+ResetAll+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll)
                             reking += 1
-                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                    if Taal == "EN":
-                        tov = input("Show a %shidden account%s or hide a %sshown account%s\n  1 %sShow%s and go\n  2 %sHide%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
-                    elif Taal == "IT":
-                        tov = input("Esporre un %sconto nascosto%s o nascondere un %sconto esposto%s\n  1 %sEspondi%s e vai\n  2 %sNascondi%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
-                    else:
-                        tov = input("Een %sverborgen rekening%s tonen of een %sgetoonde rekening%s verbergen\n  1 %sTonen%s en ga erheen\n  2 %sVerbergen%s\n  : %s" % (colslecht,ResetAll,colgoed,ResetAll,colgoed,ResetAll,colslecht,ResetAll,colgoed))
-                    print(ResetAll, end = "")
-
-                    if tov.upper() in afsluitlijst:
-                        break
-                    elif tov == "1":
-                        os.chdir(basismap)
-                        vrbrgnrekeningenlijst = []
-                        for d in os.listdir():
-                            if "_" in d:
-                                vrbrgnrekeningenlijst.append(d.split("_"))
-                        vrbrgnrekeningenlijst = sorted(vrbrgnrekeningenlijst)
-                        if len(vrbrgnrekeningenlijst) == 0:
-                            if Taal == "EN":
-                                print("%sThere are no accounts hidden%s" % (colslecht,ResetAll))
-                            elif Taal == "IT":
-                                print("%sNon ci son conti nascosti%s" % (colslecht,ResetAll))
-                            else:
-                                print("%sEr zijn geen verborgen rekeningen%s" % (colslecht,ResetAll))
+                        if Taal == "EN":
+                            rekening = input("Choose an account\n%s  : %s" % (colslecht,colgoed))
+                        elif Taal == "IT":
+                            rekening = input("Scegli un conto\n%s  : %s" % (colslecht,colgoed))
+                        else:
+                            rekening = input("Kies een rekening\n%s  : %s" % (colslecht,colgoed))
+                        print(ResetAll, end = "")
+                        if rekening.upper() in afsluitlijst:
                             os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
+                        else:
+                            try:
+                                toonrek = int(rekening)-1
+                                viban = vrbrgnrekeningenlijst[toonrek][0]
+                                vjaar = vrbrgnrekeningenlijst[toonrek][1]
+                                os.rename(os.path.join(basismap,viban+"_"+vjaar),os.path.join(basismap,viban+"@"+vjaar))
+                                os.chdir(os.path.join(basismap,viban+"@"+vjaar))
+                                with open("header","r") as h:
+                                    header = ast.literal_eval(h.read())
+                                hoe = header["Beschrijving"]
+                                wie = header["Rekeninghouder"]
+                                waar = header["Plaats"]
+                                Taal = header["Taal"]
+                                Valuta = header["Valuta"]
+                                Nulregels = header["Nulregels"]
+                                MarkeringLH = header["Markering L><H"]
+                                Kleur = header["Kleur"]
+                                kleur = updatekleur()
+                                Kleuren = kleur[0]
+                                globals().update(Kleuren)
+                                catcol = kleur[1]
+                                iban = viban
+                                jaar = vjaar
+                                break
+                            except(Exception) as error:
+                                os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                                #print(error)
+                                #pass
+                elif tov == "2":
+                    vrbrgn = "Y"
+                    while vrbrgn == "Y":
+                        os.chdir(basismap)
+                        gtndrekeningenlijst = []
+                        for d in os.listdir():
+                            if "@" in d:
+                                gtndrekeningenlijst.append(d.split("@"))
+                        gtndrekeningenlijst = sorted(gtndrekeningenlijst)
+                        if len(gtndrekeningenlijst) == 1:
+                            if Taal == "EN":
+                                print("%sYou cannot hide the account you are currently using%s" % (colslecht,ResetAll))
+                            elif Taal == "IT":
+                                print("%sNon si può nascondere il conto attualmente in uso%s" % (colslecht,ResetAll))
+                            else:
+                                print("%sJe kunt niet de rekening verbergen die je nu gebruikt%s" % (colslecht,ResetAll))
+                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
                         else:
                             if Taal == "EN":
-                                print("%sHidden%s accounts:" % (colslecht,ResetAll))
+                                print("%sShown%s accounts:" % (colgoed,ResetAll))
                             elif Taal == "IT":
-                                print("Conti %snascosti%s:" % (colslecht,ResetAll))
+                                print("Conti %sesposti%s:" % (colgoed,ResetAll))
                             else:
-                                print("%sVerborgen%s rekeningen:" % (colslecht,ResetAll))
+                                print("%sGetoonde%s rekeningen:" % (colgoed,ResetAll))
                             reking = 1
-                            for i in vrbrgnrekeningenlijst:
+                            for i in gtndrekeningenlijst:
                                 print("  "+colslecht+for3(str(reking))+ResetAll+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll)
                                 reking += 1
                             if Taal == "EN":
@@ -2242,129 +2284,54 @@ while mimo == "Y":
                             else:
                                 try:
                                     toonrek = int(rekening)-1
-                                    viban = vrbrgnrekeningenlijst[toonrek][0]
-                                    vjaar = vrbrgnrekeningenlijst[toonrek][1]
-                                    os.rename(os.path.join(basismap,viban+"_"+vjaar),os.path.join(basismap,viban+"@"+vjaar))
-                                    os.chdir(os.path.join(basismap,viban+"@"+vjaar))
-                                    with open("header","r") as h:
-                                        header = ast.literal_eval(h.read())
-                                    hoe = header["Beschrijving"]
-                                    wie = header["Rekeninghouder"]
-                                    waar = header["Plaats"]
-                                    Taal = header["Taal"]
-                                    Valuta = header["Valuta"]
-                                    Nulregels = header["Nulregels"]
-                                    MarkeringLH = header["Markering L><H"]
-                                    Kleur = header["Kleur"]
-                                    kleur = updatekleur()
-                                    Kleuren = kleur[0]
-                                    globals().update(Kleuren)
-                                    catcol = kleur[1]
-                                    iban = viban
-                                    jaar = vjaar
+                                    viban = gtndrekeningenlijst[toonrek][0]
+                                    vjaar = gtndrekeningenlijst[toonrek][1]
+                                    if viban == iban and vjaar == jaar:
+                                        if Taal == "EN":
+                                            print("%sYou cannot hide the account you are currently using%s" % (colslecht,ResetAll))
+                                        elif Taal == "IT":
+                                            print("%sNon si può nascondere il conto attualmente in uso%s" % (colslecht,ResetAll))
+                                        else:
+                                            print("%sJe kunt niet de rekening verbergen die je nu gebruikt%s" % (colslecht,ResetAll))
+                                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                                        break
+                                    os.rename(os.path.join(basismap,viban+"@"+vjaar),os.path.join(basismap,viban+"_"+vjaar))
+                                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
                                     break
                                 except(Exception) as error:
                                     os.chdir(os.path.join(basismap,iban+"@"+jaar))
                                     #print(error)
                                     #pass
-                    elif tov == "2":
-                        vrbrgn = "Y"
-                        while vrbrgn == "Y":
-                            os.chdir(basismap)
-                            gtndrekeningenlijst = []
-                            for d in os.listdir():
-                                if "@" in d:
-                                    gtndrekeningenlijst.append(d.split("@"))
-                            gtndrekeningenlijst = sorted(gtndrekeningenlijst)
-                            if len(gtndrekeningenlijst) == 1:
-                                if Taal == "EN":
-                                    print("%sYou cannot hide the account you are currently using%s" % (colslecht,ResetAll))
-                                elif Taal == "IT":
-                                    print("%sNon si può nascondere il conto attualmente in uso%s" % (colslecht,ResetAll))
-                                else:
-                                    print("%sJe kunt niet de rekening verbergen die je nu gebruikt%s" % (colslecht,ResetAll))
-                                os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                                break
-                            else:
-                                if Taal == "EN":
-                                    print("%sShown%s accounts:" % (colgoed,ResetAll))
-                                elif Taal == "IT":
-                                    print("Conti %sesposti%s:" % (colgoed,ResetAll))
-                                else:
-                                    print("%sGetoonde%s rekeningen:" % (colgoed,ResetAll))
-                                reking = 1
-                                for i in gtndrekeningenlijst:
-                                    print("  "+colslecht+for3(str(reking))+ResetAll+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll)
-                                    reking += 1
-                                if Taal == "EN":
-                                    rekening = input("Choose an account\n%s  : %s" % (colslecht,colgoed))
-                                elif Taal == "IT":
-                                    rekening = input("Scegli un conto\n%s  : %s" % (colslecht,colgoed))
-                                else:
-                                    rekening = input("Kies een rekening\n%s  : %s" % (colslecht,colgoed))
-                                print(ResetAll, end = "")
-                                if rekening.upper() in afsluitlijst:
-                                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                                    break
-                                else:
-                                    try:
-                                        toonrek = int(rekening)-1
-                                        viban = gtndrekeningenlijst[toonrek][0]
-                                        vjaar = gtndrekeningenlijst[toonrek][1]
-                                        if viban == iban and vjaar == jaar:
-                                            if Taal == "EN":
-                                                print("%sYou cannot hide the account you are currently using%s" % (colslecht,ResetAll))
-                                            elif Taal == "IT":
-                                                print("%sNon si può nascondere il conto attualmente in uso%s" % (colslecht,ResetAll))
-                                            else:
-                                                print("%sJe kunt niet de rekening verbergen die je nu gebruikt%s" % (colslecht,ResetAll))
-                                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                                            break
-                                        os.rename(os.path.join(basismap,viban+"@"+vjaar),os.path.join(basismap,viban+"_"+vjaar))
-                                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                                        break
-                                    except(Exception) as error:
-                                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                                        #print(error)
-                                        #pass
             elif keuze2 == "4":
-                if os.getcwd() == basismap:
-                    if Taal == "EN":
-                        print(colslecht+forc70("No account selected")+ResetAll)
-                    elif Taal == "IT":
-                        print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
-                    else:
-                        print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
+                if Taal == "EN":
+                    print("%sATTENTION! Abort will exit the program%s" % (colslecht,ResetAll))
+                elif Taal == "IT":
+                    print("%sATTENZIONE! Interrompere esce dal programma%s" % (colslecht,ResetAll))
                 else:
-                    if Taal == "EN":
-                        print("%sATTENTION! Abort will exit the program%s" % (colslecht,ResetAll))
-                    elif Taal == "IT":
-                        print("%sATTENZIONE! Interrompere esce dal programma%s" % (colslecht,ResetAll))
-                    else:
-                        print("%sLET OP! Afbreken verlaat het programma%s" % (colslecht,ResetAll))
-                    if Taal == "EN":
-                        print("%sAvailable accounts:%s" % (colgoed,ResetAll))
-                    elif Taal == "IT":
-                        print("%sConti disponibili:%s" % (colgoed,ResetAll))
-                    else:
-                        print("%sBeschikbare rekeningen:%s" % (colgoed,ResetAll))
-                    rekeningenlijst = rknngnlst()
-                    ibanjaar = rek()
-                    iban = ibanjaar[0]
-                    jaar = ibanjaar[1]
-                    header = ibanjaar[2]
-                    hoe = header["Beschrijving"]
-                    wie = header["Rekeninghouder"]
-                    waar = header["Plaats"]
-                    Taal = header["Taal"]
-                    Valuta = header["Valuta"]
-                    Nulregels = header["Nulregels"]
-                    MarkeringLH = header["Markering L><H"]
-                    Kleur = header["Kleur"]
-                    kleur = updatekleur()
-                    Kleuren = kleur[0]
-                    globals().update(Kleuren)
-                    catcol = kleur[1]
+                    print("%sLET OP! Afbreken verlaat het programma%s" % (colslecht,ResetAll))
+                if Taal == "EN":
+                    print("%sAvailable accounts:%s" % (colgoed,ResetAll))
+                elif Taal == "IT":
+                    print("%sConti disponibili:%s" % (colgoed,ResetAll))
+                else:
+                    print("%sBeschikbare rekeningen:%s" % (colgoed,ResetAll))
+                rekeningenlijst = rknngnlst()
+                ibanjaar = rek()
+                iban = ibanjaar[0]
+                jaar = ibanjaar[1]
+                header = ibanjaar[2]
+                hoe = header["Beschrijving"]
+                wie = header["Rekeninghouder"]
+                waar = header["Plaats"]
+                Taal = header["Taal"]
+                Valuta = header["Valuta"]
+                Nulregels = header["Nulregels"]
+                MarkeringLH = header["Markering L><H"]
+                Kleur = header["Kleur"]
+                kleur = updatekleur()
+                Kleuren = kleur[0]
+                globals().update(Kleuren)
+                catcol = kleur[1]
             elif keuze2 == "5":
                 nieuwerekening()
                 rekeningenlijst = rknngnlst()
@@ -2386,67 +2353,59 @@ while mimo == "Y":
                 globals().update(Kleuren)
                 catcol = kleur[1]
             elif keuze2 == "6":
-                if os.getcwd() == basismap:
-                    if Taal == "EN":
-                        print(colslecht+forc70("No account selected")+ResetAll)
-                    elif Taal == "IT":
-                        print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
-                    else:
-                        print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
+                os.chdir(basismap)
+                if Taal == "EN":
+                    print("Choose an account")
+                elif Taal == "IT":
+                    print("Scegli un conto")
                 else:
-                    os.chdir(basismap)
-                    if Taal == "EN":
-                        print("Choose an account")
-                    elif Taal == "IT":
-                        print("Scegli un conto")
-                    else:
-                        print("Kies een rekening")
-                    rekeningenlijst = rknngnlst()
-                    welk = input("  : ")
-                    if welk.upper() in afsluitlijst:
+                    print("Kies een rekening")
+                rekeningenlijst = rknngnlst()
+                welk = input("  : ")
+                if welk.upper() in afsluitlijst:
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                    break
+                try:
+                    welk = int(welk)-1
+                    viban = rekeningenlijst[welk][0]
+                    vjaar = rekeningenlijst[welk][1]
+                    if iban == viban and jaar == vjaar:
+                        if Taal == "EN":
+                            print("%sYou cannot delete the account you are currently using%s" % (colslecht,ResetAll))
+                        elif Taal == "IT":
+                            print("%sNon si può eliminare il conto attualmente in uso%s" % (colslecht,ResetAll))
+                        else:
+                            print("%sJe kunt niet de rekening verwijderen die je nu gebruikt%s" % (colslecht,ResetAll))
                         os.chdir(os.path.join(basismap,iban+"@"+jaar))
                         break
-                    try:
-                        welk = int(welk)-1
-                        viban = rekeningenlijst[welk][0]
-                        vjaar = rekeningenlijst[welk][1]
-                        if iban == viban and jaar == vjaar:
-                            if Taal == "EN":
-                                print("%sYou cannot delete the account you are currently using%s" % (colslecht,ResetAll))
-                            elif Taal == "IT":
-                                print("%sNon si può eliminare il conto attualmente in uso%s" % (colslecht,ResetAll))
-                            else:
-                                print("%sJe kunt niet de rekening verwijderen die je nu gebruikt%s" % (colslecht,ResetAll))
+                    elif welk in range(len(rekeningenlijst)):
+                        print(colslecht+rekeningenlijst[welk][0]+ResetAll)
+                        try:
+                            with open(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1]+str(os.path.sep)+"header","r") as h:
+                                headr = ast.literal_eval(h.read())
+                                for k,v in headr.items():
+                                    print(colonbepaald+for15(k),":",colgoed+v+ResetAll)
+                        except(Exception) as error:
+                            #print(error)
+                            pass
+                        if Taal == "EN":
+                            oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                        elif Taal == "IT":
+                            oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                        else:
+                            oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                        if oknok == "1":
+                            os.chdir(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1])
+                            for f in os.listdir():
+                                os.remove(f)
+                            os.chdir(basismap)
+                            os.rmdir(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1])
+                            rekeningenlijst.remove(rekeningenlijst[welk])
+                            rekeningenlijst = rknngnlst()
                             os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                            break
-                        elif welk in range(len(rekeningenlijst)):
-                            print(colslecht+rekeningenlijst[welk][0]+ResetAll)
-                            try:
-                                with open(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1]+str(os.path.sep)+"header","r") as h:
-                                    headr = ast.literal_eval(h.read())
-                                    for k,v in headr.items():
-                                        print(colonbepaald+for15(k),":",colgoed+v+ResetAll)
-                            except(Exception) as error:
-                                #print(error)
-                                pass
-                            if Taal == "EN":
-                                oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                            elif Taal == "IT":
-                                oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                            else:
-                                oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                            if oknok == "1":
-                                os.chdir(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1])
-                                for f in os.listdir():
-                                    os.remove(f)
-                                os.chdir(basismap)
-                                os.rmdir(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1])
-                                rekeningenlijst.remove(rekeningenlijst[welk])
-                                rekeningenlijst = rknngnlst()
-                                os.chdir(os.path.join(basismap,iban+"@"+jaar))
-                    except(Exception) as error:
-                        #print(error)
-                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                except(Exception) as error:
+                    #print(error)
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
             elif keuze2 == "0":
                 if Taal == "EN":
                     input(versieEN)
@@ -2467,126 +2426,120 @@ while mimo == "Y":
                     input(toplijn)
                     print()
             elif keuze2 == "1" or keuze2 == "":
-                if os.getcwd() == basismap:
+                catbeheer = "Y"
+                while catbeheer == "Y":
                     if Taal == "EN":
-                        print(colslecht+forc70("No account selected")+ResetAll)
+                        print("Choose a category")
                     elif Taal == "IT":
-                        print(colslecht+forc70("Nessun conto selezionato")+ResetAll)
+                        print("Scegli una categoria")
                     else:
-                        print(colslecht+forc70("Er is geen rekening geselecteerd")+ResetAll)
-                else:
-                    catbeheer = "Y"
-                    while catbeheer == "Y":
-                        if Taal == "EN":
-                            print("Choose a category")
-                        elif Taal == "IT":
-                            print("Scegli una categoria")
-                        else:
-                            print("Kies een categorie")
-                        alt()
-                        kategorie = input("  : ")
-                        if kategorie.upper() in afsluitlijst:
-                            break
-                        else:
-                            if kategorie.upper() in lijst:
-                                try:
-                                    with open(kategorie.upper(),"r") as c:
-                                        kat = ast.literal_eval(c.read())
-                                        budget = kat[0]
-                                    col = catcol[kategorie.upper()]
+                        print("Kies een categorie")
+                    alt()
+                    kategorie = input("  : ")
+                    if kategorie.upper() in afsluitlijst:
+                        break
+                    else:
+                        if kategorie.upper() in lijst:
+                            try:
+                                with open(kategorie.upper(),"r") as c:
+                                    kat = ast.literal_eval(c.read())
+                                    budget = kat[0]
+                                col = catcol[kategorie.upper()]
+                                if Taal == "EN":
+                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                    wat = input("Choose\n  1 Modify %scategory name%s (now %s)\n  2 Modify %smonth budget%s (now %s)\n  3 %sRemove category%s %s %sand everything in it%s\n  : " % (LichtCyaan,ResetAll,col+kategorienaam+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+kategorienaam+ResetAll,colslecht, ResetAll))
+                                elif Taal == "IT":
+                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                    wat = input("Scegli\n  1 Modificare %snome di categoria%s (ora %s)\n  2 Modificare %sbudget mensile%s (ora %s)\n  3 %sEliminare categoria%s %s %scon tutto dentro%s\n  : " % (LichtCyaan,ResetAll,col+kategorienaam+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+kategorienaam+ResetAll,colslecht, ResetAll))
+                                else:
+                                    wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie verwijderen%s %s %sen alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
+                                if wat.upper() in afsluitlijst:
+                                    break
+                                elif wat == "1":
                                     if Taal == "EN":
-                                        wat = input("Choose\n  1 Alter %scategory name%s (now %s)\n  2 Alter %smonth budget%s (now %s)\n  3 %sDelete category%s %s %sand everything in it%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht, ResetAll))
+                                        hoedan = input("Enter the new %scategory name%s (max 15)\n  : %s" % (LichtCyaan,ResetAll,col))
                                     elif Taal == "IT":
-                                        wat = input("Scegli\n  1 Modificare %snome di categoria%s (ora %s)\n  2 Modificare %sbudget mensile%s (ora %s)\n  3 %sEliminare categoria%s %s %scon tutto dentro%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht, ResetAll))
+                                        hoedan = input("Dai il nuovo %snome della categoria%s (mass. 15)\n  : %s" % (LichtCyaan,ResetAll,col))
                                     else:
-                                        wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie verwijderen%s %s %sen alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
-                                    if wat.upper() in afsluitlijst:
+                                        hoedan = input("Geef de nieuwe %scategorienaam%s (max 15)\n  : %s" % (LichtCyaan,ResetAll,col))
+                                    print(ResetAll, end = "")
+                                    if hoedan.upper() in afsluitlijst:
                                         break
-                                    elif wat == "1":
-                                        if Taal == "EN":
-                                            hoedan = input("Enter the new %scategory name%s (max 15)\n  : %s" % (LichtCyaan,ResetAll,col))
-                                        elif Taal == "IT":
-                                            hoedan = input("Dai il nuovo %snome della categoria%s (mass. 15)\n  : %s" % (LichtCyaan,ResetAll,col))
-                                        else:
-                                            hoedan = input("Geef de nieuwe %scategorienaam%s (max 15)\n  : %s" % (LichtCyaan,ResetAll,col))
-                                        print(ResetAll, end = "")
-                                        if hoedan.upper() in afsluitlijst:
-                                            break
-                                        else:
-                                            with open("alternatievenamen","w") as f:
-                                                alternatievenamenlijst[kategorie.upper()] = hoedan.lower()[:15]
-                                                print(alternatievenamenlijst, file = f, end = "")
-                                    elif wat == "2":
-                                        budlijst = []
-                                        for k,v in alternatievenamenlijst.items():
-                                            with open(k,"r") as f:
-                                                cat = ast.literal_eval(f.read())
-                                                budlijst.append(cat[0])
-                                                print(k,forc17(v),Valuta,fornum(cat[0]))
-                                        balans = 0
-                                        for i in budlijst:
-                                            balans += i 
-                                        if balans == 0:
-                                            colbal = colgoed
-                                        else:
-                                            colbal = colslecht
-                                        if Taal == "EN":
-                                            print(colbal+forr19("BALANCE ="),Valuta,fornum(round(balans,2))+ResetAll)
-                                        elif Taal == "IT":
-                                            print(colbal+forr19("BILANCIO ="),Valuta,fornum(round(balans,2))+ResetAll)
-                                        else:
-                                            print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
-                                        if Taal == "EN":
-                                            hoeveeldan = input("Enter the new %smonth budget%s for %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
-                                        elif Taal == "IT":
-                                            hoeveeldan = input("Dai il nuovo %sbudget mensile%s per %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
-                                        else:
-                                            hoeveeldan = input("Geef het nieuwe %smaandbudget%s voor %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
-                                        print(ResetAll, end = "")
-                                        if hoeveeldan.upper() in afsluitlijst:
-                                            break
-                                        else:
-                                            try:
-                                                kat[0] = float(hoeveeldan)
-                                                with open(kategorie.upper(),"w") as f:
-                                                    print(kat, file = f, end = "")
-                                            except(Exception) as error:
-                                                #print(error)
-                                                pass
-                                        budlijst = []
-                                        for k,v in alternatievenamenlijst.items():
-                                            with open(k,"r") as f:
-                                                cat = ast.literal_eval(f.read())
-                                                budlijst.append(cat[0])
-                                        balans = 0
-                                        for i in budlijst:
-                                            balans += i 
-                                        if balans == 0:
-                                            colbal = colgoed
-                                        else:
-                                            colbal = colslecht
-                                        if Taal == "EN":
-                                            print(colbal+forr19("BALANCE ="),Valuta,fornum(round(balans,2))+ResetAll)
-                                        elif Taal == "IT":
-                                            print(colbal+forr19("BILANCIO ="),Valuta,fornum(round(balans,2))+ResetAll)
-                                        else:
-                                            print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    else:
+                                        with open("alternatievenamen","w") as f:
+                                            alternatievenamenlijst[kategorie.upper()] = hoedan.lower()[:15]
+                                            print(alternatievenamenlijst, file = f, end = "")
+                                elif wat == "2":
+                                    budlijst = []
+                                    for k,v in alternatievenamenlijst.items():
+                                        with open(k,"r") as f:
+                                            cat = ast.literal_eval(f.read())
+                                            budlijst.append(cat[0])
+                                            print(k,forc17(v),Valuta,fornum(cat[0]))
+                                    balans = 0
+                                    for i in budlijst:
+                                        balans += i 
+                                    if balans == 0:
+                                        colbal = colgoed
+                                    else:
+                                        colbal = colslecht
+                                    if Taal == "EN":
+                                        print(colbal+forr19("BALANCE ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    elif Taal == "IT":
+                                        print(colbal+forr19("BILANCIO ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    else:
+                                        print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    if Taal == "EN":
+                                        hoeveeldan = input("Enter the new %smonth budget%s for %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
+                                    elif Taal == "IT":
+                                        hoeveeldan = input("Dai il nuovo %sbudget mensile%s per %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
+                                    else:
+                                        hoeveeldan = input("Geef het nieuwe %smaandbudget%s voor %s: %s\n  : %s" % (LichtCyaan,ResetAll,col+kategorie.upper(),alternatievenamenlijst[kategorie.upper()]+ResetAll,col))
+                                    print(ResetAll, end = "")
+                                    if hoeveeldan.upper() in afsluitlijst:
+                                        break
+                                    else:
+                                        try:
+                                            kat[0] = float(hoeveeldan)
+                                            with open(kategorie.upper(),"w") as f:
+                                                print(kat, file = f, end = "")
+                                        except(Exception) as error:
+                                            #print(error)
+                                            pass
+                                    budlijst = []
+                                    for k,v in alternatievenamenlijst.items():
+                                        with open(k,"r") as f:
+                                            cat = ast.literal_eval(f.read())
+                                            budlijst.append(cat[0])
+                                    balans = 0
+                                    for i in budlijst:
+                                        balans += i 
+                                    if balans == 0:
+                                        colbal = colgoed
+                                    else:
+                                        colbal = colslecht
+                                    if Taal == "EN":
+                                        print(colbal+forr19("BALANCE ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    elif Taal == "IT":
+                                        print(colbal+forr19("BILANCIO ="),Valuta,fornum(round(balans,2))+ResetAll)
+                                    else:
+                                        print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
 
-                                    elif wat == "3":
-                                        if Taal == "EN":
-                                            oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                                        elif Taal == "IT":
-                                            oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                                        else:
-                                            oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                                        if oknok == "1":
-                                            os.remove(kategorie.upper())
-                                            del alternatievenamenlijst[kategorie.upper()]
-                                            with open("alternatievenamen","w") as f:
-                                                print(alternatievenamenlijst, file = f, end = "")
-                                except(Exception) as error:
-                                    #print(error)
-                                    pass
+                                elif wat == "3":
+                                    if Taal == "EN":
+                                        oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                    elif Taal == "IT":
+                                        oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                    else:
+                                        oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                    if oknok == "1":
+                                        os.remove(kategorie.upper())
+                                        del alternatievenamenlijst[kategorie.upper()]
+                                        with open("alternatievenamen","w") as f:
+                                            print(alternatievenamenlijst, file = f, end = "")
+                            except(Exception) as error:
+                                #print(error)
+                                pass
         print()
         print(toplijn)
         print()
