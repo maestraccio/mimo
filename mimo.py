@@ -32,9 +32,9 @@ Iedere rekeningmap bestaat uit een rekeningnummer en een jaartal. In
 opzet bevat een map één kalenderjaar, hoewel het mogelijk is onbeperkt
 door te schrijven; dit is door de gebruiker vrij te bepalen. In de
 rekeningmap worden standaard de volgende bestanden aangemaakt:
-    "alternatievenamen": de Nederlandse categorienamen bij de letters
-    "header": rekeninggegevens en rekeninggebonden weergaveopties
-    zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
+  - zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
+  - "alternatievenamen": de Nederlandse categorienamen bij de letters
+  - "header": rekeninggegevens en rekeninggebonden weergaveopties
 
 6 categorieën (uitbreid- en aanpasbaar):
 A: saldo & inkomen: in principe positieve bedragen, budget negatief
@@ -63,9 +63,9 @@ Every account folder is formed by an account number and a year. It is
 intended for details of one calendar year, although the user can
 decide otherwise and continue adding details to the same folder. In
 this account folder the following files are created by default:
-    "alternatievenamen": the Dutch category names to the letters
-    "header": account details and account related interface options
-    six category files "A"-"E" and "O" with financial mutations
+  - six category files "A"-"E" and "O" with financial mutations
+  - "alternatievenamen": the Dutch category names to the letters
+  - "header": account details and account related interface options
 
 6 categories (expandable and adjustable, translated from Dutch names):
 A: funds & income : intentionally positive amounts, budget negative
@@ -90,15 +90,15 @@ copy and assigning it to a new to be made category.
 
 +-----"""
 info1IT = """
-Ogni cartello del conto è composto da un numero di conto ed un anno. È
-destinato ai elementi di un anno solare, sebbene l'utente possa
-decidere diversamente e continuare ad aggiungere elementi nella stessa
-cartella. In questa cartella del conto vengono creati i seguenti file
-per impostazione predefinita:
-    "alternatievenamen": i nomi delle categorie (in NL) alle lettere
-    "header": dettagli del conto ed opzioni dell'interfaccia relative
+Il nome di ogni cartella del conto contiene un numero di conto ed un
+anno. Questa cartella è destinata ad elementi di un anno solare,
+sebbene l'utente possa decidere diversamente e continuare ad aggiun-
+gere elementi nella stessa cartella. In questa cartella del conto
+vengono creati i seguenti file per impostazione predefinita:
+  - sei file di categoria "A"-"E" e "O" con mutazioni finanziarie
+  - "alternatievenamen": i nomi delle categorie (in NL) alle lettere
+  - "header": dettagli del conto ed opzioni dell'interfaccia relative
         al conto
-    sei file di categoria "A"-"E" e "O" con mutazioni finanziarie
 
 6 categorie (espandibili e regolabili, nomi olandesi del file):
 A: saldo & reddito: importi intenzionalmente positivi, budget negativo
@@ -107,7 +107,7 @@ C: spese: spese variabili giornaliere/alimentari
 D: viaggioalloggio: spese di viaggio, carburante, soggiorni, ecc.
 E: prestiti: spese da restituire e viceversa
 O: altro: atre mutazioni
-È possibile aggiungere altre categorie aggiungendo une nuova muta-
+È possibile aggiungere altre categorie aggiungendo una nuova muta-
 zione o effettuando a copiarla ed assegnarla ad una nuova categoria
 da fare.
 
@@ -1402,7 +1402,7 @@ while mimo == "Y":
                                                 if maandtotaallijst[k] != 0:
                                                     print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|X"+forr7(" ")+" "+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
                                                 else:
-                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|="+forr7(" ")+" "+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25(" "*25)+"|="+forr7(" ")+" "+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
                         budtot = 0
                         for i in lijst:
                             try:
