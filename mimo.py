@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.47"
+bouw = "1.48"
 hardedatum = "20220904"
 
 versie = """
@@ -161,7 +161,8 @@ PROGRAMMASTRUCTUUR:
 4 Mutatie verwijderen
 
 Keuzes moeten worden bevestigd met "Enter".
-"Terug" of "Verlaten" met "Q" of "X" en "Enter".
+"Terug" of "Verlaten" met "Q" (of "X").
+"Terug naar hoofdmenu" met "QQ", "Nu afsluiten" met "QQQ".
 """
 info2EN = """
 PROGRAM STRUCTURE:
@@ -200,7 +201,8 @@ PROGRAM STRUCTURE:
 4 Remove mutation
 
 Choices must be confirmed with "Enter".
-"Back" or "Abort" with "Q" or "X" and "Enter".
+"Back" or "Abort" with "Q" (or "X").
+"Back to main menu" with "QQ", "Exit now" with "QQQ".
 """
 info2IT = """
 STRUTTURA DEL PROGRAMMA:
@@ -239,7 +241,8 @@ STRUTTURA DEL PROGRAMMA:
 4 Rimuovere mutazione
 
 Le scelte devono essere confermate con "Invio".
-"Indietro" o "Annulla" con "Q" o "X" e "Invio".
+"Indietro" o "Annulla" con "Q" (o "X").
+"Tornare al menu principale" con "QQ", "Uscire ora" con "QQQ".
 """
 
 basismap = os.path.dirname(os.path.realpath(__file__)) # de map waar het pythonscript in staat moet schrijfbaar zijn
