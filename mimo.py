@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.46"
-hardedatum = "20220903"
+bouw = "1.47"
+hardedatum = "20220904"
 
 versie = """
 Versie: %s
@@ -28,12 +28,12 @@ Catania %s
 
 +-----""" % (bouw,hardedatum)
 info1 = """
-Iedere rekeningmap bestaat uit een rekeningnummer en een jaartal. In 
-opzet bevat een map één kalenderjaar, hoewel het mogelijk is onbeperkt
-door te schrijven; dit is door de gebruiker vrij te bepalen. In de
-rekeningmap worden standaard de volgende bestanden aangemaakt:
+Iedere rekeningmapnaam bestaat uit een rekeningnummer en een jaartal.
+In opzet bevat een map één kalenderjaar, hoewel het mogelijk is om
+onbeperkt door te schrijven; dit is door de gebruiker vrij te bepalen.
+In de rekeningmap worden standaard de volgende bestanden aangemaakt:
   - zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
-  - "alternatievenamen": de Nederlandse categorienamen bij de letters
+  - "alternatievenamen": de Nederlandse categorienamen bij die letters
   - "header": rekeninggegevens en rekeninggebonden weergaveopties
 
 6 categorieën (uitbreid- en aanpasbaar):
@@ -59,12 +59,12 @@ toe te voegen of te wijzigen en toe te wijzen aan de nieuwe categorie.
 
 +-----"""
 info1EN = """
-Every account folder is formed by an account number and a year. It is
-intended for details of one calendar year, although the user can
+Every account folder name is formed by an account number and a year.
+It is intended for details of one calendar year, although the user can
 decide otherwise and continue adding details to the same folder. In
 this account folder the following files are created by default:
   - six category files "A"-"E" and "O" with financial mutations
-  - "alternatievenamen": the Dutch category names to the letters
+  - "alternatievenamen": the Dutch category names to those letters
   - "header": account details and account related interface options
 
 6 categories (expandable and adjustable, translated from Dutch names):
@@ -96,7 +96,7 @@ sebbene l'utente possa decidere diversamente e continuare ad aggiun-
 gere elementi nella stessa cartella. In questa cartella del conto
 vengono creati i seguenti file per impostazione predefinita:
   - sei file di categoria "A"-"E" e "O" con mutazioni finanziarie
-  - "alternatievenamen": i nomi delle categorie (in NL) alle lettere
+  - "alternatievenamen": i nomi delle categorie (NL) a queste lettere
   - "header": dettagli del conto ed opzioni dell'interfaccia relative
         al conto
 
@@ -942,12 +942,17 @@ while mimo == "Y":
                         break
                     else:
                         try:
-                            startdatum = int(str(datetime.strptime(bereik[:8],"%Y%m%d"))[:10].replace("-",""))
-                            einddatum = int(str(datetime.strptime(bereik[9:],"%Y%m%d"))[:10].replace("-",""))
+                            if len(bereik) < 10:
+                                startdatum = int(str(datetime.strptime(bereik[:8],"%Y%m%d"))[:10].replace("-",""))
+                                einddatum = nu
+                            else:
+                                startdatum = int(str(datetime.strptime(bereik[:8],"%Y%m%d"))[:10].replace("-",""))
+                                einddatum = int(str(datetime.strptime(bereik[9:],"%Y%m%d"))[:10].replace("-",""))
                             print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                         except(Exception) as error:
                             startdatum = 11111112
                             einddatum = 99999999
+                            print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                             #print(error)
                 elif keuze2 == "5":
                     dagsaldo = "Y"
