@@ -730,8 +730,6 @@ while mimo == "Y":
     print(LichtMagenta+forc70(iban+" "+Valuta+" "+fornum(moni))+ResetAll)
     alt()
     print()
-    
-##### Hier volgt het eerste keuzemenu #####
     if sel == []:
         col1 = LichtGeel
         dagen = 7
@@ -796,6 +794,8 @@ while mimo == "Y":
             print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
         print(pluslijn)
         print()
+    
+##### Hier volgt het eerste keuzemenu #####
 
     if Taal == "EN":
         keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
@@ -808,6 +808,16 @@ while mimo == "Y":
         print(toplijn)
         print()
         break
+    elif len(keuze1) == 2 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[1] in afsluitlijst:
+        print()
+        print(toplijn)
+        print()
+        break
+    elif len(keuze1) == 3 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[2] in afsluitlijst:
+        print()
+        print(toplijn)
+        print()
+        exit()
     elif keuze1 == "1" or keuze1 == "": # BEKIJKEN
         print()
         bekijken = "Y"
@@ -836,6 +846,13 @@ while mimo == "Y":
                     print(ResetAll, end = "")
                     if dagen.upper() in afsluitlijst:
                         break
+                    elif len(dagen) == 2 and dagen.upper()[0] in afsluitlijst and dagen.upper()[1] in afsluitlijst:
+                        break
+                    elif len(dagen) == 3 and dagen.upper()[0] in afsluitlijst and dagen.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         try:
                             dagen = int(dagen)
@@ -869,6 +886,13 @@ while mimo == "Y":
                     print(ResetAll, end = "")
                     if maanden.upper() in afsluitlijst:
                         break
+                    elif len(maanden) == 2 and maanden.upper()[0] in afsluitlijst and maanden.upper()[1] in afsluitlijst:
+                        break
+                    elif len(maanden) == 3 and maanden.upper()[0] in afsluitlijst and maanden.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         maandcheck = int(strnu[4:6])
                         try:
@@ -940,6 +964,13 @@ while mimo == "Y":
                     print(ResetAll, end = "")
                     if bereik.upper() in afsluitlijst:
                         break
+                    elif len(bereik) == 2 and bereik.upper()[0] in afsluitlijst and bereik.upper()[1] in afsluitlijst:
+                        break
+                    elif len(bereik) == 3 and bereik.upper()[0] in afsluitlijst and bereik.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         try:
                             if len(bereik) < 10:
@@ -954,6 +985,8 @@ while mimo == "Y":
                             einddatum = 99999999
                             print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                             #print(error)
+                        if startdatum == einddatum:
+                            dagsaldo = "Y"
                 elif keuze2 == "5":
                     dagsaldo = "Y"
                     if Taal == "EN":
@@ -965,6 +998,13 @@ while mimo == "Y":
                     print(ResetAll, end = "")
                     if dag.upper() in afsluitlijst:
                         break
+                    elif len(dag) == 2 and dag.upper()[0] in afsluitlijst and dag.upper()[1] in afsluitlijst:
+                        break
+                    elif len(dag) == 3 and dag.upper()[0] in afsluitlijst and dag.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         try:
                             startdatum = int(str(datetime.strptime(dag[:8],"%Y%m%d"))[:10].replace("-",""))
@@ -996,6 +1036,13 @@ while mimo == "Y":
                     print(ResetAll, end = "")
                     if maanden.upper() in afsluitlijst:
                         break
+                    elif len(maanden) == 2 and maanden.upper()[0] in afsluitlijst and maanden.upper()[1] in afsluitlijst:
+                        break
+                    elif len(maanden) == 3 and maanden.upper()[0] in afsluitlijst and maanden.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     elif maanden == "":
                         maanden = 0
                     maandcheck = int(strnu[4:6])
@@ -1100,6 +1147,13 @@ while mimo == "Y":
                 selcat = []
                 if keuze3.upper() in afsluitlijst:
                     break
+                elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                    break
+                elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 try:
                     if keuze3[0] != "-":
                         Katlijst = []
@@ -1141,6 +1195,13 @@ while mimo == "Y":
                     keuze4 = input("%sSubselectie%s\n  1 Bedrag\n  2 Wederpartij\n  3 Aantekening\n  : " % (col1,ResetAll))
                 if keuze4.upper() in afsluitlijst:
                     break
+                elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
+                    break
+                elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 elif keuze4== "1":
                     sel3 = "bedrag"
                     bedrag = "N"
@@ -1155,6 +1216,14 @@ while mimo == "Y":
                             bedragv1 = -99999.99
                             bedragv2 = 99999.99
                             break
+                        elif len(bedragv) == 2 and bedragv.upper()[0] in afsluitlijst and bedragv.upper()[1] in afsluitlijst:
+                            bedrag = "Q"
+                            break
+                        elif len(bedragv) == 3 and bedragv.upper()[0] in afsluitlijst and bedragv.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif bedragv == "":
                             bedragv1 = -99999.99
                             bedragv2 = 99999.99
@@ -1184,6 +1253,8 @@ while mimo == "Y":
                                     bedragv2 = 99999.99
                                     print(bedragv1,bedragv2)
                                     bedrag = "Y"
+                    if bedrag == "Q":
+                        break
                     if Taal == "EN":
                         kop = ", %s from %s %s to %s %s" % (sel3,Valuta,fornum(bedragv1),Valuta,fornum(bedragv2))
                     elif Taal == "IT":
@@ -1215,9 +1286,19 @@ while mimo == "Y":
                             wederpartijv = input("Inserisci (parte della) %scontroparte%s\n  : " % (col1,ResetAll)).lower()
                         else:
                             wederpartijv = input("Geef een (deel van de) %swederpartij%s op\n  : " % (col1,ResetAll)).lower()
+                        wederpartij = "Y"
                         if wederpartijv.upper() in afsluitlijst:
                             wederpartijv = ""
-                        wederpartij = "Y"
+                        elif len(wederpartijv) == 2 and wederpartijv.upper()[0] in afsluitlijst and wederpartijv.upper()[1] in afsluitlijst:
+                            wederpartij = "Q"
+                            break
+                        elif len(wederpartijv) == 3 and wederpartijv.upper()[0] in afsluitlijst and wederpartijv.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
+                    if wederpartij == "Q":
+                        break
                     kop = ", %s *%s*" % (sel3,wederpartijv)
                     if wederpartijv == "":
                         if Taal == "EN":
@@ -1244,9 +1325,19 @@ while mimo == "Y":
                             aantekeningv = input("Inserisci (parte dell') %sannotazione%s\n  : " % (col1,ResetAll)).lower()
                         else:
                             aantekeningv = input("Geef een (deel van de) %saantekening%s op\n  : " % (col1,ResetAll)).lower()
+                        aantekening = "Y"
                         if aantekeningv.upper() in afsluitlijst:
                             aantekeningv = ""
-                        aantekening = "Y"
+                        elif len(aantekeningv) == 2 and aantekeningv.upper()[0] in afsluitlijst and aantekeningv.upper()[1] in afsluitlijst:
+                            aantekening = "Q"
+                            break
+                        elif len(aantekeningv) == 3 and aantekeningv.upper()[0] in afsluitlijst and aantekeningv.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
+                    if aantekening == "Q":
+                        break
                     kop = ", %s *%s*" % (sel3,aantekeningv)
                     if aantekeningv == "":
                         if Taal == "EN":
@@ -1468,6 +1559,13 @@ while mimo == "Y":
         print(ResetAll, end = "")
         if keuze2.upper() in afsluitlijst:
             pass
+        elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
+            pass
+        elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
+            print()
+            print(toplijn)
+            print()
+            exit()
         else:
             toe = "N"
             while toe == "N":
@@ -1480,6 +1578,13 @@ while mimo == "Y":
                         tekopieren = input("Welk ID wil je %skopieren%s\n  : " % (col2, ResetAll))
                     if tekopieren.upper() in afsluitlijst:
                         break
+                    elif len(tekopieren) == 2 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[1] in afsluitlijst:
+                        break
+                    elif len(tekopieren) == 3 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         try:
                             with open(tekopieren[0].upper(),"r") as f:
@@ -1525,6 +1630,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if datum.upper() in afsluitlijst:
                             break
+                        elif len(datum) == 2 and datum.upper()[0] in afsluitlijst and datum.upper()[1] in afsluitlijst:
+                            break
+                        elif len(datum) == 3 and datum.upper()[0] in afsluitlijst and datum.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif "," in datum:
                             csv = datum.split(",")
                             if len(csv) == 5:
@@ -1569,6 +1681,13 @@ while mimo == "Y":
                             print(ResetAll, end = "")
                             if bedrag.upper() in afsluitlijst:
                                 break
+                            elif len(bedrag) == 2 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[1] in afsluitlijst:
+                                break
+                            elif len(bedrag) == 3 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[2] in afsluitlijst:
+                                print()
+                                print(toplijn)
+                                print()
+                                exit()
                             elif bedrag == "":
                                 bedrag = 0.0
                                 print(col2+"    "+forn(bedrag)+ResetAll)
@@ -1584,6 +1703,13 @@ while mimo == "Y":
                             print(ResetAll, end = "")
                             if wederpartij.upper() in afsluitlijst:
                                 break
+                            elif len(wederpartij) == 2 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[1] in afsluitlijst:
+                                break
+                            elif len(wederpartij) == 3 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[2] in afsluitlijst:
+                                print()
+                                print(toplijn)
+                                print()
+                                exit()
                             nieuw.append(wederpartij[:15])
                             if Taal == "EN":
                                 betreft = input("%sAbout%s\n  : %s" % (col2,ResetAll,col2))
@@ -1594,6 +1720,13 @@ while mimo == "Y":
                             print(ResetAll, end = "")
                             if betreft.upper() in afsluitlijst:
                                 break
+                            elif len(betreft) == 2 and betreft.upper()[0] in afsluitlijst and betreft.upper()[1] in afsluitlijst:
+                                break
+                            elif len(betreft) == 3 and betreft.upper()[0] in afsluitlijst and betreft.upper()[2] in afsluitlijst:
+                                print()
+                                print(toplijn)
+                                print()
+                                exit()
                             nieuw.append(betreft[:18])
                         if Taal == "EN":
                             print("%sCategory%s (letter \"%s\"-\"%s\")" % (col2,ResetAll,lijst[0],lijst[-1]))
@@ -1606,6 +1739,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if categorie.upper() in afsluitlijst or categorie.upper() not in lijst:
                             break
+                        elif len(categorie) == 2 and categorie.upper()[0] in afsluitlijst and categorie.upper()[1] in afsluitlijst:
+                            break
+                        elif len(categorie) == 3 and categorie.upper()[0] in afsluitlijst and categorie.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         else:
                             categorie = categorie.upper()
                         try:
@@ -1621,6 +1761,13 @@ while mimo == "Y":
                                 nieuwecategorie = input("Geef de %snieuwe categorie%s %s een naam\n  : " % (col2,ResetAll,catcol[categorie]+categorie+ResetAll))
                             if nieuwecategorie.upper() in afsluitlijst:
                                 break
+                            elif len(nieuwecategorie) == 2 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[1] in afsluitlijst:
+                                break
+                            elif len(nieuwecategorie) == 3 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[2] in afsluitlijst:
+                                print()
+                                print(toplijn)
+                                print()
+                                exit()
                             else:
                                 alternatievenamenlijst[categorie] = nieuwecategorie[:15].lower()
                                 with open("alternatievenamen","w") as f:
@@ -1668,6 +1815,14 @@ while mimo == "Y":
                 if tewijzigen.upper() in afsluitlijst:
                     del keuze1
                     break
+                elif len(tewijzigen) == 2 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[1] in afsluitlijst:
+                    del keuze1
+                    break
+                elif len(tewijzigen) == 3 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 else:
                     if tewijzigen != "":
                         twloop = tewijzigen
@@ -1694,6 +1849,13 @@ while mimo == "Y":
                                     wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
                                 if wat.upper() in afsluitlijst:
                                     break
+                                elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                                    break
+                                elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
+                                    print()
+                                    print(toplijn)
+                                    print()
+                                    exit()
                                 elif wat == "1":
                                     try:
                                         if Taal == "EN":
@@ -1705,6 +1867,13 @@ while mimo == "Y":
                                         print(ResetAll, end = "")
                                         if datum.upper() in afsluitlijst:
                                             break
+                                        elif len(datum) == 2 and datum.upper()[0] in afsluitlijst and datum.upper()[1] in afsluitlijst:
+                                            break
+                                        elif len(datum) == 3 and datum.upper()[0] in afsluitlijst and datum.upper()[2] in afsluitlijst:
+                                            print()
+                                            print(toplijn)
+                                            print()
+                                            exit()
                                         elif datum == "":
                                             datum = nu
                                             print(col3+"    "+str(datum)+ResetAll)
@@ -1738,6 +1907,13 @@ while mimo == "Y":
                                         print(ResetAll, end = "")
                                         if bedrag.upper() in afsluitlijst:
                                             break
+                                        elif len(bedrag) == 2 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[1] in afsluitlijst:
+                                            break
+                                        elif len(bedrag) == 3 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[2] in afsluitlijst:
+                                            print()
+                                            print(toplijn)
+                                            print()
+                                            exit()
                                         elif bedrag == "":
                                             bedrag = 0.0
                                             print(col3+"    "+forn(bedrag)+ResetAll)
@@ -1772,6 +1948,13 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if wederpartij.upper() in afsluitlijst:
                                         break
+                                    elif len(wederpartij) == 2 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(wederpartij) == 3 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                                     for j in inhoudvancategorie:
                                         if i[:4] == j:
                                             inhoudvancategorie.remove(j)
@@ -1796,6 +1979,13 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if betreft.upper() in afsluitlijst:
                                         break
+                                    elif len(betreft) == 2 and betreft.upper()[0] in afsluitlijst and betreft.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(betreft) == 3 and betreft.upper()[0] in afsluitlijst and betreft.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                                     for j in inhoudvancategorie:
                                         if i[:4] == j:
                                             inhoudvancategorie.remove(j)
@@ -1821,6 +2011,13 @@ while mimo == "Y":
                                     waar = input("  : ")
                                     if waar.upper() in afsluitlijst or waar.upper() not in lijst:
                                         break
+                                    elif len(waar) == 2 and waar.upper()[0] in afsluitlijst and waar.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(waar) == 3 and waar.upper()[0] in afsluitlijst and waar.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                                     else:
                                         waar = waar.upper()
                                         try:
@@ -1836,6 +2033,13 @@ while mimo == "Y":
                                                 nieuwecategorie = input("Geef de %snieuwe categorie%s %s een naam\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
                                             if nieuwecategorie.upper() in afsluitlijst:
                                                 break
+                                            elif len(nieuwecategorie) == 2 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[1] in afsluitlijst:
+                                                break
+                                            elif len(nieuwecategorie) == 3 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[2] in afsluitlijst:
+                                                print()
+                                                print(toplijn)
+                                                print()
+                                                exit()
                                             else:
                                                 alternatievenamenlijst[waar] = nieuwecategorie[:15].lower()
                                                 with open("alternatievenamen","w") as f:
@@ -1896,6 +2100,13 @@ while mimo == "Y":
                     teverwijderen = input("Welk ID wil je %sverwijderen%s\n  : " % (col4, ResetAll))
                 if teverwijderen.upper() in afsluitlijst:
                     break
+                elif len(teverwijderen) == 2 and teverwijderen.upper()[0] in afsluitlijst and teverwijderen.upper()[1] in afsluitlijst:
+                    break
+                elif len(teverwijderen) == 3 and teverwijderen.upper()[0] in afsluitlijst and teverwijderen.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 else:
                     try:
                         with open(teverwijderen[0].upper(),"r") as f:
@@ -1935,10 +2146,20 @@ while mimo == "Y":
                                         if undo.upper() == "U":
                                             inhoudvancategorie.append(j)
                                         print(inhoudvancategorie, file = f, end = "")
+                                elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                                    verwijder = "Q"
+                                    break
+                                elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
+                                    print()
+                                    print(toplijn)
+                                    print()
+                                    exit()
                                 print()
                     except(Exception) as error:
                         #print(error)
                         pass
+                if verwijder == "Q":
+                    break
         except(Exception) as error:
             pass
         print()
@@ -1957,6 +2178,13 @@ while mimo == "Y":
                 keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
+            elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
+                break
+            elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
+                print()
+                print(toplijn)
+                print()
+                exit()
             elif keuze2 == "2":
                 headerloop = "Y"
                 while headerloop == "Y":
@@ -1984,6 +2212,13 @@ while mimo == "Y":
                         wat = input("Kies wat je wilt wijzigen\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % ( colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
                     if wat.upper() in afsluitlijst:
                         break
+                    elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                        break
+                    elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     elif wat == "1":
                         if Taal == "EN":
                             hoe = input("Description\n  : %s" % (colgoed))
@@ -1994,6 +2229,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if hoe.upper() in afsluitlijst:
                             break
+                        elif len(hoe) == 2 and hoe.upper()[0] in afsluitlijst and hoe.upper()[1] in afsluitlijst:
+                            break
+                        elif len(hoe) == 3 and hoe.upper()[0] in afsluitlijst and hoe.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         header["Beschrijving"] = hoe
                     elif wat == "2":
                         if Taal == "EN":
@@ -2005,6 +2247,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if wie.upper() in afsluitlijst:
                             break
+                        elif len(wie) == 2 and wie.upper()[0] in afsluitlijst and wie.upper()[1] in afsluitlijst:
+                            break
+                        elif len(wie) == 3 and wie.upper()[0] in afsluitlijst and wie.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         header["Rekeninghouder"] = wie
                     elif wat == "3":
                         if Taal == "EN":
@@ -2016,6 +2265,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if waar.upper() in afsluitlijst:
                             break
+                        elif len(waar) == 2 and waar.upper()[0] in afsluitlijst and waar.upper()[1] in afsluitlijst:
+                            break
+                        elif len(waar) == 3 and waar.upper()[0] in afsluitlijst and waar.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         header["Plaats"] = waar
                     elif wat == "4":
                         if Taal == "EN":
@@ -2027,6 +2283,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if taal.upper() in afsluitlijst:
                             break
+                        elif len(taal) == 2 and taal.upper()[0] in afsluitlijst and taal.upper()[1] in afsluitlijst:
+                            break
+                        elif len(taal) == 3 and taal.upper()[0] in afsluitlijst and taal.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif taal == "2":
                             Taal = "EN"
                         elif taal == "3":
@@ -2044,6 +2307,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if Valuta.upper() in afsluitlijst:
                             break
+                        elif len(Valuta) == 2 and Valuta.upper()[0] in afsluitlijst and Valuta.upper()[1] in afsluitlijst:
+                            break
+                        elif len(Valuta) == 3 and Valuta.upper()[0] in afsluitlijst and Valuta.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         header["Valuta"] = Valuta
                     elif wat == "6":
                         if Taal == "EN":
@@ -2055,6 +2325,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if nuljanee.upper() in afsluitlijst:
                             break
+                        elif len(nuljanee) == 2 and nuljanee.upper()[0] in afsluitlijst and nuljanee.upper()[1] in afsluitlijst:
+                            break
+                        elif len(nuljanee) == 3 and nuljanee.upper()[0] in afsluitlijst and nuljanee.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif nuljanee.upper() in jalijst:
                             header["Nulregels"] = "Ja"
                         else:
@@ -2069,6 +2346,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if Ondermarkering.upper() in afsluitlijst:
                             break
+                        elif len(Ondermarkering) == 2 and Ondermarkering.upper()[0] in afsluitlijst and Ondermarkering.upper()[1] in afsluitlijst:
+                            break
+                        elif len(Ondermarkering) == 3 and Ondermarkering.upper()[0] in afsluitlijst and Ondermarkering.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif Ondermarkering == "":
                             Ondermarkering = header["Markering L><H"][0]
                         else:
@@ -2087,6 +2371,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if Bovenmarkering.upper() in afsluitlijst:
                             break
+                        elif len(Bovenmarkering) == 2 and Bovenmarkering.upper()[0] in afsluitlijst and Bovenmarkering.upper()[1] in afsluitlijst:
+                            break
+                        elif len(Bovenmarkering) == 3 and Bovenmarkering.upper()[0] in afsluitlijst and Bovenmarkering.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif Bovenmarkering == "":
                             Bovenmarkering = header["Markering L><H"][1]
                         else:
@@ -2106,6 +2397,13 @@ while mimo == "Y":
                         print(ResetAll, end = "")
                         if Koeleur.upper() in afsluitlijst:
                             break
+                        elif len(Koeleur) == 2 and Koeleur.upper()[0] in afsluitlijst and Koeleur.upper()[1] in afsluitlijst:
+                            break
+                        elif len(Koeleur) == 3 and Koeleur.upper()[0] in afsluitlijst and Koeleur.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         elif Koeleur.upper() == "1":
                             header["Kleur"] = "Alle"
                         elif Koeleur.upper() == "2":
@@ -2132,6 +2430,13 @@ while mimo == "Y":
                             header["Datumformaat"] = "DDmmm\'YY"
                         elif formaat == "5":
                             header["Datumformaat"] = "DD-mmmYY"
+                        elif len(formaat) == 2 and formaat.upper()[0] in afsluitlijst and formaat.upper()[1] in afsluitlijst:
+                            break
+                        elif len(formaat) == 3 and formaat.upper()[0] in afsluitlijst and formaat.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         else:
                             header["Datumformaat"] = "YYYYMMDD"
                     with open("header","w") as f:
@@ -2183,6 +2488,13 @@ while mimo == "Y":
 
                 if tov.upper() in afsluitlijst:
                     break
+                elif len(tov) == 2 and tov.upper()[0] in afsluitlijst and tov.upper()[1] in afsluitlijst:
+                    break
+                elif len(tov) == 3 and tov.upper()[0] in afsluitlijst and tov.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 elif tov == "1":
                     os.chdir(basismap)
                     vrbrgnrekeningenlijst = []
@@ -2219,6 +2531,14 @@ while mimo == "Y":
                         if rekening.upper() in afsluitlijst:
                             os.chdir(os.path.join(basismap,iban+"@"+jaar))
                             break
+                        elif len(rekening) == 2 and rekening.upper()[0] in afsluitlijst and rekening.upper()[1] in afsluitlijst:
+                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
+                        elif len(rekening) == 3 and rekening.upper()[0] in afsluitlijst and rekening.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                         else:
                             try:
                                 toonrek = int(rekening)-1
@@ -2286,6 +2606,14 @@ while mimo == "Y":
                             if rekening.upper() in afsluitlijst:
                                 os.chdir(os.path.join(basismap,iban+"@"+jaar))
                                 break
+                            elif len(rekening) == 2 and rekening.upper()[0] in afsluitlijst and rekening.upper()[1] in afsluitlijst:
+                                os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                                break
+                            elif len(rekening) == 3 and rekening.upper()[0] in afsluitlijst and rekening.upper()[2] in afsluitlijst:
+                                print()
+                                print(toplijn)
+                                print()
+                                exit()
                             else:
                                 try:
                                     toonrek = int(rekening)-1
@@ -2370,6 +2698,14 @@ while mimo == "Y":
                 if welk.upper() in afsluitlijst:
                     os.chdir(os.path.join(basismap,iban+"@"+jaar))
                     break
+                elif len(welk) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                    break
+                elif len(welk) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                    print()
+                    print(toplijn)
+                    print()
+                    exit()
                 try:
                     welk = int(welk)-1
                     viban = rekeningenlijst[welk][0]
@@ -2408,6 +2744,14 @@ while mimo == "Y":
                             rekeningenlijst.remove(rekeningenlijst[welk])
                             rekeningenlijst = rknngnlst()
                             os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                        elif len(oknok) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
+                        elif len(oknok) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                            print()
+                            print(toplijn)
+                            print()
+                            exit()
                 except(Exception) as error:
                     #print(error)
                     os.chdir(os.path.join(basismap,iban+"@"+jaar))
@@ -2443,6 +2787,13 @@ while mimo == "Y":
                     kategorie = input("  : ")
                     if kategorie.upper() in afsluitlijst:
                         break
+                    elif len(kategorie) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                        break
+                    elif len(kategorie) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                        print()
+                        print(toplijn)
+                        print()
+                        exit()
                     else:
                         if kategorie.upper() in lijst:
                             try:
@@ -2460,6 +2811,13 @@ while mimo == "Y":
                                     wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie verwijderen%s %s %sen alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
                                 if wat.upper() in afsluitlijst:
                                     break
+                                elif len(wat) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                    break
+                                elif len(wat) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                    print()
+                                    print(toplijn)
+                                    print()
+                                    exit()
                                 elif wat == "1":
                                     if Taal == "EN":
                                         hoedan = input("Enter the new %scategory name%s (max 15)\n  : %s" % (LichtCyaan,ResetAll,col))
@@ -2470,6 +2828,13 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if hoedan.upper() in afsluitlijst:
                                         break
+                                    elif len(hoedan) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(hoedan) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                                     else:
                                         with open("alternatievenamen","w") as f:
                                             alternatievenamenlijst[kategorie.upper()] = hoedan.lower()[:15]
@@ -2503,6 +2868,13 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if hoeveeldan.upper() in afsluitlijst:
                                         break
+                                    elif len(hoeveeldan) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(hoeveeldan) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                                     else:
                                         try:
                                             kat[0] = float(hoeveeldan)
@@ -2542,6 +2914,13 @@ while mimo == "Y":
                                         del alternatievenamenlijst[kategorie.upper()]
                                         with open("alternatievenamen","w") as f:
                                             print(alternatievenamenlijst, file = f, end = "")
+                                    elif len(oknok) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(oknok) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                        print()
+                                        print(toplijn)
+                                        print()
+                                        exit()
                             except(Exception) as error:
                                 #print(error)
                                 pass
