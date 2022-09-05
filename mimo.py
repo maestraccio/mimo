@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.5"
+bouw = "1.51"
 hardedatum = "20220905"
 
 versie = """
@@ -236,8 +236,8 @@ STRUTTURA DEL PROGRAMMA:
     Selezione data > Selezione categoria > Sottoselezione > Mostra+ID
 2 Aggiungere mutazione
     1 Nuova
-    2 Copia ad oggi
-    3 Copia ad un altro conto
+    2 Copia colla data di oggi
+    3 Copia su un altro conto
 3 Modificare mutazione
     1 Data (impostazione predefinita = oggi)
     2 Somma (predefinito = "0.0", "+" o "-" = inversione)
@@ -1535,7 +1535,7 @@ while mimo == "Y":
         if Taal == "EN":
             keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n  1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         elif Taal == "IT":
-            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia ad oggi%s\n  3 %sCopia ad un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia colla data di oggi%s\n  3 %sCopia su un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         else:
             keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n  1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         print(ResetAll, end = "")
@@ -1552,7 +1552,7 @@ while mimo == "Y":
                     if Taal == "EN":
                         tekopieren = input("Which ID do you want to %scopy to today%s\n  : " % (col2, ResetAll))
                     elif Taal == "IT":
-                        tekopieren = input("Di quale ID vuoi fare una %scopia ad oggi%s\n  : " % (col2, ResetAll))
+                        tekopieren = input("Di quale ID vuoi fare una %scopia colla data di oggi%s\n  : " % (col2, ResetAll))
                     else:
                         tekopieren = input("Welk ID wil je %skopieren naar vandaag%s\n  : " % (col2, ResetAll))
                     if tekopieren.upper() in afsluitlijst:
@@ -1598,7 +1598,7 @@ while mimo == "Y":
                     if Taal == "EN":
                         tekopieren = input("Which ID do you want to %scopy to another account%s\n  : " % (col2, ResetAll))
                     elif Taal == "IT":
-                        tekopieren = input("Di quale ID vuoi fare una %scopia ad un altro conto%s\n  : " % (col2, ResetAll))
+                        tekopieren = input("Di quale ID vuoi fare una %scopia su un altro conto%s\n  : " % (col2, ResetAll))
                     else:
                         tekopieren = input("Welk ID wil je %skopieren naar een andere rekening%s\n  : " % (col2, ResetAll))
                     if tekopieren.upper() in afsluitlijst:
@@ -1608,13 +1608,14 @@ while mimo == "Y":
                     elif len(tekopieren) == 3 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[2] in afsluitlijst:
                         doei()
                     else:
+                        col = catcol[tekopieren.upper()[0]]
                         os.chdir(basismap)
                         if Taal == "EN":
-                            print("To which account do you want to %scopy %s%s" % (col2, tekopieren.upper(),ResetAll))
+                            print("To which account do you want to %scopy %s%s%s" % (col2,col,tekopieren.upper(),ResetAll))
                         elif Taal == "IT":
-                            print("In quale conto vuoi fare una %scopia di %s%s" % (col2, tekopieren.upper(),ResetAll))
+                            print("In quale conto vuoi fare una %scopia di %s%s%s" % (col2,col,tekopieren.upper(),ResetAll))
                         else:
-                            print("Naar welke rekening wil je %s%s kopieren%s" % (col2, tekopieren.upper(),ResetAll))
+                            print("Naar welke rekening wil je %s%s%s kopieren%s" % (col,tekopieren.upper(),col2,ResetAll))
                         rekeningenlijst = rknngnlst()
                         welk = input("  : ")
                         if welk.upper() in afsluitlijst:
