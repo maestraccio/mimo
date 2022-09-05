@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.49"
-hardedatum = "20220904"
+bouw = "1.5"
+hardedatum = "20220905"
 
 versie = """
 Versie: %s
@@ -147,11 +147,13 @@ PROGRAMMASTRUCTUUR:
     4 Wissel van rekening
     5 Nieuwe rekening toevoegen
     6 Verwijder rekening
+    7 Instellingen overzetten
 1 Mutaties bekijken
     Datumselectie -> Categorieselectie -> Subselectie -> Toon + ID
 2 Mutatie toevoegen
     1 Nieuw
-    2 Kopie
+    2 Kopie naar vandaag
+    3 Kopie naar andere rekening
 3 Mutatie wijzigen
     1 Datum (standaard = vandaag)
     2 Bedrag (standaard = "0.0", "+" of "-" = omkering)
@@ -187,11 +189,13 @@ PROGRAM STRUCTURE:
     4 Switch account (!)
     5 Add new account
     6 Delete account
+    7 Transfer account settings
 1 View mutations
     Date selection -> Category selection -> Subselection -> Show + ID
 2 Add mutation
     1 New
-    2 Copy
+    2 Copy to today
+    3 Copy to another account
 3 Modify mutation
     1 Date (default = today)
     2 Amount (default = "0.0", "+" or "-" = opposite)
@@ -227,11 +231,13 @@ STRUTTURA DEL PROGRAMMA:
     4 Passare ad un altro conto
     5 Aggiungere un nuovo conto
     6 Eliminare conto
+    7 Trasferire impostazioni
 1 Vedere mutazioni
     Selezione data > Selezione categoria > Sottoselezione > Mostra+ID
 2 Aggiungere mutazione
     1 Nuova
-    2 Copia
+    2 Copia ad oggi
+    3 Copia ad un altro conto
 3 Modificare mutazione
     1 Data (impostazione predefinita = oggi)
     2 Somma (predefinito = "0.0", "+" o "-" = inversione)
@@ -1527,11 +1533,11 @@ while mimo == "Y":
         print()
         col2 = LichtGroen
         if Taal == "EN":
-            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n  1 %sNew%s\n  2 %sCopy%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n  1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         elif Taal == "IT":
-            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia ad oggi%s\n  3 %sCopia ad un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         else:
-            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n  1 %sNieuw%s\n  2 %sKopie%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n  1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         print(ResetAll, end = "")
         if keuze2.upper() in afsluitlijst:
             pass
@@ -1544,11 +1550,11 @@ while mimo == "Y":
             while toe == "N":
                 if keuze2 == "2":
                     if Taal == "EN":
-                        tekopieren = input("Which ID do you want to %scopy%s\n  : " % (col2, ResetAll))
+                        tekopieren = input("Which ID do you want to %scopy to today%s\n  : " % (col2, ResetAll))
                     elif Taal == "IT":
-                        tekopieren = input("Di quale ID vuoi fare una %scopia%s\n  : " % (col2, ResetAll))
+                        tekopieren = input("Di quale ID vuoi fare una %scopia ad oggi%s\n  : " % (col2, ResetAll))
                     else:
-                        tekopieren = input("Welk ID wil je %skopieren%s\n  : " % (col2, ResetAll))
+                        tekopieren = input("Welk ID wil je %skopieren naar vandaag%s\n  : " % (col2, ResetAll))
                     if tekopieren.upper() in afsluitlijst:
                         break
                     elif len(tekopieren) == 2 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[1] in afsluitlijst:
@@ -1587,6 +1593,73 @@ while mimo == "Y":
                                 print(inhoudvancategorie, file = w, end = "")
                         except(Exception) as error:
                             pass
+                    break
+                if keuze2 == "3":
+                    if Taal == "EN":
+                        tekopieren = input("Which ID do you want to %scopy to another account%s\n  : " % (col2, ResetAll))
+                    elif Taal == "IT":
+                        tekopieren = input("Di quale ID vuoi fare una %scopia ad un altro conto%s\n  : " % (col2, ResetAll))
+                    else:
+                        tekopieren = input("Welk ID wil je %skopieren naar een andere rekening%s\n  : " % (col2, ResetAll))
+                    if tekopieren.upper() in afsluitlijst:
+                        break
+                    elif len(tekopieren) == 2 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[1] in afsluitlijst:
+                        break
+                    elif len(tekopieren) == 3 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[2] in afsluitlijst:
+                        doei()
+                    else:
+                        os.chdir(basismap)
+                        if Taal == "EN":
+                            print("To which account do you want to %scopy %s%s" % (col2, tekopieren.upper(),ResetAll))
+                        elif Taal == "IT":
+                            print("In quale conto vuoi fare una %scopia di %s%s" % (col2, tekopieren.upper(),ResetAll))
+                        else:
+                            print("Naar welke rekening wil je %s%s kopieren%s" % (col2, tekopieren.upper(),ResetAll))
+                        rekeningenlijst = rknngnlst()
+                        welk = input("  : ")
+                        if welk.upper() in afsluitlijst:
+                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
+                        elif len(welk) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                            break
+                        elif len(welk) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                            doei()
+                        try:
+                            welk = int(welk)-1
+                            viban = rekeningenlijst[welk][0]
+                            vjaar = rekeningenlijst[welk][1]
+                            with open(os.path.join(viban+"@"+vjaar,tekopieren[0].upper()),"r") as f:
+                                inhoudvancategoriev = ast.literal_eval(f.read())
+                            alternatievenaam = alternatievenamenlijst[tekopieren[0].upper()]
+                            col = catcol[tekopieren[0].upper()]
+                        except(Exception) as error:
+                            #print(error)
+                            pass
+                        try:
+                            for i in sel:
+                                if i[4] == tekopieren[0].upper()+tekopieren[1:]:
+                                    inhoudvancategoriev.append(i[:4])
+                                    break
+                            sortcat0 = inhoudvancategoriev[0]
+                            sortcat1 = sorted(inhoudvancategoriev[1:])
+                            inhoudvancategoriev = [sortcat0]
+                            for k in sortcat1:
+                                inhoudvancategoriev.append(k)
+                            if Taal == "EN":
+                                alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col2,i[0],ResetAll,for15("Amount: "),col2,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col2,i[2],ResetAll,for15("About: "),col2,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                            elif Taal == "IT":
+                                alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col2,i[0],ResetAll,for15("Somma: "),col2,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col2,i[2],ResetAll,for15("Riguarda: "),col2,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                            else:
+                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col2,i[0],ResetAll,for15("Bedrag: "),col2,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col2,i[2],ResetAll,for15("Betreft: "),col2,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                            with open(os.path.join(viban+"@"+vjaar,tekopieren[0].upper()),"w") as w:
+                                print(inhoudvancategoriev, file = w, end = "")
+                        except(Exception) as error:
+                            #print(error)
+                            pass
+                        os.chdir(iban+"@"+jaar)
                     break
                 else:
                     nieuw = []
@@ -2093,11 +2166,11 @@ while mimo == "Y":
         beheer = "Y"
         while beheer == "Y":
             if Taal == "EN":
-                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             elif Taal == "IT":
-                keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             else:
-                keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -2617,12 +2690,41 @@ while mimo == "Y":
                             os.rmdir(rekeningenlijst[welk][0]+"@"+rekeningenlijst[welk][1])
                             rekeningenlijst.remove(rekeningenlijst[welk])
                             rekeningenlijst = rknngnlst()
-                            os.chdir(os.path.join(basismap,iban+"@"+jaar))
                         elif len(oknok) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
                             os.chdir(os.path.join(basismap,iban+"@"+jaar))
                             break
                         elif len(oknok) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
                             doei()
+                        os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                except(Exception) as error:
+                    #print(error)
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
+            elif keuze2 == "7":
+                os.chdir(basismap)
+                if Taal == "EN":
+                    print("Choose an account to transfer your current settings to")
+                elif Taal == "IT":
+                    print("Scegli un conto per trasferirci su le impostazioni correnti")
+                else:
+                    print("Kies een rekening om de huidige instellingen naar over te zetten")
+                rekeningenlijst = rknngnlst()
+                welk = input("  : ")
+                if welk.upper() in afsluitlijst:
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                    break
+                elif len(welk) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
+                    break
+                elif len(welk) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                    doei()
+                try:
+                    welk = int(welk)-1
+                    viban = rekeningenlijst[welk][0]
+                    vjaar = rekeningenlijst[welk][1]
+                    naarmap = os.path.join(basismap,viban+"@"+vjaar)
+                    with open(os.path.join(basismap,naarmap,"header"),"w") as w:
+                        print(header, file = w, end = "")
+                    os.chdir(os.path.join(basismap,iban+"@"+jaar))
                 except(Exception) as error:
                     #print(error)
                     os.chdir(os.path.join(basismap,iban+"@"+jaar))
