@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.52"
-hardedatum = "20220906"
+bouw = "1.53"
+hardedatum = "20220907"
 
 versie = """
 Versie: %s
@@ -769,6 +769,7 @@ while mimo == "Y":
             except(Exception) as error:
                 #print(error)
                 pass
+        sel = sorted(sel)
         print(toplijn)
         startdatumeinddatum = "%s-%s" % (startdatum,einddatum)
         print("|"+col1+forc68(startdatumeinddatum)+ResetAll+"|")
@@ -2182,6 +2183,25 @@ while mimo == "Y":
                 break
             elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
                 doei()
+
+
+
+
+                        #if Taal == "EN":
+                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
+                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
+                        #    formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
+                        #elif Taal == "IT":
+                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
+                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
+                        #    formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
+                        #else:
+                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
+                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
+                        #    formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
+
+
+
             elif keuze2 == "2":
                 headerloop = "Y"
                 while headerloop == "Y":
@@ -2202,14 +2222,51 @@ while mimo == "Y":
                         Nulregels = Nulregels.replace("Ja","Sì").replace("Nee","No")
                         Kleur = Kleur.replace("Alle","Tutti").replace("Categorie","Categoria").replace("Mono","Mono").replace("Regenboog","Arcobaleno")
                     if Taal == "EN":
-                        wat = input("Choose what you want to %smodify%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                        if Datumformaat == "DDMMYYYY":
+                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                        elif Datumformaat == "DD-MM-YY":
+                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                        elif Datumformaat == "DD/MM/YY":
+                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                        elif Datumformaat == "DDmmm\'YY":
+                            yymd = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
+                        elif Datumformaat == "DD-mmmYY":
+                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
+                        else:
+                            yymd = strnu
+                        wat = input("Choose what you want to %smodify%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll))
                     elif Taal == "IT":
-                        wat = input("Scegli cosa vuoi %smodificare%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                        if Datumformaat == "DDMMYYYY":
+                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                        elif Datumformaat == "DD-MM-YY":
+                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                        elif Datumformaat == "DD/MM/YY":
+                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                        elif Datumformaat == "DDmmm\'YY":
+                            yymd = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
+                        elif Datumformaat == "DD-mmmYY":
+                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
+                        else:
+                            yymd = strnu
+                        wat = input("Scegli cosa vuoi %smodificare%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll))
                     else:
-                        wat = input("Kies wat je wilt %saanpassen%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+ResetAll))
+                        if Datumformaat == "DDMMYYYY":
+                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                        elif Datumformaat == "DD-MM-YY":
+                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                        elif Datumformaat == "DD/MM/YY":
+                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                        elif Datumformaat == "DDmmm\'YY":
+                            yymd = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
+                        elif Datumformaat == "DD-mmmYY":
+                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
+                        else:
+                            yymd = strnu
+                        wat = input("Kies wat je wilt %saanpassen%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll))
                     if wat.upper() in afsluitlijst:
                         break
                     elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                        headerloop = "Q"
                         break
                     elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
                         doei()
@@ -2224,6 +2281,7 @@ while mimo == "Y":
                         if hoe.upper() in afsluitlijst:
                             break
                         elif len(hoe) == 2 and hoe.upper()[0] in afsluitlijst and hoe.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(hoe) == 3 and hoe.upper()[0] in afsluitlijst and hoe.upper()[2] in afsluitlijst:
                             doei()
@@ -2239,6 +2297,7 @@ while mimo == "Y":
                         if wie.upper() in afsluitlijst:
                             break
                         elif len(wie) == 2 and wie.upper()[0] in afsluitlijst and wie.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(wie) == 3 and wie.upper()[0] in afsluitlijst and wie.upper()[2] in afsluitlijst:
                             doei()
@@ -2254,6 +2313,7 @@ while mimo == "Y":
                         if waar.upper() in afsluitlijst:
                             break
                         elif len(waar) == 2 and waar.upper()[0] in afsluitlijst and waar.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(waar) == 3 and waar.upper()[0] in afsluitlijst and waar.upper()[2] in afsluitlijst:
                             doei()
@@ -2269,6 +2329,7 @@ while mimo == "Y":
                         if taal.upper() in afsluitlijst:
                             break
                         elif len(taal) == 2 and taal.upper()[0] in afsluitlijst and taal.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(taal) == 3 and taal.upper()[0] in afsluitlijst and taal.upper()[2] in afsluitlijst:
                             doei()
@@ -2290,6 +2351,7 @@ while mimo == "Y":
                         if Valuta.upper() in afsluitlijst:
                             break
                         elif len(Valuta) == 2 and Valuta.upper()[0] in afsluitlijst and Valuta.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(Valuta) == 3 and Valuta.upper()[0] in afsluitlijst and Valuta.upper()[2] in afsluitlijst:
                             doei()
@@ -2305,6 +2367,7 @@ while mimo == "Y":
                         if nuljanee.upper() in afsluitlijst:
                             break
                         elif len(nuljanee) == 2 and nuljanee.upper()[0] in afsluitlijst and nuljanee.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(nuljanee) == 3 and nuljanee.upper()[0] in afsluitlijst and nuljanee.upper()[2] in afsluitlijst:
                             doei()
@@ -2323,6 +2386,7 @@ while mimo == "Y":
                         if Ondermarkering.upper() in afsluitlijst:
                             break
                         elif len(Ondermarkering) == 2 and Ondermarkering.upper()[0] in afsluitlijst and Ondermarkering.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(Ondermarkering) == 3 and Ondermarkering.upper()[0] in afsluitlijst and Ondermarkering.upper()[2] in afsluitlijst:
                             doei()
@@ -2345,6 +2409,7 @@ while mimo == "Y":
                         if Bovenmarkering.upper() in afsluitlijst:
                             break
                         elif len(Bovenmarkering) == 2 and Bovenmarkering.upper()[0] in afsluitlijst and Bovenmarkering.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(Bovenmarkering) == 3 and Bovenmarkering.upper()[0] in afsluitlijst and Bovenmarkering.upper()[2] in afsluitlijst:
                             doei()
@@ -2368,6 +2433,7 @@ while mimo == "Y":
                         if Koeleur.upper() in afsluitlijst:
                             break
                         elif len(Koeleur) == 2 and Koeleur.upper()[0] in afsluitlijst and Koeleur.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(Koeleur) == 3 and Koeleur.upper()[0] in afsluitlijst and Koeleur.upper()[2] in afsluitlijst:
                             doei()
@@ -2381,11 +2447,17 @@ while mimo == "Y":
                             header["Kleur"] = "Regenboog"
                     elif wat == "9":
                         if Taal == "EN":
-                            formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                            yymd4 = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
+                            yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
+                            formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
                         elif Taal == "IT":
-                            formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                            yymd4 = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
+                            yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
+                            formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
                         else:
-                            formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD\n  1 DDMMYYYY\n  2 DD-MM-YY\n  3 DD/MM/YY\n  4 DDmmm\'YY\n  5 DD-mmmYY\n  :%s" % (colgoed))
+                            yymd4 = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
+                            yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
+                            formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
                         print(ResetAll, end = "")
                         if formaat == "1":
                             header["Datumformaat"] = "DDMMYYYY"
@@ -2398,6 +2470,7 @@ while mimo == "Y":
                         elif formaat == "5":
                             header["Datumformaat"] = "DD-mmmYY"
                         elif len(formaat) == 2 and formaat.upper()[0] in afsluitlijst and formaat.upper()[1] in afsluitlijst:
+                            headerloop = "Q"
                             break
                         elif len(formaat) == 3 and formaat.upper()[0] in afsluitlijst and formaat.upper()[2] in afsluitlijst:
                             doei()
@@ -2409,6 +2482,8 @@ while mimo == "Y":
                     Kleuren = kleur[0]
                     globals().update(Kleuren)
                     catcol = kleur[1]
+                if headerloop == "Q":
+                    break
             elif keuze2 == "3":
                 os.chdir(basismap)
                 gtndrekeningenlijst = []
