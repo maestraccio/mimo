@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.53"
-hardedatum = "20220907"
+bouw = "1.54"
+hardedatum = "20220909"
 
 versie = """
 Versie: %s
@@ -846,6 +846,10 @@ while mimo == "Y":
             print(ResetAll, end = "")
             if keuze2.upper() in afsluitlijst:
                 break
+            elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
+                break
+            elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
+                doei()
             else:
                 if keuze2 == "2":
                     einddatum = nu
@@ -1134,13 +1138,14 @@ while mimo == "Y":
                                 maandtotaallijst[i] = round(j1,2)
 
                 if Taal == "EN":
-                    print("%sCategory selection \"?\" or exclusion \"-?\"%s" % (col1,ResetAll))
+                    print("%sCategory selection \"?\" or exclusion \"-?\"\nor all \"+\"%s to group by category" % (col1,ResetAll))
                 elif Taal == "IT":
-                    print("%sSeleziona categoria \"?\" o escludi \"-?\"%s" % (col1,ResetAll))
+                    print("%sSeleziona categoria \"?\" o escludi \"-?\"\no tutte \"+\"%s per gruppare per categoria" % (col1,ResetAll))
                 else:
-                    print("%sCategorie selecteren \"?\" of uitsluiten \"-?\"%s" % (col1,ResetAll))
+                    print("%sCategorie selecteren \"?\" of uitsluiten \"-?\"\nof alle \"+\"%s om te groeperen per categorie" % (col1,ResetAll))
                 alt()
                 keuze3 = input("  : ")
+                katsel = "N"
                 selcat = []
                 if keuze3.upper() in afsluitlijst:
                     break
@@ -1148,6 +1153,8 @@ while mimo == "Y":
                     break
                 elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
                     doei()
+                elif keuze3 == "+":
+                    keuze3 = "".join(map(str,lijst)) # voor copy-paste voor andere toepassingen map() toegevoegd (lijst is alleen str)
                 try:
                     if keuze3[0] != "-":
                         Katlijst = []
@@ -1175,11 +1182,13 @@ while mimo == "Y":
                             Kat = ", senza "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
                         else:
                             Kat = ", zonder "+str(Katlijst).replace("[","").replace("]","").replace("\'","").replace(",","").replace(" ","")
+                    katsel = "Y"
                 except(Exception) as error:
                     #print(error)
                     Kat = ""
                     pass
-                seldat = sorted(seldat)
+                if katsel == "N":
+                    seldat = sorted(seldat)
                 sel = []
                 if Taal == "EN":
                     keuze4 = input("%sSubselection%s\n  1 Amount\n  2 Other party\n  3 Note\n  : " % (col1,ResetAll))
@@ -1526,6 +1535,8 @@ while mimo == "Y":
                     else:
                         print(col1+forc70("Dagsaldo op %s: %s %s" % (str(startdatum),Valuta,fornum(moni)))+ResetAll)
                 bekijken = "N"
+        if bekijken == "Q":
+            break
         print(toplijn)
         print()
     elif keuze1 == "2": # TOEVOEGEN
@@ -1557,6 +1568,7 @@ while mimo == "Y":
                     if tekopieren.upper() in afsluitlijst:
                         break
                     elif len(tekopieren) == 2 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[1] in afsluitlijst:
+                        toe = "Q"
                         break
                     elif len(tekopieren) == 3 and tekopieren.upper()[0] in afsluitlijst and tekopieren.upper()[2] in afsluitlijst:
                         doei()
@@ -1826,6 +1838,8 @@ while mimo == "Y":
                     except(Exception) as error:
                         #print(error)
                         break
+            if toe == "Q":
+                break
         print()
         print(toplijn)
         print()
