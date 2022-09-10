@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.55"
+bouw = "1.6"
 hardedatum = "20220910"
 
 versie = """
@@ -339,43 +339,24 @@ for i in logo:
 forn = "{0:>.2f}".format
 fornum = "{0:>8.2f}".format
 for3 = "{:3}".format
-forc3 = "{:^3}".format
-for4 = "{:4}".format
-for5 = "{:5}".format
 forc5 = "{:^5}".format
-forr5 = "{:>5}".format
-forc7 = "{:^7}".format
 forr7 = "{:>7}".format
 for8 = "{:8}".format
-forc9 = "{:^9}".format
-for10 = "{:10}".format
 forc10 = "{:^10}".format
-forl10 = "{:<10}".format
-forr10 = "{:>10}".format
-for12 = "{:12}".format
 forc12 = "{:^12}".format
 for15 = "{:15}".format
 forc15 = "{:^15}".format
 forc17 = "{:^17}".format
 for18 = "{:18}".format
-for19 = "{:19}".format
-forc19 = "{:^19}".format
 forr19 = "{:>19}".format
 for20 = "{:20}".format
 forc20 = "{:^20}".format
 forl20 = "{:<20}".format
 forr20 = "{:>20}".format
-for25 = "{:25}".format
 forl25 = "{:<25}".format
 forr25 = "{:>25}".format
-forl40 = "{:<40}".format
-forc50 = "{:^50}".format
-forl50 = "{:<50}".format
-for60 = "{:<60}".format
-forc60 = "{:^60}".format
 forc68 = "{:^68}".format
 forc70 = "{:^70}".format
-forc80 = "{:^80}".format # alleen als er een kleur en een ResetAll in zit
 toplijn = "+"+"-"*10+"-"+"-"*12+"-"+"-"*17+"-"+"-"*20+"-"+"-"*5+"+"
 pluslijn = "+"+"-"*10+"+"+"-"*12+"+"+"-"*17+"+"+"-"*20+"+"+"-"*5+"+"
 lijst = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
@@ -607,7 +588,6 @@ def doei():
 
 print()
 rekeningenlijst = rknngnlst()
-print()
 if len(rekeningenlijst) == 0:
     nieuwetaal = input("Choose your language\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
     print(ResetAll, end = "")
@@ -2866,7 +2846,7 @@ while mimo == "Y":
                                     kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                     wat = input("Scegli\n  1 Modificare %snome di categoria%s (ora %s)\n  2 Modificare %sbudget mensile%s (ora %s)\n  3 %sEliminare categoria%s %s %scon tutto dentro%s\n  : " % (LichtCyaan,ResetAll,col+kategorienaam+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+kategorienaam+ResetAll,colslecht, ResetAll))
                                 else:
-                                    wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie verwijderen%s %s %sen alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
+                                    wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie%s %s %sverwijderen en alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
                                 if wat.upper() in afsluitlijst:
                                     break
                                 elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
