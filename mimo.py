@@ -363,6 +363,8 @@ forc19 = "{:^19}".format
 forr19 = "{:>19}".format
 for20 = "{:20}".format
 forc20 = "{:^20}".format
+forl20 = "{:<20}".format
+forr20 = "{:>20}".format
 for25 = "{:25}".format
 forl25 = "{:<25}".format
 forr25 = "{:>25}".format
@@ -507,20 +509,15 @@ def alt():
                     lengte = ast.literal_eval(g.read())
                     tot = 0
                     for i in lengte[1:]:
-                        tot = tot + i[1]
+                        if i[0] > int(strnu[:6]+"00"):
+                            tot = tot + i[1]
                     budget = lengte[0]
-                    if Taal == "EN":
-                        lencat = "items: "+forr5(str(len(lengte)-1))
-                    elif Taal == "IT":
-                        lencat = "elementi: "+forr5(str(len(lengte)-1))
-                    else:
-                        lencat = "items: "+forr5(str(len(lengte)-1))
                     col = catcol[k]
                     if Taal == "EN":
                         v = v.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                     elif Taal == "IT":
                         v = v.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
-                    print(col+forc70(k+": "+forc17(v)+lencat)+ResetAll)
+                    print(col+forc70(forl20(k+": "+forc15(v))+forr20(Valuta+fornum(tot)+"/"+fornum(budget)))+ResetAll)
                     alternatievenamenlijst[k] = v
     except(Exception) as error:
         #print(error)
