@@ -1126,10 +1126,9 @@ while mimo == "Y":
                         mndtot += i[1]
                     if mndtot >= 0:
                         colmtot = colgoed
-                        mtot = colmtot+Valuta+fornum(mndtot)+ResetAll
                     else:
                         colmtot = colslecht
-                        mtot = colmtot+Valuta+fornum(mndtot)+ResetAll
+                    mtot = colmtot+Valuta+fornum(mndtot)+ResetAll
                     maandtotaallijst = {}
                     if Nulregels == "Ja":
                         for k in alternatievenamenlijst:
@@ -1455,11 +1454,11 @@ while mimo == "Y":
                     else:
                         regels = "regels"
                 if Taal == "EN":
-                    print(col1+forc80("This SELECTION counts %s %s with a total of %s" % (str(count),regels,tot))+ResetAll)
+                    print(col1+"    This SELECTION counts %s %s with a total of %s" % (str(count),regels,tot)+ResetAll)
                 elif Taal == "IT":
-                    print(col1+forc80("Questa SELEZIONE contiene %s %s per un totale di %s" % (str(count),regels,tot))+ResetAll)
+                    print(col1+"    Questa SELEZIONE contiene %s %s per un totale di %s" % (str(count),regels,tot)+ResetAll)
                 else:
-                    print(col1+forc80("Deze SELECTIE bevat %s %s voor een totaal van %s" % (str(count),regels,tot))+ResetAll)
+                    print(col1+"    Deze SELECTIE bevat %s %s voor een totaal van %s" % (str(count),regels,tot)+ResetAll)
                 if budgetcheck == "Y":
                     try:
                         with open("alternatievenamen","r") as f:
@@ -1524,11 +1523,11 @@ while mimo == "Y":
                             else:
                                 regels = "regels"
                         if Taal == "EN":
-                            print(col1+forc80("This WHOLE MONTH counts %s %s with a total of %s" % (str(mcount),regels,mtot))+ResetAll)
+                            print(col1+"    This WHOLE MONTH counts %s %s with a total of %s" % (str(mcount),regels,mtot)+ResetAll)
                         elif Taal == "IT":
-                            print(col1+forc80("Questo INTERO MESE contiene %s %s per un totale di %s" % (str(mcount),regels,mtot))+ResetAll)
+                            print(col1+"    Questo INTERO MESE contiene %s %s per un totale di %s" % (str(mcount),regels,mtot)+ResetAll)
                         else:
-                            print(col1+forc80("Deze HELE MAAND bevat %s %s voor een totaal van %s" % (str(mcount),regels,mtot))+ResetAll)
+                            print(col1+"    Deze HELE MAAND bevat %s %s voor een totaal van %s" % (str(mcount),regels,mtot)+ResetAll)
                     except(Exception) as error:
                         pass
                 if dagsaldo == "Y":
@@ -2201,25 +2200,6 @@ while mimo == "Y":
                 break
             elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
                 doei()
-
-
-
-
-                        #if Taal == "EN":
-                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
-                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
-                        #    formaat = input("Choose your preferred date formatting\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
-                        #elif Taal == "IT":
-                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
-                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
-                        #    formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
-                        #else:
-                        #    yymd4 = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
-                        #    yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
-                        #    formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
-
-
-
             elif keuze2 == "2":
                 headerloop = "Y"
                 while headerloop == "Y":
@@ -2871,6 +2851,7 @@ while mimo == "Y":
                     if kategorie.upper() in afsluitlijst:
                         break
                     elif len(kategorie) == 2 and kategorie.upper()[0] in afsluitlijst and kategorie.upper()[1] in afsluitlijst:
+                        catbeheer = "Q"
                         break
                     elif len(kategorie) == 3 and kategorie.upper()[0] in afsluitlijst and kategorie.upper()[2] in afsluitlijst:
                         doei()
@@ -2892,6 +2873,7 @@ while mimo == "Y":
                                 if wat.upper() in afsluitlijst:
                                     break
                                 elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                                    catbeheer = "Q"
                                     break
                                 elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
                                     doei()
@@ -2906,6 +2888,7 @@ while mimo == "Y":
                                     if hoedan.upper() in afsluitlijst:
                                         break
                                     elif len(hoedan) == 2 and hoedan.upper()[0] in afsluitlijst and hoedan.upper()[1] in afsluitlijst:
+                                        catbeheer = "Q"
                                         break
                                     elif len(hoedan) == 3 and hoedan.upper()[0] in afsluitlijst and hoedan.upper()[2] in afsluitlijst:
                                         doei()
@@ -2943,6 +2926,7 @@ while mimo == "Y":
                                     if hoeveeldan.upper() in afsluitlijst:
                                         break
                                     elif len(hoeveeldan) == 2 and hoeveeldan.upper()[0] in afsluitlijst and hoeveeldan.upper()[1] in afsluitlijst:
+                                        catbeheer = "Q"
                                         break
                                     elif len(hoeveeldan) == 3 and hoeveeldan.upper()[0] in afsluitlijst and hoeveeldan.upper()[2] in afsluitlijst:
                                         doei()
@@ -2985,12 +2969,15 @@ while mimo == "Y":
                                         with open("alternatievenamen","w") as f:
                                             print(alternatievenamenlijst, file = f, end = "")
                                     elif len(oknok) == 2 and oknok.upper()[0] in afsluitlijst and oknok.upper()[1] in afsluitlijst:
+                                        catbeheer = "Q"
                                         break
                                     elif len(oknok) == 3 and oknok.upper()[0] in afsluitlijst and oknok.upper()[2] in afsluitlijst:
                                         doei()
                             except(Exception) as error:
                                 #print(error)
                                 pass
+                if catbeheer == "Q":
+                    break
         print()
         print(toplijn)
         print()
