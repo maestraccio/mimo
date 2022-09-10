@@ -3,8 +3,8 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.54"
-hardedatum = "20220909"
+bouw = "1.55"
+hardedatum = "20220910"
 
 versie = """
 Versie: %s
