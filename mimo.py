@@ -439,6 +439,10 @@ def rek():
         rekening = input("%s  : %s" % (colslecht,colgoed))
         print(ResetAll, end = "")
         if rekening.upper() in afsluitlijst:
+            break
+        elif len(rekening) == 2 and rekening.upper()[0] in afsluitlijst and rekening.upper()[1] in afsluitlijst:
+            break
+        elif len(rekening) == 3 and rekening.upper()[0] in afsluitlijst and rekening.upper()[2] in afsluitlijst:
             doei()
         else:
             try:
@@ -1140,7 +1144,7 @@ while mimo == "Y":
                 if Taal == "EN":
                     print("%sCategory selection \"?\" or exclusion \"-?\"\nor all \"+\"%s to group by category" % (col1,ResetAll))
                 elif Taal == "IT":
-                    print("%sSeleziona categoria \"?\" o escludi \"-?\"\no tutte \"+\"%s per gruppare per categoria" % (col1,ResetAll))
+                    print("%sSeleziona categoria \"?\" o escludi \"-?\"\no tutte \"+\"%s per ragruppare per categoria" % (col1,ResetAll))
                 else:
                     print("%sCategorie selecteren \"?\" of uitsluiten \"-?\"\nof alle \"+\"%s om te groeperen per categorie" % (col1,ResetAll))
                 alt()
@@ -2842,6 +2846,18 @@ while mimo == "Y":
                     input(toplijn)
                     print()
             elif keuze2 == "1" or keuze2 == "":
+                for i in lijst:                                         # hier worden de mutaties van alle categorieën alsnog op datum gesorteerd (jwmn)
+                    try:
+                        with open(i,"r") as r:
+                            inhoudvancategoriei = ast.literal_eval(r.read())
+                        inhoudvancategorie = [inhoudvancategoriei[0]]   # het eerste item is altijd het budget
+                        for j in sorted(inhoudvancategoriei[1:]):
+                            inhoudvancategorie.append(j)                # alle mutaties worden op volgorde van 0:datum en 1:prijs (enz.) toegevoegd
+                        with open(i,"w") as w:
+                            print(inhoudvancategorie, file = w, end = "")
+                    except(Exception) as error:
+                        #print(error)
+                        pass
                 catbeheer = "Y"
                 while catbeheer == "Y":
                     if Taal == "EN":
@@ -2854,9 +2870,9 @@ while mimo == "Y":
                     kategorie = input("  : ")
                     if kategorie.upper() in afsluitlijst:
                         break
-                    elif len(kategorie) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                    elif len(kategorie) == 2 and kategorie.upper()[0] in afsluitlijst and kategorie.upper()[1] in afsluitlijst:
                         break
-                    elif len(kategorie) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                    elif len(kategorie) == 3 and kategorie.upper()[0] in afsluitlijst and kategorie.upper()[2] in afsluitlijst:
                         doei()
                     else:
                         if kategorie.upper() in lijst:
@@ -2875,9 +2891,9 @@ while mimo == "Y":
                                     wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie verwijderen%s %s %sen alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
                                 if wat.upper() in afsluitlijst:
                                     break
-                                elif len(wat) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
                                     break
-                                elif len(wat) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
                                     doei()
                                 elif wat == "1":
                                     if Taal == "EN":
@@ -2889,9 +2905,9 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if hoedan.upper() in afsluitlijst:
                                         break
-                                    elif len(hoedan) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                    elif len(hoedan) == 2 and hoedan.upper()[0] in afsluitlijst and hoedan.upper()[1] in afsluitlijst:
                                         break
-                                    elif len(hoedan) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                    elif len(hoedan) == 3 and hoedan.upper()[0] in afsluitlijst and hoedan.upper()[2] in afsluitlijst:
                                         doei()
                                     else:
                                         with open("alternatievenamen","w") as f:
@@ -2926,9 +2942,9 @@ while mimo == "Y":
                                     print(ResetAll, end = "")
                                     if hoeveeldan.upper() in afsluitlijst:
                                         break
-                                    elif len(hoeveeldan) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                    elif len(hoeveeldan) == 2 and hoeveeldan.upper()[0] in afsluitlijst and hoeveeldan.upper()[1] in afsluitlijst:
                                         break
-                                    elif len(hoeveeldan) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                    elif len(hoeveeldan) == 3 and hoeveeldan.upper()[0] in afsluitlijst and hoeveeldan.upper()[2] in afsluitlijst:
                                         doei()
                                     else:
                                         try:
@@ -2956,7 +2972,6 @@ while mimo == "Y":
                                         print(colbal+forr19("BILANCIO ="),Valuta,fornum(round(balans,2))+ResetAll)
                                     else:
                                         print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
-
                                 elif wat == "3":
                                     if Taal == "EN":
                                         oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
@@ -2969,9 +2984,9 @@ while mimo == "Y":
                                         del alternatievenamenlijst[kategorie.upper()]
                                         with open("alternatievenamen","w") as f:
                                             print(alternatievenamenlijst, file = f, end = "")
-                                    elif len(oknok) == 2 and welk.upper()[0] in afsluitlijst and welk.upper()[1] in afsluitlijst:
+                                    elif len(oknok) == 2 and oknok.upper()[0] in afsluitlijst and oknok.upper()[1] in afsluitlijst:
                                         break
-                                    elif len(oknok) == 3 and welk.upper()[0] in afsluitlijst and welk.upper()[2] in afsluitlijst:
+                                    elif len(oknok) == 3 and oknok.upper()[0] in afsluitlijst and oknok.upper()[2] in afsluitlijst:
                                         doei()
                             except(Exception) as error:
                                 #print(error)
