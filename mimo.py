@@ -3,30 +3,31 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.6"
-hardedatum = "20220910"
+bouw = "1.61"
+plaats = "Amersfoort"
+hardedatum = "20220916"
 
 versie = """
 Versie: %s
 Auteur: Maestraccio
 Contact: maestraccio@musician.org
-Catania %s
+%s %s
 
-+-----""" % (bouw,hardedatum)
++-----""" % (bouw,plaats,hardedatum)
 versieEN = """
 Versione: %s
 Writer: Maestraccio
 Contact: maestraccio@musician.org
-Catania %s
+%s %s
 
-+-----""" % (bouw,hardedatum)
++-----""" % (bouw,plaats,hardedatum)
 versieIT = """
 Versione: %s
 Scrittore: Maestraccio
 Recapiti: maestraccio@musician.org
-Catania %s
+%s %s
 
-+-----""" % (bouw,hardedatum)
++-----""" % (bouw,plaats,hardedatum)
 info1 = """
 Iedere rekeningmapnaam bestaat uit een rekeningnummer en een jaartal.
 In opzet bevat een map één kalenderjaar, hoewel het mogelijk is om
@@ -45,6 +46,7 @@ E: leningen       : bedragen die worden voorgeschoten en terugbetaald
 O: overig         : overige mutaties
 Andere categorieën kunnen worden toegevoegd door een nieuwe mutatie 
 toe te voegen of te wijzigen en toe te wijzen aan de nieuwe categorie.
+Het aanpasbare startsaldo "0.0" staat in "A" op datum "11111111".
 
 "header" bevat 9 items waarvan alleen de eerste drie worden getoond:
 1: Beschrijving
@@ -76,6 +78,7 @@ E: loans          : expenses to be returned and vice versa
 O: other          : other mutations
 Other categories can be added by adding a new mutation or making a
 copy and assigning it to a new to be made category.
+The customizable starting balance "0.0" is in "A" on date "11111111".
 
 "header" contains 9 items of which only the first three are shown:
 1: Description
@@ -110,6 +113,7 @@ O: altro: atre mutazioni
 È possibile aggiungere altre categorie aggiungendo una nuova muta-
 zione o effettuando a copiarla ed assegnarla ad una nuova categoria
 da fare.
+Il personalizzabile saldo iniziale "0.0" è in "A" su data "11111111".
 
 "header" contiene 10 elementi di cui vengono mostrati solo i primi
 tre:
@@ -568,7 +572,12 @@ def nieuwerekening():
             with open(k,"w") as h:
                 print([0.0], file = h, end = "")
         with open("A","w") as w:
-            print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+            if Taal == "EN":
+                print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
+            elif Taal == "IT":
+                print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
+            else:
+                print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
         nieuw = "N"
     os.chdir(basismap)
 
