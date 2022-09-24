@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.61"
+bouw = "1.62"
 plaats = "Amersfoort"
-hardedatum = "20220916"
+hardedatum = "20220924"
 
 versie = """
 Versie: %s
@@ -1489,11 +1489,11 @@ while mimo == "Y":
                             except(Exception) as error:
                                 pass
                         if mndtot < 0:
-                            print(colslecht+for8(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
+                            print(colslecht+forc5(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
                         elif mndtot > 0:
-                            print(colslecht+for8(" ")+"|"+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/budtot*25,0)))+"|"+for8(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+                            print(colslecht+forc5(" ")+"|"+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/budtot*25,0)))+"|"+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
                         else:
-                            print(colgoed+for8(" ")+" "*24+"-=+"+" "*24+for8(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+                            print(colgoed+forc5(" ")+" "*24+"-=+"+" "*24+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
                         if mcount == 1:
                             if Taal == "EN":
                                 regels = "line"
@@ -1532,11 +1532,11 @@ while mimo == "Y":
         print()
         col2 = LichtGroen
         if Taal == "EN":
-            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n  1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n >1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         elif Taal == "IT":
-            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n  1 %sNuovo%s\n  2 %sCopia colla data di oggi%s\n  3 %sCopia su un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n >1 %sNuovo%s\n  2 %sCopia colla data di oggi%s\n  3 %sCopia su un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         else:
-            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n  1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n >1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
         print(ResetAll, end = "")
         if keuze2.upper() in afsluitlijst:
             pass
