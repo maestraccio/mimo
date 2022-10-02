@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "1.62"
+bouw = "1.63"
 plaats = "Amersfoort"
-hardedatum = "20220924"
+hardedatum = "20221002"
 
 versie = """
 Versie: %s
@@ -1720,11 +1720,11 @@ while mimo == "Y":
                                 datum = int(str(datetime.strptime(datumstr,"%Y%m%d")).replace("-","")[:8])
                             nieuw.append(datum)
                             if Taal == "EN":
-                                bedrag = input("%sAmount%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,".").strip()
+                                bedrag = input("%sAmount%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,"").strip()
                             elif Taal == "IT":
-                                bedrag = input("%sSomma%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,".").strip()
+                                bedrag = input("%sSomma%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,"").strip()
                             else:
-                                bedrag = input("%sBedrag%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,".").strip()
+                                bedrag = input("%sBedrag%s\n  : %s" % (col2,ResetAll,col2)).replace(",",".").replace(Valuta,"").strip()
                             print(ResetAll, end = "")
                             if bedrag.upper() in afsluitlijst:
                                 break
@@ -1924,11 +1924,11 @@ while mimo == "Y":
                                 elif wat == "2":
                                     try:
                                         if Taal == "EN":
-                                            bedrag = input("%sAmount%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,".").strip()
+                                            bedrag = input("%sAmount%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
                                         elif Taal == "IT":
-                                            bedrag = input("%sSomma%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,".").strip()
+                                            bedrag = input("%sSomma%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
                                         else:
-                                            bedrag = input("%sBedrag%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,".").strip()
+                                            bedrag = input("%sBedrag%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
                                         print(ResetAll, end = "")
                                         if bedrag.upper() in afsluitlijst:
                                             break
