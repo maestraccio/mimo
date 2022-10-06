@@ -717,6 +717,8 @@ print()
 sel = []
 mimo = "Y"
 while mimo == "Y":
+    strnu = str(date.today()).replace("-","") # hier haalt hij de datum van vandaag op, voor als het programma openstaat om middernacht
+    nu = int(strnu)
     Taal = updatetaal()
     Datumopmaak = updatedat()
     kleur = updatekleur()                     # hier past hij de kleurinstellingen van de rekening toe
@@ -726,6 +728,7 @@ while mimo == "Y":
     with open("alternatievenamen","r") as a:  # hier haalt hij de dictionary uit het bestand met de alternatieve namen van de categorieën
         alternatievenamenlijst = ast.literal_eval(a.read())
     printheader()
+    print(LichtGeel+forc70(nu)+ResetAll)
     print()
     moni = 0.0                                # hier telt hij alle bedragen die hij kan vinden bij elkaar op
     for i in lijst:
