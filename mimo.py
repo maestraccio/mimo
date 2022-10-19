@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.0"
+bouw = "2.1"
 plaats = "Amersfoort"
-hardedatum = "20221016"
+hardedatum = "20221019"
 
 versie = """
 Versie: %s
@@ -1368,9 +1368,9 @@ while mimo == "Y":
                 # HIER WORDT HET MAANDOVERZICHT NAAR HET BESTAND GEPRINT
 
                 if header["Print"] == "Ja" and budgetcheck == "Y":
-                    with open(iban+"."+str(startdatum)[:6]+".txt","w") as p:
+                    with open(os.path.join(os.path.expanduser("~"),iban+"."+str(startdatum)[:6]+".txt"),"w") as p:
                         print(toplijn, file = p)
-                    with open(iban+"."+str(startdatum)[:6]+".txt","a") as p:
+                    with open(os.path.join(os.path.expanduser("~"),iban+"."+str(startdatum)[:6]+".txt"),"a") as p:
                         startdatumeinddatum = "%s-%s" % (startdatum,einddatum)
                         if startdatum == 11111111 and einddatum == 99999999:
                             if Taal == "EN":
