@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.1"
-plaats = "Amersfoort"
-hardedatum = "20221019"
+bouw = "2.11"
+plaats = "Catania"
+hardedatum = "20221125"
 
 versie = """
 Versie: %s
@@ -1662,9 +1662,16 @@ while mimo == "Y":
                             except(Exception) as error:
                                 pass
                         if mndtot < 0:
-                            print(colslecht+forc5(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
+                            if int(round(mndtot/budtot*100,0)) >= -100:
+                                print(colslecht+forc5(int(round(mndtot/budtot*100,0)))+"% |"+forr25("-"*int(round(mndtot/budtot*-25,0)))+"|"+colgoed+" "*25+"|"+ResetAll)
+                            else:
+                                print(colslecht+forc5(int(round(mndtot/budtot*100,0)))+"% |"+forr25("="*25)+"|"+colgoed+" "*25+"|"+ResetAll)
                         elif mndtot > 0:
-                            print(colslecht+forc5(" ")+"|"+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/budtot*25,0)))+"|"+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+                            if int(round(mndtot/budtot*100,0)) <= 100:
+                                print(colslecht+forc5(" ")+"|"+" "*25+colgoed+"|"+forl25("+"*int(round(mndtot/budtot*25,0)))+"|"+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+                            else:
+                                print(colslecht+forc5(" ")+"|"+" "*25+colgoed+"|"+forl25("#"*25)+"|"+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
+
                         else:
                             print(colgoed+forc5(" ")+" "*24+"-=+"+" "*24+forc5(int(round(mndtot/budtot*100,0)))+"%"+ResetAll)
                         if mcount == 1:
