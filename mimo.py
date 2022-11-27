@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.11"
+bouw = "2.2"
 plaats = "Catania"
-hardedatum = "20221125"
+hardedatum = "20221127"
 
 versie = """
 Versie: %s
@@ -169,6 +169,13 @@ PROGRAMMASTRUCTUUR:
     4 Betreft
     5 Categorie
 4 Mutatie verwijderen
+5 Spaarpotten
+    1 Bekijk spaarpotten
+    2 Wijzig spaarpot
+        1 Naam
+        2 Waarde
+    3 Voeg nieuwe spaarpot toe
+    4 Verwijder spaarpot
 
 Keuzes moeten worden bevestigd met "Enter".
 "Terug" of "Verlaten" met "Q" (of "X").
@@ -212,6 +219,13 @@ PROGRAM STRUCTURE:
     4 About
     5 Category
 4 Remove mutation
+5 Piggy banks
+    1 View piggy banks
+    2 Modify piggy bank
+        1 Name
+        2 Value
+    3 Add new piggy bank
+    4 Remove piggy bank
 
 Choices must be confirmed with "Enter".
 "Back" or "Abort" with "Q" (or "X").
@@ -255,6 +269,13 @@ STRUTTURA DEL PROGRAMMA:
     4 Riguarda
     5 Categoria
 4 Rimuovere mutazione
+5 Salvadanai
+    1 Vedere salvadanai
+    2 Modificare salvadanaio
+        1 Nome
+        2 Valore
+    3 Aggiungere salvadanaio
+    4 Rimuovere salvadanaio
 
 Le scelte devono essere confermate con "Invio".
 "Indietro" o "Annulla" con "Q" (o "X").
@@ -589,12 +610,15 @@ def nieuwerekening():
 
 def doei():
     print()
-    if Taal == "EN":
-        print(coltekst+forc70("Thank you for having used mimo an have a nice day")+ResetAll)
-    elif Taal == "IT":
-        print(coltekst+forc70("Grazie per aver usato mimo ed una buona giornata")+ResetAll)
-    else:
-        print(coltekst+forc70("Bedankt voor het gebruiken van mimo en nog een fijne dag")+ResetAll)
+    try:
+        if Taal == "EN":
+            print(coltekst+forc70("Thank you for having used mimo an have a nice day")+ResetAll)
+        elif Taal == "IT":
+            print(coltekst+forc70("Grazie per aver usato mimo ed una buona giornata")+ResetAll)
+        else:
+            print(coltekst+forc70("Bedankt voor het gebruiken van mimo en nog een fijne dag")+ResetAll)
+    except:
+        pass
     print(toplijn)
     print()
     exit()
@@ -818,11 +842,11 @@ while mimo == "Y":
 ##### Hier volgt het eerste keuzemenu #####
 
     if Taal == "EN":
-        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
     elif Taal == "IT":
-        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n%s  5 Salvadanai%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
     else:
-        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll))
+        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n%s  5 Spaarpotten%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
     if keuze1.upper() in afsluitlijst:
         doei()
     elif len(keuze1) == 2 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[1] in afsluitlijst:
@@ -2350,6 +2374,349 @@ while mimo == "Y":
         print()
         print(toplijn)
         print()
+
+    elif keuze1 == "5": # SPAARPOTTEN
+        print()
+        col5 = Wit
+        spaarpotten = "Y"
+        while spaarpotten == "Y":
+            with open("A","r") as a:
+                Uitgaven = ast.literal_eval(a.read())[0]
+            try:
+                with open("spaarpotten","r") as s:
+                    spaar = ast.literal_eval(s.read())
+                    spaartel = 0
+                    spaartotaal = 0
+                    for i,j in spaar.items():
+                        spaartel += 1
+                        spaartotaal += j
+                    if Taal == "EN":
+                        print("    Total in piggy banks: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                    elif Taal == "IT":
+                        print("    Totale in salvadanai: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                    else:
+                        print("    Totaal in spaarpotten: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                    if Taal == "EN":
+                        print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                    elif Taal == "IT":
+                        print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                    else:
+                        print("    %s is gereserveerd voor maandelijkse uitgaven" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                    if Taal == "EN":
+                        print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                    elif Taal == "IT":
+                        print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                    else:
+                        print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                    print()
+            except(Exception) as error:
+                if Taal == "EN":
+                    print("There are no piggy banks (yet)")
+                    print()
+                elif Taal == "IT":
+                    print("Non ci sono (ancora) salvadanai")
+                    print()
+                else:
+                    print("Er zijn (nog) geen spaarpotten")
+                    print()
+            if Taal == "EN":
+                keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+            elif Taal == "IT":
+                keuze2 = input("%s Fai una scelta%s\n  >1 %sVedere salvadanai%s\n   2 %sModificare salvadanaio%s\n   3 %sAggiungere salvadanaio%s\n   4 %sEliminare salvadanaio%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+            else:
+                keuze2 = input("%s Maak een keuze%s\n  >1 %sBekijk spaarpotten%s\n   2 %sWijzig spaarpot%s\n   3 %sVoeg nieuwe spaarpot toe%s\n   4 %sVerwijder spaarpot%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+            if keuze2.upper() in afsluitlijst:
+                break
+            elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
+                break
+            elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
+                doei()
+            elif keuze2 == "2":
+                potwijzig = "Y"
+                while potwijzig == "Y":
+                    if Taal == "EN":
+                        print("  Which %spiggy bank%s do you want to %smodify%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                    elif Taal == "IT":
+                        print("  Quale %ssalvadanaio%s vuoi %smodificare%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                    else:
+                        print("  Welke %sspaarpot%s wil je %swijzigen%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                    spaartel = 0
+                    try:
+                        with open("spaarpotten","r") as s:
+                            spaar = ast.literal_eval(s.read())
+                            spaarlijst = []
+                            for i,j in spaar.items():
+                                spaartel += 1
+                                if Taal == "EN":
+                                    print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                elif Taal == "IT":
+                                    print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                else:
+                                    print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                spaarlijst.append(i)
+                        keuze3 = input("    : ")
+                        if keuze3.upper() in afsluitlijst:
+                            break
+                        elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                            break
+                        elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
+                            doei()
+                        else:
+                            try:
+                                keuze3 = int(keuze3)-1
+                                if keuze3 in range(spaartel):
+                                    if Taal == "EN":
+                                        keuze4 = input("   What do you want to modify\n     1 Name   %s\n    >2 Value %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                    elif Taal == "IT":
+                                        keuze4 = input("   Cosa vuoi modificare\n     1 Nome   %s\n    >2 Valore %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                    else:
+                                        keuze4 = input("   Wat wil je wijzigen\n     1 Naam   %s\n    >2 Waarde %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                    if keuze4.upper() in afsluitlijst:
+                                        break
+                                    elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
+                                        doei()
+                                    elif keuze4 == "1":
+                                        if Taal == "EN":
+                                            nieuwekey = input("    Rename this piggy bank %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                        elif Taal == "IT":
+                                            nieuwekey = input("    Rinomina questo salvadanaio %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                        else:
+                                            nieuwekey = input("    Geef deze spaarpot %s een nieuwe naam\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                        print(ResetAll, end = "")
+                                        if nieuwekey.upper() in afsluitlijst:
+                                            break
+                                        elif len(nieuwekey) == 2 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[1] in afsluitlijst:
+                                            break
+                                        elif len(nieuwekey) == 3 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[2] in afsluitlijst:
+                                            doei()
+                                        spaar[nieuwekey] = spaar[spaarlijst[keuze3]]
+                                        del spaar[spaarlijst[keuze3]]
+                                        with open("spaarpotten","w") as s:
+                                            print(spaar, file = s, end = "")
+                                    else:
+                                        inspaarpotlijst = []
+                                        for i,j in spaar.items():
+                                            if i != spaarlijst[keuze3]:
+                                                inspaarpotlijst.append(j)
+                                        inspaarpot = 0
+                                        for i in inspaarpotlijst:
+                                            inspaarpot += i
+                                        beschikbaar = round(moni,2) + Uitgaven - inspaarpot
+                                        nieuwewaarde = "Y"
+                                        while nieuwewaarde == "Y":
+                                            if Taal == "EN":
+                                                nieuwevalue = input("    Enter a new value\n      : %s" % (col5))
+                                            elif Taal == "IT":
+                                                nieuwevalue = input("    Inserire un nuovo valore\n      : %s" % (col5))
+                                            else:
+                                                nieuwevalue = input("    Geef een nieuwe waarde op\n      : %s" % (col5))
+                                            print(ResetAll, end = "")
+                                            if nieuwevalue.upper() in afsluitlijst:
+                                                break
+                                            elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                                break
+                                            elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
+                                                doei()
+                                            try:
+                                                nieuwevalue = round(float(nieuwevalue),2)
+                                                if nieuwevalue > beschikbaar:
+                                                    if Taal == "EN":
+                                                        print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
+                                                    elif Taal == "IT":
+                                                        print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
+                                                    else:
+                                                        print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
+                                                elif nieuwevalue < 0:
+                                                    if Taal == "EN":
+                                                        print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
+                                                    elif Taal == "IT":
+                                                        print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
+                                                    else:
+                                                        print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
+                                                else:
+                                                    spaar[spaarlijst[keuze3]] = nieuwevalue
+                                                    with open("spaarpotten","w") as s:
+                                                        print(spaar, file = s, end = "")
+                                                    if Taal == "EN":
+                                                        print("%s contains %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                    elif Taal == "IT":
+                                                        print("%s contiene %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                    else:
+                                                        print("%s bevat %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                    break
+                                            except:
+                                                if Taal == "EN":
+                                                    print("%sThat is not a valid value%s" % (colslecht,ResetAll))
+                                                elif Taal == "IT":
+                                                    print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
+                                                else:
+                                                    print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
+                                else:
+                                    if Taal == "EN":
+                                        print("That piggy bank doesn't exist (yet)")
+                                    elif Taal == "IT":
+                                        print("Questo salvadanaio non existe (ancora)")
+                                    else:
+                                        print("Die spaarpot bestaat (nog) niet")
+                            except(Exception) as error:
+                                print(error)
+                    except(Exception) as error:
+                        pass
+            elif keuze2 == "3":
+                potnieuw = "Y"
+                while potnieuw == "Y":
+                    try:
+                        with open("spaarpotten","r") as s:
+                            spaar = ast.literal_eval(s.read())
+                            spaarlijst = []
+                            for i,j in spaar.items():
+                                if Taal == "EN":
+                                    print("%s contains %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                elif Taal == "IT":
+                                    print("%s contiene %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                else:
+                                    print("%s bevat %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                spaarlijst.append(i)
+                    except:
+                        spaar = {}
+                        spaarlijst = []
+                    if Taal == "EN":
+                        nieuwespaarpot = input("  Enter the %sname%s of the new piggy bank\n    : %s" % (col5,ResetAll,col5))[:15]
+                        print(ResetAll, end = "")
+                    elif Taal == "IT":
+                        nieuwespaarpot = input("  Inserisci il %snome%s del nuovo salvadanaio\n    : %s" % (col5,ResetAll,col5))[:15]
+                        print(ResetAll, end = "")
+                    else:
+                        nieuwespaarpot = input("  Typ de %snaam%s van de nieuwe spaarpot\n    : %s" % (col5,ResetAll,col5))[:15]
+                        print(ResetAll, end = "")
+                    if nieuwespaarpot.upper() in afsluitlijst:
+                        break
+                    elif len(nieuwespaarpot) == 2 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[1] in afsluitlijst:
+                        break
+                    elif len(nieuwespaarpot) == 3 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[2] in afsluitlijst:
+                        doei()
+                    else:
+                        with open("A","r") as a:
+                            Uitgaven = ast.literal_eval(a.read())[0]
+                        inspaarpotlijst = []
+                        for i,j in spaar.items():
+                            inspaarpotlijst.append(j)
+                        inspaarpot = 0
+                        for i in inspaarpotlijst:
+                            inspaarpot += i
+                        beschikbaar = round(moni,2) + Uitgaven - inspaarpot
+                        nieuwewaarde = "Y"
+                        while nieuwewaarde == "Y":
+                            if Taal == "EN":
+                                nieuwevalue = input("  Enter a new value\n    : %s" % (col5))
+                            elif Taal == "IT":
+                                nieuwevalue = input("  Inserire un nuovo valore\n    : %s" % (col5))
+                            else:
+                                nieuwevalue = input("  Geef een nieuwe waarde op\n    : %s" % (col5))
+                            print(ResetAll, end = "")
+                            if nieuwevalue.upper() in afsluitlijst:
+                                break
+                            elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                break
+                            elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
+                                doei()
+                            try:
+                                nieuwevalue = round(float(nieuwevalue),2)
+                                if nieuwevalue > beschikbaar:
+                                    if Taal == "EN":
+                                        print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
+                                    elif Taal == "IT":
+                                        print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
+                                    else:
+                                        print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
+                                elif nieuwevalue < 0:
+                                    if Taal == "EN":
+                                        print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
+                                    elif Taal == "IT":
+                                        print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
+                                    else:
+                                        print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
+                                else:
+                                    spaar[nieuwespaarpot] = nieuwevalue
+                                    with open("spaarpotten","w") as s:
+                                        print(spaar, file = s, end = "")
+                                    if Taal == "EN":
+                                        print("%s contains %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                    elif Taal == "IT":
+                                        print("%s contiene %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                    else:
+                                        print("%s bevat %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                    break
+                            except:
+                                if Taal == "EN":
+                                    print("%sThat is not a valid value%s" % (colslecht,ResetAll))
+                                elif Taal == "IT":
+                                    print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
+                                else:
+                                    print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
+            elif keuze2 == "4":
+                potverwijder = "Y"
+                while potverwijder == "Y":
+                    if Taal == "EN":
+                        print("  Which %spiggy bank%s do you want to %sremove%s" % (col5,ResetAll,colslecht,ResetAll))
+                    elif Taal == "IT":
+                        print("  Quale %ssalvadanaio%s vuoi %seliminare%s" % (col5,ResetAll,colslecht,ResetAll))
+                    else:
+                        print("  Welke %sspaarpot%s wil je %sverwijderen%s" % (col5,ResetAll,colslecht,ResetAll))
+                    spaartel = 0
+                    try:
+                        with open("spaarpotten","r") as s:
+                            spaar = ast.literal_eval(s.read())
+                            spaarlijst = []
+                            for i,j in spaar.items():
+                                spaartel += 1
+                                if Taal == "EN":
+                                    print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                elif Taal == "IT":
+                                    print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                else:
+                                    print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                spaarlijst.append(i)
+                        keuze3 = input("    : ")
+                        if keuze3.upper() in afsluitlijst:
+                            break
+                        elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                            break
+                        elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
+                            doei()
+                        else:
+                            keuze3 = int(keuze3)-1
+                            if keuze3 in range(spaartel):
+                                del spaar[spaarlijst[keuze3]]
+                                if len(spaar) == 0:
+                                    os.remove("spaarpotten")
+                                else:
+                                    with open("spaarpotten","w") as s:
+                                        print(spaar, file = s, end = "")
+                    except:
+                        pass
+            else:
+                try:
+                    with open("spaarpotten","r") as s:
+                        print()
+                        spaar = ast.literal_eval(s.read())
+                        spaartel = 0
+                        spaartotaal = 0
+                        for i,j in spaar.items():
+                            spaartel += 1
+                            spaartotaal += j
+                            if Taal == "EN":
+                                print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                            elif Taal == "IT":
+                                print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                            else:
+                                print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                        print()
+                except(Exception) as error:
+                    pass
+
     elif keuze1 == "0": # BEHEER
         print()
         col5 = LichtMagenta
@@ -3146,22 +3513,30 @@ while mimo == "Y":
                                     else:
                                         print(colbal+forr19("BALANS ="),Valuta,fornum(round(balans,2))+ResetAll)
                                 elif wat == "3":
-                                    if Taal == "EN":
-                                        oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                                    elif Taal == "IT":
-                                        oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                    if kategorie.upper() in ["A","O"]:
+                                        if Taal == "EN":
+                                            print("%sYou can not remove this category%s\n  : " % (colslecht,ResetAll))
+                                        elif Taal == "IT":
+                                            print("%sNon si puó rimuovere questa categoria%s\n  : " % (colslecht,ResetAll))
+                                        else:
+                                            print("%sJe kunt deze categorie niet verwijderen%s\n  : " % (colslecht,ResetAll))
                                     else:
-                                        oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
-                                    if oknok == "1":
-                                        os.remove(kategorie.upper())
-                                        del alternatievenamenlijst[kategorie.upper()]
-                                        with open("alternatievenamen","w") as f:
-                                            print(alternatievenamenlijst, file = f, end = "")
-                                    elif len(oknok) == 2 and oknok.upper()[0] in afsluitlijst and oknok.upper()[1] in afsluitlijst:
-                                        catbeheer = "Q"
-                                        break
-                                    elif len(oknok) == 3 and oknok.upper()[0] in afsluitlijst and oknok.upper()[2] in afsluitlijst:
-                                        doei()
+                                        if Taal == "EN":
+                                            oknok = input("%sOK%s or %sNot OK%s\n%s  1 OK%s\n%s >2 Not OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                        elif Taal == "IT":
+                                            oknok = input("%sOK%s o %sNon OK%s\n%s  1 OK%s\n%s >2 Non OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                        else:
+                                            oknok = input("%sOK%s of %sNiet OK%s\n%s  1 OK%s\n%s >2 Niet OK%s\n  : " % (colgoed,ResetAll,colslecht,ResetAll,colgoed,ResetAll,colslecht,ResetAll))
+                                        if oknok == "1":
+                                            os.remove(kategorie.upper())
+                                            del alternatievenamenlijst[kategorie.upper()]
+                                            with open("alternatievenamen","w") as f:
+                                                print(alternatievenamenlijst, file = f, end = "")
+                                        elif len(oknok) == 2 and oknok.upper()[0] in afsluitlijst and oknok.upper()[1] in afsluitlijst:
+                                            catbeheer = "Q"
+                                            break
+                                        elif len(oknok) == 3 and oknok.upper()[0] in afsluitlijst and oknok.upper()[2] in afsluitlijst:
+                                            doei()
                             except(Exception) as error:
                                 #print(error)
                                 pass
