@@ -846,9 +846,7 @@ while mimo == "Y":
             Uitgaven = ast.literal_eval(a.read())[0]
         with open("spaarpotten","r") as s:
             spaar = ast.literal_eval(s.read())
-            spaartel = 0
             for i,j in spaar.items():
-                spaartel += 1
                 spaartotaal += j
         if moni-Uitgaven < spaartotaal:
             col5 = Rood
