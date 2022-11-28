@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.2"
+bouw = "2.25"
 plaats = "Catania"
-hardedatum = "20221127"
+hardedatum = "20221128"
 
 versie = """
 Versie: %s
@@ -838,15 +838,31 @@ while mimo == "Y":
             print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
         print(pluslijn)
         print()
+
+    col5 = Groen
+    try:
+        spaartotaal = 0
+        with open("A","r") as a:
+            Uitgaven = ast.literal_eval(a.read())[0]
+        with open("spaarpotten","r") as s:
+            spaar = ast.literal_eval(s.read())
+            spaartel = 0
+            for i,j in spaar.items():
+                spaartel += 1
+                spaartotaal += j
+        if moni-Uitgaven < spaartotaal:
+            col5 = Rood
+    except:
+        pass
     
 ##### Hier volgt het eerste keuzemenu #####
 
     if Taal == "EN":
-        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
+        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     elif Taal == "IT":
-        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n%s  5 Salvadanai%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
+        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n%s  5 Salvadanai%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     else:
-        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n%s  5 Spaarpotten%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,Wit,ResetAll))
+        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n%s  5 Spaarpotten%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     if keuze1.upper() in afsluitlijst:
         doei()
     elif len(keuze1) == 2 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[1] in afsluitlijst:
@@ -2377,16 +2393,15 @@ while mimo == "Y":
 
     elif keuze1 == "5": # SPAARPOTTEN
         print()
-        col5 = Wit
         spaarpotten = "Y"
         while spaarpotten == "Y":
+            spaartotaal = 0
             with open("A","r") as a:
                 Uitgaven = ast.literal_eval(a.read())[0]
             try:
                 with open("spaarpotten","r") as s:
                     spaar = ast.literal_eval(s.read())
                     spaartel = 0
-                    spaartotaal = 0
                     for i,j in spaar.items():
                         spaartel += 1
                         spaartotaal += j
@@ -2410,6 +2425,7 @@ while mimo == "Y":
                         print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
                     print()
             except(Exception) as error:
+                print(error)
                 if Taal == "EN":
                     print("There are no piggy banks (yet)")
                     print()
@@ -2419,6 +2435,8 @@ while mimo == "Y":
                 else:
                     print("Er zijn (nog) geen spaarpotten")
                     print()
+            if moni-Uitgaven < spaartotaal:
+                col5 = Rood
             if Taal == "EN":
                 keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
             elif Taal == "IT":
