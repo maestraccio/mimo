@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.25"
-plaats = "Catania"
-hardedatum = "20221128"
+bouw = "2.26"
+plaats = "Amersfoort"
+hardedatum = "20221210"
 
 versie = """
 Versie: %s
@@ -2474,6 +2474,7 @@ while mimo == "Y":
                         if keuze3.upper() in afsluitlijst:
                             break
                         elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                            spaarpotten = "N"
                             break
                         elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
                             doei()
@@ -2490,6 +2491,7 @@ while mimo == "Y":
                                     if keuze4.upper() in afsluitlijst:
                                         break
                                     elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
+                                        spaarpotten = "N"
                                         break
                                     elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
                                         doei()
@@ -2504,6 +2506,7 @@ while mimo == "Y":
                                         if nieuwekey.upper() in afsluitlijst:
                                             break
                                         elif len(nieuwekey) == 2 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[1] in afsluitlijst:
+                                            spaarpotten = "N"
                                             break
                                         elif len(nieuwekey) == 3 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[2] in afsluitlijst:
                                             doei()
@@ -2532,6 +2535,8 @@ while mimo == "Y":
                                             if nieuwevalue.upper() in afsluitlijst:
                                                 break
                                             elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                                spaarpotten = "N"
+                                                potwijzig = "N"
                                                 break
                                             elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
                                                 doei()
@@ -2610,6 +2615,7 @@ while mimo == "Y":
                     if nieuwespaarpot.upper() in afsluitlijst:
                         break
                     elif len(nieuwespaarpot) == 2 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[1] in afsluitlijst:
+                        spaarpotten = "N"
                         break
                     elif len(nieuwespaarpot) == 3 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[2] in afsluitlijst:
                         doei()
@@ -2635,6 +2641,8 @@ while mimo == "Y":
                             if nieuwevalue.upper() in afsluitlijst:
                                 break
                             elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                spaarpotten = "N"
+                                potnieuw = "N"
                                 break
                             elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
                                 doei()
@@ -2699,6 +2707,7 @@ while mimo == "Y":
                         if keuze3.upper() in afsluitlijst:
                             break
                         elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                            spaarpotten = "N"
                             break
                         elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
                             doei()
