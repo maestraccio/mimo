@@ -152,7 +152,7 @@ PROGRAMMASTRUCTUUR:
         9 Datumformaat (standaard = "JJJJMMDD")
         10: Print maandoverzicht naar bestand (standaard "Nee")
     3 Toon of verberg rekening
-    4 Wissel van rekening
+    4 Wissel van zichtbare rekening
     5 Nieuwe rekening toevoegen
     6 Verwijder rekening
     7 Instellingen overzetten
@@ -202,7 +202,7 @@ PROGRAM STRUCTURE:
         9 Date formatting (default = "YYYYMMDD")
         10: Print month overview to file (default "No")
     3 Show or hide account
-    4 Switch account (!)
+    4 Switch visible account (!)
     5 Add new account
     6 Delete account
     7 Transfer account settings
@@ -252,7 +252,7 @@ STRUTTURA DEL PROGRAMMA:
         9 Formato data (predefinito "AAAAMMGG")
         10: Stampa riepilogo mensile in file (predefinito "No") 
     3 Mostrare o nascondere conto
-    4 Passare ad un altro conto
+    4 Passare ad un altro conto visibile
     5 Aggiungere un nuovo conto
     6 Eliminare conto
     7 Trasferire impostazioni
@@ -2748,11 +2748,11 @@ while mimo == "Y":
         beheer = "Y"
         while beheer == "Y":
             if Taal == "EN":
-                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch visible account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             elif Taal == "IT":
-                keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto visibile%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             else:
-                keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van zichtbare rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -3252,11 +3252,11 @@ while mimo == "Y":
                 else:
                     print("%sLET OP! Afbreken verlaat het programma%s" % (colslecht,ResetAll))
                 if Taal == "EN":
-                    print("%sAvailable accounts:%s" % (colgoed,ResetAll))
+                    print("%sAvailable visible accounts:%s" % (colgoed,ResetAll))
                 elif Taal == "IT":
-                    print("%sConti disponibili:%s" % (colgoed,ResetAll))
+                    print("%sConti visibili disponibili:%s" % (colgoed,ResetAll))
                 else:
-                    print("%sBeschikbare rekeningen:%s" % (colgoed,ResetAll))
+                    print("%sBeschikbare zichtbare rekeningen:%s" % (colgoed,ResetAll))
                 rekeningenlijst = rknngnlst()
                 ibanjaar = rek()
                 iban = ibanjaar[0]
