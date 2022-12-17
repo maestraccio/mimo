@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.27"
+bouw = "2.28"
 plaats = "Amersfoort"
-hardedatum = "20221214"
+hardedatum = "20221217"
 
 versie = """
 Versie: %s
@@ -387,6 +387,9 @@ forr20 = "{:>20}".format
 forl25 = "{:<25}".format
 forr25 = "{:>25}".format
 forc68 = "{:^68}".format
+forl35 = "{:<35}".format
+forr35 = "{:>35}".format
+forr37 = "{:>37}".format
 forc70 = "{:^70}".format
 toplijn = "+"+"-"*10+"-"+"-"*12+"-"+"-"*17+"-"+"-"*20+"-"+"-"*5+"+"
 pluslijn = "+"+"-"*10+"+"+"-"*12+"+"+"-"*17+"+"+"-"*20+"+"+"-"*5+"+"
@@ -773,6 +776,37 @@ while mimo == "Y":
     print(LichtMagenta+forc70(iban+" "+Valuta+" "+fornum(moni))+ResetAll)
     alt()
     print()
+    col5 = Groen
+    try:
+        spaartotaal = 0
+        with open("A","r") as a:
+            gebudgetteerd = ast.literal_eval(a.read())[0]*-1
+        with open("spaarpotten","r") as s:
+            spaar = ast.literal_eval(s.read())
+            for i,j in spaar.items():
+                spaartotaal += j
+        if moni-spaartotaal < gebudgetteerd:
+            col5 = Rood
+            tekort = col5+Valuta+fornum(moni-gebudgetteerd-spaartotaal)+ResetAll
+            if Taal == "EN":
+                print(col5+forc70("You have dropped below recommended buffer size. Check your piggy banks.")+ResetAll)
+                print(forr37("Total budget            : ")+Valuta+fornum(gebudgetteerd))
+                print(forr37("Total in all piggy banks: ")+Valuta+fornum(spaartotaal))
+                print(forr37("Short                   : ")+tekort)
+            elif Taal == "IT":
+                print(col5+forc70("Sei sceso sotto la cifra di buffer raccomandato. Controlla salvadanai.")+ResetAll)
+                print(forr37("Totale budgettato         : ")+Valuta+fornum(gebudgetteerd))
+                print(forr37("Totale di tutti salvadanai: ")+Valuta+fornum(spaartotaal))
+                print(forr37("Disavanzo                 : ")+tekort)
+            else:
+                print(col5+forc70("Je bent onder je aanbevolen buffer gezakt. Controleer je spaarpotten.")+ResetAll)
+                print(forr37("Totaal gebudgetteerd      : ")+Valuta+fornum(gebudgetteerd))
+                print(forr37("Totaal in alle spaarpotten: ")+Valuta+fornum(spaartotaal))
+                print(forr37("Tekort                    : ")+tekort)
+            print()
+    except(Exception) as error:
+        print(error)
+        pass
     if sel == []:
         col1 = LichtGeel
         dagen = 7
@@ -839,20 +873,6 @@ while mimo == "Y":
         print(pluslijn)
         print()
 
-    col5 = Groen
-    try:
-        spaartotaal = 0
-        with open("A","r") as a:
-            Uitgaven = ast.literal_eval(a.read())[0]
-        with open("spaarpotten","r") as s:
-            spaar = ast.literal_eval(s.read())
-            for i,j in spaar.items():
-                spaartotaal += j
-        if moni-Uitgaven < spaartotaal:
-            col5 = Rood
-    except:
-        pass
-    
 ##### Hier volgt het eerste keuzemenu #####
 
     if Taal == "EN":
@@ -2405,22 +2425,19 @@ while mimo == "Y":
                         spaartotaal += j
                     if Taal == "EN":
                         print("    Total in piggy banks: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                        print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                        print("    A buffer of %s on payday (i.p) is recommended" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     elif Taal == "IT":
                         print("    Totale in salvadanai: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                        print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                        print("    Un buffer di %s su giorno di paga (s.p.) è raccomandato" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     else:
                         print("    Totaal in spaarpotten: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
-                    if Taal == "EN":
-                        print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    elif Taal == "IT":
-                        print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    else:
                         print("    %s is gereserveerd voor maandelijkse uitgaven" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    if Taal == "EN":
-                        print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                    elif Taal == "IT":
-                        print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                    else:
                         print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                        print("    Een buffer van %s op betaaldag wordt (i.m.) aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     print()
             except(Exception) as error:
                 print(error)
