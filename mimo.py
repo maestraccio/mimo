@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.28"
+bouw = "2.29"
 plaats = "Amersfoort"
-hardedatum = "20221217"
+hardedatum = "20221219"
 
 versie = """
 Versie: %s
@@ -480,6 +480,23 @@ def rek():
                     alternatievenamenlijst = ast.literal_eval(g.read())
                 return iban,jaar,header,alternatievenamenlijst,werkmap
 
+            #            if formaat == "1":
+            #                header["Datumformaat"] = "DDMMYYYY"
+            #            elif formaat == "2":
+            #                header["Datumformaat"] = "DD-MM-YY"
+            #            elif formaat == "3":
+            #                header["Datumformaat"] = "DD/MM/YY"
+            #            elif formaat == "4":
+            #                header["Datumformaat"] = "DDmmm\'YY"
+            #            elif formaat == "5":
+            #                header["Datumformaat"] = "DD-mmmYY"
+            #            elif len(formaat) == 2 and formaat.upper()[0] in afsluitlijst and formaat.upper()[1] in afsluitlijst:
+            #                headerloop = "Q"
+            #                break
+            #            elif len(formaat) == 3 and formaat.upper()[0] in afsluitlijst and formaat.upper()[2] in afsluitlijst:
+            #                doei()
+            #            else:
+            #                header["Datumformaat"] = "YYYYMMDD"
 def printheaderall():
     for k,v in header.items():
         if Taal == "EN":
@@ -489,10 +506,14 @@ def printheaderall():
         elif Taal == "IT":
             if k == "Markering L><H":
                 v = header["Valuta"]+fornum(v[0])+ResetAll+" >< "+colgoed+header["Valuta"]+fornum(v[1])
+            if k == "Datumformaat":
+                v = v.replace("DDMMYYYY","GGMMAAAA").replace("DD-MM-YY","GG-MM-YY").replace("DD/MM/YY","GG/MM/AA").replace("DDmmm\'YY","GGmmm\'AA").replace("DD-mmmYY","GG-mmmAA").replace("YYYYMMDD","AAAAMMGG")
             print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Markering L><H","Indicaz. I><S").replace("Kleur","Colore").replace("Datumformaat","Formato data").replace("Print","Stampa")),colonbepaald+":",colgoed+v+ResetAll)
         else:
             if k == "Markering L><H":
                 v = header["Valuta"]+fornum(v[0])+ResetAll+" >< "+colgoed+header["Valuta"]+fornum(v[1])
+            if k == "Datumformaat":
+                v = v.replace("DDMMYYYY","DDMMJJJJ").replace("DD-MM-YY","DD-MM-JJ").replace("DD/MM/YY","DD/MM/JJ").replace("DDmmm\'YY","DDmmm\'JJ").replace("DD-mmmYY","DD-mmmJJ").replace("YYYYMMDD","JJJJMMDD")
             print(colslecht+for15(k),colonbepaald+":",colgoed+v+ResetAll)
 
 def printheader():
@@ -505,10 +526,14 @@ def printheader():
         elif Taal == "IT":
             if k == "Markering L><H":
                 v = header["Valuta"]+fornum(v[0])+" >< "+header["Valuta"]+fornum(v[1])
+            if k == "Datumformaat":
+                v = v.replace("DDMMYYYY","GGMMAAAA").replace("DD-MM-YY","GG-MM-YY").replace("DD/MM/YY","GG/MM/AA").replace("DDmmm\'YY","GGmmm\'AA").replace("DD-mmmYY","GG-mmmAA").replace("YYYYMMDD","AAAAMMGG")
             print(colslecht+for15(k.replace("Beschrijving","Descrizione").replace("Rekeninghouder","Intestatario").replace("Plaats","Città").replace("Taal","Lingua").replace("Valuta","Valuta").replace("Nulregels","Linee a zero").replace("Markering L><H","Indicaz. I><S").replace("Kleur","Colore").replace("Datumformaat","Formato data").replace("Print","Stampa")),colonbepaald+":",colgoed+v+ResetAll)
         else:
             if k == "Markering L><H":
                 v = header["Valuta"]+fornum(v[0])+" >< "+header["Valuta"]+fornum(v[1])
+            if k == "Datumformaat":
+                v = v.replace("DDMMYYYY","DDMMJJJJ").replace("DD-MM-YY","DD-MM-JJ").replace("DD/MM/YY","DD/MM/JJ").replace("DDmmm\'YY","DDmmm\'JJ").replace("DD-mmmYY","DD-mmmJJ").replace("YYYYMMDD","JJJJMMDD")
             print(colslecht+for15(k),colonbepaald+":",colgoed+v+ResetAll)
         regel += 1
         if regel == 3:
@@ -2814,30 +2839,42 @@ while mimo == "Y":
                         wat = input("Choose what you want to %smodify%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print to file")+ResetAll+colgoed+for15(Print)+ResetAll))
                     elif Taal == "IT":
                         if Datumformaat == "DDMMYYYY":
+                            Datumformaat = "GGMMAAAA"
                             yymd = strnu[6:]+strnu[4:6]+strnu[:4]
                         elif Datumformaat == "DD-MM-YY":
+                            Datumformaat = "GG-MM-AA"
                             yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
                         elif Datumformaat == "DD/MM/YY":
+                            Datumformaat = "GG/MM/AA"
                             yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
                         elif Datumformaat == "DDmmm\'YY":
+                            Datumformaat = "GGmmm'\AA"
                             yymd = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
                         elif Datumformaat == "DD-mmmYY":
+                            Datumformaat = "GG-mmmAA"
                             yymd = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
                         else:
+                            Datumformaat = "AAAAMMGG"
                             yymd = strnu
                         wat = input("Scegli cosa vuoi %smodificare%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Stampa file")+ResetAll+colgoed+for15(Print)+ResetAll))
                     else:
                         if Datumformaat == "DDMMYYYY":
+                            Datumformaat = "DDMMJJJJ"
                             yymd = strnu[6:]+strnu[4:6]+strnu[:4]
                         elif Datumformaat == "DD-MM-YY":
+                            Datumformaat = "DD-MM-JJ"
                             yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
                         elif Datumformaat == "DD/MM/YY":
+                            Datumformaat = "DD/MM/JJ"
                             yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
                         elif Datumformaat == "DDmmm\'YY":
+                            Datumformaat = "DDmmm\'JJ"
                             yymd = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
                         elif Datumformaat == "DD-mmmYY":
+                            Datumformaat = "DD-mmmJJ"
                             yymd = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
                         else:
+                            Datumformaat = "JJJJMMDD"
                             yymd = strnu
                         wat = input("Kies wat je wilt %saanpassen%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print naar file")+ResetAll+colgoed+for15(Print)+ResetAll))
                     if wat.upper() in afsluitlijst:
@@ -3030,11 +3067,11 @@ while mimo == "Y":
                         elif Taal == "IT":
                             yymd4 = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
                             yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
-                            formaat = input("Scegli il tuo formato data preferito\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
+                            formaat = input("Scegli il tuo formato data preferito\n >0 AAAAMMGG (%s)\n  1 GGMMAAAA (%s)\n  2 GG-MM-AA (%s)\n  3 GG/MM/AA (%s)\n  4 GGmmm\'AA (%s)\n  5 GG-mmmAA (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
                         else:
                             yymd4 = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
                             yymd5 = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
-                            formaat = input("Kies je voorkeursdatumformaat\n >0 YYYYMMDD (%s)\n  1 DDMMYYYY (%s)\n  2 DD-MM-YY (%s)\n  3 DD/MM/YY (%s)\n  4 DDmmm\'YY (%s)\n  5 DD-mmmYY (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
+                            formaat = input("Kies je voorkeursdatumformaat\n >0 JJJJMMDD (%s)\n  1 DDMMJJJJ (%s)\n  2 DD-MM-JJ (%s)\n  3 DD/MM/JJ (%s)\n  4 DDmmm\'JJ (%s)\n  5 DD-mmmJJ (%s)\n  :%s" % (strnu,strnu[6:]+strnu[4:6]+strnu[:4],strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4],strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4],yymd4,yymd5,colgoed))
                         print(ResetAll, end = "")
                         if formaat == "1":
                             header["Datumformaat"] = "DDMMYYYY"
