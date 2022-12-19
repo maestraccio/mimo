@@ -480,23 +480,6 @@ def rek():
                     alternatievenamenlijst = ast.literal_eval(g.read())
                 return iban,jaar,header,alternatievenamenlijst,werkmap
 
-            #            if formaat == "1":
-            #                header["Datumformaat"] = "DDMMYYYY"
-            #            elif formaat == "2":
-            #                header["Datumformaat"] = "DD-MM-YY"
-            #            elif formaat == "3":
-            #                header["Datumformaat"] = "DD/MM/YY"
-            #            elif formaat == "4":
-            #                header["Datumformaat"] = "DDmmm\'YY"
-            #            elif formaat == "5":
-            #                header["Datumformaat"] = "DD-mmmYY"
-            #            elif len(formaat) == 2 and formaat.upper()[0] in afsluitlijst and formaat.upper()[1] in afsluitlijst:
-            #                headerloop = "Q"
-            #                break
-            #            elif len(formaat) == 3 and formaat.upper()[0] in afsluitlijst and formaat.upper()[2] in afsluitlijst:
-            #                doei()
-            #            else:
-            #                header["Datumformaat"] = "YYYYMMDD"
 def printheaderall():
     for k,v in header.items():
         if Taal == "EN":
