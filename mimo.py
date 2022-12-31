@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.3"
-plaats = "Amersfoort"
-hardedatum = "20221219"
+bouw = "2.31"
+plaats = "Catania"
+hardedatum = "20221231"
 
 versie = """
 Versie: %s
@@ -813,7 +813,7 @@ while mimo == "Y":
                 print(forr37("Tekort                    : ")+tekort)
             print()
     except(Exception) as error:
-        print(error)
+        #print(error)
         pass
     if sel == []:
         col1 = LichtGeel
@@ -2454,7 +2454,6 @@ while mimo == "Y":
                         print("    Een buffer van %s op betaaldag wordt (i.m.) aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     print()
             except(Exception) as error:
-                print(error)
                 if Taal == "EN":
                     print("There are no piggy banks (yet)")
                     print()
@@ -2751,6 +2750,7 @@ while mimo == "Y":
                                 else:
                                     with open("spaarpotten","w") as s:
                                         print(spaar, file = s, end = "")
+                            break
                     except:
                         pass
             else:
