@@ -2572,7 +2572,7 @@ while mimo == "Y":
                                                 doei()
                                             try:
                                                 nieuwevalue = round(float(nieuwevalue),2)
-                                                if nieuwevalue > beschikbaar:
+                                                if nieuwevalue > beschikbaar and nieuwevalue != 0:
                                                     if Taal == "EN":
                                                         print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
                                                     elif Taal == "IT":
