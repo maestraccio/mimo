@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.31"
+bouw = "2.32"
 plaats = "Catania"
-hardedatum = "20221231"
+hardedatum = "20230105"
 
 versie = """
 Versie: %s
@@ -456,7 +456,7 @@ def rek():
         rekening = input("%s  : %s" % (colslecht,colgoed))
         print(ResetAll, end = "")
         if rekening.upper() in afsluitlijst:
-            break
+            doei()
         elif len(rekening) == 2 and rekening.upper()[0] in afsluitlijst and rekening.upper()[1] in afsluitlijst:
             break
         elif len(rekening) == 3 and rekening.upper()[0] in afsluitlijst and rekening.upper()[2] in afsluitlijst:
