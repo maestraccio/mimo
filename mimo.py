@@ -373,6 +373,7 @@ for3 = "{:3}".format
 forc5 = "{:^5}".format
 forr7 = "{:>7}".format
 for8 = "{:8}".format
+forr8 = "{:>8}".format
 forc10 = "{:^10}".format
 forc12 = "{:^12}".format
 for15 = "{:15}".format
@@ -1485,7 +1486,10 @@ while mimo == "Y":
                                     yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(yymd)[2:4]
                                 else:
                                     yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
-                            print("|",for8(str(yymd)),"|",Valuta,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
+                            if i[1] <= -10000 or i[1] >= 10000:
+                                print("|",for8(str(yymd)),"|",Valuta,forr8(str(int(i[1]))[:-3]+"~K"),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
+                            else:
+                                print("|",for8(str(yymd)),"|",Valuta,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
                         print(pluslijn, file = p)
                         try:
                             mon = str(sel[0][0])[:6]
@@ -1517,12 +1521,6 @@ while mimo == "Y":
                                 regels = "linee"
                             else:
                                 regels = "regels"
-                        #if Taal == "EN":
-                        #    print("    This SELECTION counts %s %s with a total of %s" % (str(count),regels,tot.replace(colgoed,"").replace(colslecht,"").replace(ResetAll,"")), file = p)
-                        #elif Taal == "IT":
-                        #    print("    Questa SELEZIONE contiene %s %s per un totale di %s" % (str(count),regels,tot.replace(colgoed,"").replace(colslecht,"").replace(ResetAll,"")), file = p)
-                        #else:
-                        #    print("    Deze SELECTIE bevat %s %s voor een totaal van %s" % (str(count),regels,tot.replace(colgoed,"").replace(colslecht,"").replace(ResetAll,"")), file = p)
                         if budgetcheck == "Y":
                             try:
                                 with open("alternatievenamen","r") as f:
@@ -1652,7 +1650,10 @@ while mimo == "Y":
                             yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(yymd)[2:4]
                         else:
                             yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
-                    print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+                    if i[1] <= -10000 or i[1] >= 10000:
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8(str(int(i[1]))[:-3]+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+                    else:
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
                 print(pluslijn)
                 try:
                     mon = str(sel[0][0])[:6]
