@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.32"
-plaats = "Catania"
-hardedatum = "20230105"
+bouw = "2.5"
+plaats = "Amersfoort"
+hardedatum = "20230201"
 
 versie = """
 Versie: %s
@@ -132,7 +132,7 @@ tre:
 
 +-----"""
 info2 = """
-PROGRAMMASTRUCTUUR:
+PROGRAMMASTRUCTUUR en snelkeuzes:
 
 0 Beheer rekeningopties
     0 Print versie en info
@@ -150,7 +150,7 @@ PROGRAMMASTRUCTUUR:
         7 Markering Laag >< Hoog (Laag standaard omkering van Hoog)
         8 Kleur (standaard = "Categorie")
         9 Datumformaat (standaard = "JJJJMMDD")
-        10: Print maandoverzicht naar bestand (standaard "Nee")
+        A: Print maandoverzicht naar bestand (standaard "Nee")
     3 Toon of verberg rekening
     4 Wissel van zichtbare rekening
     5 Nieuwe rekening toevoegen
@@ -182,7 +182,7 @@ Keuzes moeten worden bevestigd met "Enter".
 "Terug naar hoofdmenu" met "QQ", "Nu afsluiten" met "QQQ".
 """
 info2EN = """
-PROGRAM STRUCTURE:
+PROGRAM STRUCTURE and quick choices:
 
 0 Manage account options
     0 Print version and info
@@ -200,7 +200,7 @@ PROGRAM STRUCTURE:
         7 Marking Lower >< Upper (by default one inversion of other)
         8 Colour (default = "Category")
         9 Date formatting (default = "YYYYMMDD")
-        10: Print month overview to file (default "No")
+        A: Print month overview to file (default "No")
     3 Show or hide account
     4 Switch visible account (!)
     5 Add new account
@@ -232,7 +232,7 @@ Choices must be confirmed with "Enter".
 "Back to main menu" with "QQ", "Exit now" with "QQQ".
 """
 info2IT = """
-STRUTTURA DEL PROGRAMMA:
+STRUTTURA DEL PROGRAMMA e selezioni rapidi:
 
 0 Gestire opzioni del conto
     0 Print versione ed info
@@ -250,7 +250,7 @@ STRUTTURA DEL PROGRAMMA:
         7 Indicazione Inf. >< Sup. (Inf. predefinito inverso di Sup.)
         8 Colore (predefinito = "Categoria")
         9 Formato data (predefinito "AAAAMMGG")
-        10: Stampa riepilogo mensile in file (predefinito "No") 
+        A: Stampa riepilogo mensile in file (predefinito "No") 
     3 Mostrare o nascondere conto
     4 Passare ad un altro conto visibile
     5 Aggiungere un nuovo conto
@@ -896,7 +896,25 @@ while mimo == "Y":
         pass
     elif len(keuze1) == 3 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[2] in afsluitlijst:
         doei()
-    elif keuze1 == "1" or keuze1 == "": # BEKIJKEN
+    snelkeuze1 = "Y"
+    try:
+        snelkeuze3 = keuze1[3]
+        snelkeuze2 = keuze1[2]
+        snelkeuze1 = keuze1[1]
+        keuze1 = keuze1[0]
+    except:
+        try:
+            snelkeuze2 = keuze1[2]
+            snelkeuze1 = keuze1[1]
+            keuze1 = keuze1[0]
+        except:
+            try:
+                snelkeuze1 = keuze1[1]
+                keuze1 = keuze1[0]
+            except(Exception) as error:
+                print(error)
+
+    if keuze1 == "1" or keuze1 == "": # BEKIJKEN
         print()
         bekijken = "Y"
         while bekijken == "Y":
@@ -1785,13 +1803,17 @@ while mimo == "Y":
     elif keuze1 == "2": # TOEVOEGEN
         print()
         col2 = LichtGroen
-        if Taal == "EN":
-            keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n >1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
-        elif Taal == "IT":
-            keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n >1 %sNuovo%s\n  2 %sCopia colla data di oggi%s\n  3 %sCopia su un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+        if snelkeuze1 != "Y":
+            keuze2 = snelkeuze1
+            snelkeuze1 = "Y"
         else:
-            keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n >1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
-        print(ResetAll, end = "")
+            if Taal == "EN":
+                keuze2 = input("%sAdd a new mutation or make a copy of a known ID%s\n >1 %sNew%s\n  2 %sCopy to today%s\n  3 %sCopy to other account%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            elif Taal == "IT":
+                keuze2 = input("%sAggiungi una nuova mutazione o fai una copia di un ID conosciuto%s\n >1 %sNuovo%s\n  2 %sCopia colla data di oggi%s\n  3 %sCopia su un altro conto%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            else:
+                keuze2 = input("%sNieuwe mutatie toevoegen of een kopie van een bekend ID maken%s\n >1 %sNieuw%s\n  2 %sKopie naar vandaag%s\n  3 %sKopie naar andere rekening%s\n  : %s" % (col2,ResetAll,col2,ResetAll,col2,ResetAll,col2,ResetAll,col2))
+            print(ResetAll, end = "")
         if keuze2.upper() in afsluitlijst:
             pass
         elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -2082,7 +2104,7 @@ while mimo == "Y":
                         #print(error)
                         break
             if toe == "Q":
-                break
+                pass
         print()
         print(toplijn)
         print()
@@ -2124,14 +2146,18 @@ while mimo == "Y":
                         col = catcol[tewijzigen[0].upper()]
                         for i in sel:
                             if i[4] == tewijzigen.upper():
-                                if Taal == "EN":
-                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
-                                    wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                elif Taal == "IT":
-                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
-                                    wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                if snelkeuze1 != "Y":
+                                    wat = snelkeuze1
+                                    snelkeuze1 = "Y"
                                 else:
-                                    wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                                    if Taal == "EN":
+                                        alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                        wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                    elif Taal == "IT":
+                                        alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                        wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                    else:
+                                        wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
                                 if wat.upper() in afsluitlijst:
                                     break
                                 elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
@@ -2466,12 +2492,16 @@ while mimo == "Y":
                     print()
             if moni-Uitgaven < spaartotaal:
                 col5 = Rood
-            if Taal == "EN":
-                keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
-            elif Taal == "IT":
-                keuze2 = input("%s Fai una scelta%s\n  >1 %sVedere salvadanai%s\n   2 %sModificare salvadanaio%s\n   3 %sAggiungere salvadanaio%s\n   4 %sEliminare salvadanaio%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+            if snelkeuze1 != "Y":
+                keuze2 = snelkeuze1
+                snelkeuze1 = "Y"
             else:
-                keuze2 = input("%s Maak een keuze%s\n  >1 %sBekijk spaarpotten%s\n   2 %sWijzig spaarpot%s\n   3 %sVoeg nieuwe spaarpot toe%s\n   4 %sVerwijder spaarpot%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                if Taal == "EN":
+                    keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                elif Taal == "IT":
+                    keuze2 = input("%s Fai una scelta%s\n  >1 %sVedere salvadanai%s\n   2 %sModificare salvadanaio%s\n   3 %sAggiungere salvadanaio%s\n   4 %sEliminare salvadanaio%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                else:
+                    keuze2 = input("%s Maak een keuze%s\n  >1 %sBekijk spaarpotten%s\n   2 %sWijzig spaarpot%s\n   3 %sVoeg nieuwe spaarpot toe%s\n   4 %sVerwijder spaarpot%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -2779,12 +2809,25 @@ while mimo == "Y":
         col5 = LichtMagenta
         beheer = "Y"
         while beheer == "Y":
-            if Taal == "EN":
-                keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch visible account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
-            elif Taal == "IT":
-                keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto visibile%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+            if snelkeuze1 != "Y":
+                try:
+                    wat = snelkeuze2
+                    keuze2 = snelkeuze1
+                    keuze1 = keuze1[:1]
+                    snelkeuze1 = "Y"
+                    tweedekeus = True
+                except:
+                    keuze2 = snelkeuze1
+                    snelkeuze1 = "Y"
+                    tweedekeus = False
             else:
-                keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van zichtbare rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                tweedekeus = False
+                if Taal == "EN":
+                    keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch visible account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                elif Taal == "IT":
+                    keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto visibile%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                else:
+                    keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van zichtbare rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -2813,60 +2856,63 @@ while mimo == "Y":
                         Nulregels = Nulregels.replace("Ja","Sì").replace("Nee","No")
                         Print = Print.replace("Ja","Sì").replace("Nee","No")
                         Kleur = Kleur.replace("Alle","Tutti").replace("Categorie","Categoria").replace("Mono","Mono").replace("Regenboog","Arcobaleno")
-                    if Taal == "EN":
-                        if Datumformaat == "DDMMYYYY":
-                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
-                        elif Datumformaat == "DD-MM-YY":
-                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
-                        elif Datumformaat == "DD/MM/YY":
-                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
-                        elif Datumformaat == "DDmmm\'YY":
-                            yymd = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
-                        elif Datumformaat == "DD-mmmYY":
-                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
+                    if tweedekeus == False:
+                        if Taal == "EN":
+                            if Datumformaat == "DDMMYYYY":
+                                yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                            elif Datumformaat == "DD-MM-YY":
+                                yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                            elif Datumformaat == "DD/MM/YY":
+                                yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                            elif Datumformaat == "DDmmm\'YY":
+                                yymd = strnu[6:]+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+"'"+strnu[2:4]
+                            elif Datumformaat == "DD-mmmYY":
+                                yymd = strnu[6:]+"-"+strnu[4:6].replace("01","Jan").replace("02","Feb").replace("03","Mar").replace("04","Apr").replace("05","May").replace("06","Jun").replace("07","Jul").replace("08","Aug").replace("09","Sep").replace("10","Oct").replace("11","Nov").replace("12","Dec")+strnu[2:4]
+                            else:
+                                yymd = strnu
+                            wat = input("Choose what you want to %smodify%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  A %s\n  : " % (Blauw,ResetAll,colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print to file")+ResetAll+colgoed+for15(Print)+ResetAll))
+                        elif Taal == "IT":
+                            if Datumformaat == "DDMMYYYY":
+                                Datumformaat = "GGMMAAAA"
+                                yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                            elif Datumformaat == "DD-MM-YY":
+                                Datumformaat = "GG-MM-AA"
+                                yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                            elif Datumformaat == "DD/MM/YY":
+                                Datumformaat = "GG/MM/AA"
+                                yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                            elif Datumformaat == "DDmmm\'YY":
+                                Datumformaat = "GGmmm'\AA"
+                                yymd = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
+                            elif Datumformaat == "DD-mmmYY":
+                                Datumformaat = "GG-mmmAA"
+                                yymd = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
+                            else:
+                                Datumformaat = "AAAAMMGG"
+                                yymd = strnu
+                            wat = input("Scegli cosa vuoi %smodificare%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  A %s\n  : " % (Blauw,ResetAll,colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Stampa file")+ResetAll+colgoed+for15(Print)+ResetAll))
                         else:
-                            yymd = strnu
-                        wat = input("Choose what you want to %smodify%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Description")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Account holder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("City")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Language")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Currency")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Zero lines")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Marking L><U")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colour")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Date formatting")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print to file")+ResetAll+colgoed+for15(Print)+ResetAll))
-                    elif Taal == "IT":
-                        if Datumformaat == "DDMMYYYY":
-                            Datumformaat = "GGMMAAAA"
-                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
-                        elif Datumformaat == "DD-MM-YY":
-                            Datumformaat = "GG-MM-AA"
-                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
-                        elif Datumformaat == "DD/MM/YY":
-                            Datumformaat = "GG/MM/AA"
-                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
-                        elif Datumformaat == "DDmmm\'YY":
-                            Datumformaat = "GGmmm'\AA"
-                            yymd = strnu[6:]+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+strnu[2:4]
-                        elif Datumformaat == "DD-mmmYY":
-                            Datumformaat = "GG-mmmAA"
-                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+strnu[2:4]
-                        else:
-                            Datumformaat = "AAAAMMGG"
-                            yymd = strnu
-                        wat = input("Scegli cosa vuoi %smodificare%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Descrizione")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Intestatario")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Città")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Lingua")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Linee a zero")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Indicaz. I><S")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Colore")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Formato data")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Stampa file")+ResetAll+colgoed+for15(Print)+ResetAll))
+                            if Datumformaat == "DDMMYYYY":
+                                Datumformaat = "DDMMJJJJ"
+                                yymd = strnu[6:]+strnu[4:6]+strnu[:4]
+                            elif Datumformaat == "DD-MM-YY":
+                                Datumformaat = "DD-MM-JJ"
+                                yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
+                            elif Datumformaat == "DD/MM/YY":
+                                Datumformaat = "DD/MM/JJ"
+                                yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
+                            elif Datumformaat == "DDmmm\'YY":
+                                Datumformaat = "DDmmm\'JJ"
+                                yymd = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
+                            elif Datumformaat == "DD-mmmYY":
+                                Datumformaat = "DD-mmmJJ"
+                                yymd = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
+                            else:
+                                Datumformaat = "JJJJMMDD"
+                                yymd = strnu
+                            wat = input("Kies wat je wilt %saanpassen%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n  A %s\n  : " % (Blauw,ResetAll,colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print naar file")+ResetAll+colgoed+for15(Print)+ResetAll))
                     else:
-                        if Datumformaat == "DDMMYYYY":
-                            Datumformaat = "DDMMJJJJ"
-                            yymd = strnu[6:]+strnu[4:6]+strnu[:4]
-                        elif Datumformaat == "DD-MM-YY":
-                            Datumformaat = "DD-MM-JJ"
-                            yymd = strnu[6:]+"-"+strnu[4:6]+"-"+strnu[2:4]
-                        elif Datumformaat == "DD/MM/YY":
-                            Datumformaat = "DD/MM/JJ"
-                            yymd = strnu[6:]+"/"+strnu[4:6]+"/"+strnu[2:4]
-                        elif Datumformaat == "DDmmm\'YY":
-                            Datumformaat = "DDmmm\'JJ"
-                            yymd = strnu[6:]+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+strnu[2:4]
-                        elif Datumformaat == "DD-mmmYY":
-                            Datumformaat = "DD-mmmJJ"
-                            yymd = strnu[6:]+"-"+strnu[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+strnu[2:4]
-                        else:
-                            Datumformaat = "JJJJMMDD"
-                            yymd = strnu
-                        wat = input("Kies wat je wilt %saanpassen%s\n  1 %s\n  2 %s\n  3 %s\n  4 %s\n  5 %s\n  6 %s\n  7 %s\n  8 %s\n  9 %s\n 10 %s\n  : " % (Blauw,ResetAll,colslecht+for15("Beschrijving")+ResetAll+colgoed+for15(hoe)+ResetAll, colslecht+for15("Rekeninghouder")+ResetAll+colgoed+for15(wie)+ResetAll, colslecht+for15("Plaats")+ResetAll+colgoed+for15(waar)+ResetAll, colslecht+for15("Taal")+ResetAll+colgoed+for15(Taal)+ResetAll, colslecht+for15("Valuta")+ResetAll+colgoed+for15(Valuta)+ResetAll, colslecht+for15("Nulregels")+ResetAll+colgoed+for15(Nulregels)+ResetAll, colslecht+for15("Markering L><H")+ResetAll+colgoed+Valuta+fornum(MarkeringLH[0])+ResetAll+" >< "+colgoed+Valuta+fornum(MarkeringLH[1])+ResetAll, colslecht+for15("Kleur")+ResetAll+colgoed+for15(Kleur)+ResetAll, colslecht+for15("Datumformaat")+ResetAll+colgoed+for15(Datumformaat)+for15(yymd)+ResetAll, colslecht+for15("Print naar file")+ResetAll+colgoed+for15(Print)+ResetAll))
+                        tweedekeus = False
                     if wat.upper() in afsluitlijst:
                         break
                     elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
@@ -3080,7 +3126,7 @@ while mimo == "Y":
                             doei()
                         else:
                             header["Datumformaat"] = "YYYYMMDD"
-                    elif wat == "10":
+                    elif wat.upper() == "A":
                         if Taal == "EN":
                             printjanee = input("Print month overview to file\n  Y Yes\n >N No\n  : %s" % (colgoed))
                         elif Taal == "IT":
