@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.5"
+bouw = "2.51"
 plaats = "Amersfoort"
 hardedatum = "20230201"
 
@@ -178,6 +178,7 @@ PROGRAMMASTRUCTUUR en snelkeuzes:
     4 Verwijder spaarpot
 
 Keuzes moeten worden bevestigd met "Enter".
+Snelkeuze "M" voor "Alles deze maand".
 "Terug" of "Verlaten" met "Q" (of "X").
 "Terug naar hoofdmenu" met "QQ", "Nu afsluiten" met "QQQ".
 """
@@ -228,6 +229,7 @@ PROGRAM STRUCTURE and quick choices:
     4 Remove piggy bank
 
 Choices must be confirmed with "Enter".
+Quick choice "M" for "All this month".
 "Back" or "Abort" with "Q" (or "X").
 "Back to main menu" with "QQ", "Exit now" with "QQQ".
 """
@@ -278,6 +280,7 @@ STRUTTURA DEL PROGRAMMA e selezioni rapidi:
     4 Rimuovere salvadanaio
 
 Le scelte devono essere confermate con "Invio".
+Selezione rapida "M" per "Tutto questo mese".
 "Indietro" o "Annulla" con "Q" (o "X").
 "Tornare al menu principale" con "QQ", "Uscire ora" con "QQQ".
 """
@@ -901,33 +904,39 @@ while mimo == "Y":
         snelkeuze3 = keuze1[3]
         snelkeuze2 = keuze1[2]
         snelkeuze1 = keuze1[1]
-        keuze1 = keuze1[0]
+        #keuze1 = keuze1[0]
     except:
         try:
             snelkeuze2 = keuze1[2]
             snelkeuze1 = keuze1[1]
-            keuze1 = keuze1[0]
+            #keuze1 = keuze1[0]
         except:
             try:
                 snelkeuze1 = keuze1[1]
-                keuze1 = keuze1[0]
+                #keuze1 = keuze1[0]
             except(Exception) as error:
-                print(error)
+                pass
+                #print(error)
 
-    if keuze1 == "1" or keuze1 == "": # BEKIJKEN
+    if keuze1 == "": # BEKIJKEN
+        keuze1 = "1"
+    if keuze1 == "1" or keuze1[0].upper() == "M":
         print()
         bekijken = "Y"
         while bekijken == "Y":
             budgetcheck = "N"
             dagsaldo = "N"
             col1 = LichtGeel
-            if Taal == "EN":
-                keuze2 = input("%sSelect a date option%s\n >1 %sOne month%s (incl. budget analysis)\n  2 %sNumber of days ago%s till today\n  3 %sNumber of months ago%s till today\n  4 %sA date range%s YYYYMMDD-YYYYMMDD\n  5 %sOne day%s YYYYMMDD (incl. day balance)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
-            elif Taal == "IT":
-                keuze2 = input("%sSeleziona data%s\n >1 %sUn mese%s (incl. analisi di budget)\n  2 %sNumero di giorni fa%s fino ad oggi\n  3 %sNumero di mesi fa%s fino ad oggi\n  4 %sUn intervallo di date%s AAAAMMGG-AAAAMMGG\n  5 %sUn giorno%s AAAAMMGG (incl. saldo giornaliero)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
+            if keuze1[0].upper() == "M":
+                keuze2 = "1"
             else:
-                keuze2 = input("%sMaak een datumselectie%s\n >1 %sÉén maand%s (incl. budgetanalyse)\n  2 %sAantal dagen geleden%s t/m vandaag\n  3 %sAantal maanden geleden%s t/m vandaag\n  4 %sEen datumbereik%s JJJJMMDD-JJJJMMDD\n  5 %sÉén dag%s JJJJMMDD (incl. dagsaldo)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
-            print(ResetAll, end = "")
+                if Taal == "EN":
+                    keuze2 = input("%sSelect a date option%s\n >1 %sOne month%s (incl. budget analysis)\n  2 %sNumber of days ago%s till today\n  3 %sNumber of months ago%s till today\n  4 %sA date range%s YYYYMMDD-YYYYMMDD\n  5 %sOne day%s YYYYMMDD (incl. day balance)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
+                elif Taal == "IT":
+                    keuze2 = input("%sSeleziona data%s\n >1 %sUn mese%s (incl. analisi di budget)\n  2 %sNumero di giorni fa%s fino ad oggi\n  3 %sNumero di mesi fa%s fino ad oggi\n  4 %sUn intervallo di date%s AAAAMMGG-AAAAMMGG\n  5 %sUn giorno%s AAAAMMGG (incl. saldo giornaliero)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
+                else:
+                    keuze2 = input("%sMaak een datumselectie%s\n >1 %sÉén maand%s (incl. budgetanalyse)\n  2 %sAantal dagen geleden%s t/m vandaag\n  3 %sAantal maanden geleden%s t/m vandaag\n  4 %sEen datumbereik%s JJJJMMDD-JJJJMMDD\n  5 %sÉén dag%s JJJJMMDD (incl. dagsaldo)\n  : %s" % (col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1,ResetAll,col1))
+                print(ResetAll, end = "")
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
@@ -1115,13 +1124,16 @@ while mimo == "Y":
 
                 else:
                     budgetcheck = "Y"
-                    if Taal == "EN":
-                        maanden = input("%sNumber of months ago%s (max. 3 yrs)\n  : %s" % (col1,ResetAll,col1))
-                    elif Taal == "IT":
-                        maanden = input("%sNumero di mesi fa%s (mass. 3 anni)\n  : %s" % (col1,ResetAll,col1))
+                    if keuze1[0].upper() == "M":
+                        maanden = "0"
                     else:
-                        maanden = input("%sAantal maanden geleden%s (max. 3 jr)\n  : %s" % (col1,ResetAll,col1))
-                    print(ResetAll, end = "")
+                        if Taal == "EN":
+                            maanden = input("%sNumber of months ago%s (max. 3 yrs)\n  : %s" % (col1,ResetAll,col1))
+                        elif Taal == "IT":
+                            maanden = input("%sNumero di mesi fa%s (mass. 3 anni)\n  : %s" % (col1,ResetAll,col1))
+                        else:
+                            maanden = input("%sAantal maanden geleden%s (max. 3 jr)\n  : %s" % (col1,ResetAll,col1))
+                        print(ResetAll, end = "")
                     if maanden.upper() in afsluitlijst:
                         break
                     elif len(maanden) == 2 and maanden.upper()[0] in afsluitlijst and maanden.upper()[1] in afsluitlijst:
@@ -1220,14 +1232,17 @@ while mimo == "Y":
                                 j1 = j1 + j[1]
                                 maandtotaallijst[i] = round(j1,2)
 
-                if Taal == "EN":
-                    print("%sCategory selection \"?\" or exclusion \"-?\"\nor all \"+\"%s to group by category" % (col1,ResetAll))
-                elif Taal == "IT":
-                    print("%sSeleziona categoria \"?\" o escludi \"-?\"\no tutte \"+\"%s per ragruppare per categoria" % (col1,ResetAll))
+                if keuze1[0].upper() == "M":
+                    keuze3 = ""
                 else:
-                    print("%sCategorie selecteren \"?\" of uitsluiten \"-?\"\nof alle \"+\"%s om te groeperen per categorie" % (col1,ResetAll))
-                alt()
-                keuze3 = input("  : ")
+                    if Taal == "EN":
+                        print("%sCategory selection \"?\" or exclusion \"-?\"\nor all \"+\"%s to group by category" % (col1,ResetAll))
+                    elif Taal == "IT":
+                        print("%sSeleziona categoria \"?\" o escludi \"-?\"\no tutte \"+\"%s per ragruppare per categoria" % (col1,ResetAll))
+                    else:
+                        print("%sCategorie selecteren \"?\" of uitsluiten \"-?\"\nof alle \"+\"%s om te groeperen per categorie" % (col1,ResetAll))
+                    alt()
+                    keuze3 = input("  : ")
                 katsel = "N"
                 selcat = []
                 if keuze3.upper() in afsluitlijst:
@@ -1273,12 +1288,17 @@ while mimo == "Y":
                 if katsel == "N":
                     seldat = sorted(seldat)
                 sel = []
-                if Taal == "EN":
-                    keuze4 = input("%sSubselection%s\n  1 Amount\n  2 Other party\n  3 Note\n  : " % (col1,ResetAll))
-                elif Taal == "IT":
-                    keuze4 = input("%sSottoselezione%s\n  1 Somma\n  2 Controparte\n  3 Annotazione\n  : " % (col1,ResetAll))
+                if keuze1.upper() in ["M","MIMO","MOMI"]:
+                    keuze4 = ""
+                elif keuze1.upper() in ["MI","MO"]:
+                    keuze4 = "1"
                 else:
-                    keuze4 = input("%sSubselectie%s\n  1 Bedrag\n  2 Wederpartij\n  3 Aantekening\n  : " % (col1,ResetAll))
+                    if Taal == "EN":
+                        keuze4 = input("%sSubselection%s\n  1 Amount\n  2 Other party\n  3 Note\n  : " % (col1,ResetAll))
+                    elif Taal == "IT":
+                        keuze4 = input("%sSottoselezione%s\n  1 Somma\n  2 Controparte\n  3 Annotazione\n  : " % (col1,ResetAll))
+                    else:
+                        keuze4 = input("%sSubselectie%s\n  1 Bedrag\n  2 Wederpartij\n  3 Aantekening\n  : " % (col1,ResetAll))
                 if keuze4.upper() in afsluitlijst:
                     break
                 elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
@@ -1289,12 +1309,17 @@ while mimo == "Y":
                     sel3 = "bedrag"
                     bedrag = "N"
                     while bedrag == "N":
-                        if Taal == "EN":
-                            bedragv = input("Enter an amount \"%s##.##%s\" or amount range \"%s##.## ##.##%s\"\n  : " % (col1,ResetAll,col1,ResetAll)) 
-                        elif Taal == "IT":
-                            bedragv = input("Inserisci una somma \"%s##.##%s\" o intervallo di somme \"%s##.## ##.##%s\"\n  : " % (col1,ResetAll,col1,ResetAll)) 
+                        if keuze1.upper() == "MI":
+                            bedragv = "0 99999.99"
+                        elif keuze1.upper() == "MO":
+                            bedragv = "-99999.99 0"
                         else:
-                            bedragv = input("Geef een bedrag \"%s##.##%s\" of bedragbereik \"%s##.## ##.##%s\" op\n  : " % (col1,ResetAll,col1,ResetAll)) 
+                            if Taal == "EN":
+                                bedragv = input("Enter an amount \"%s##.##%s\" or amount range \"%s##.## ##.##%s\"\n  : " % (col1,ResetAll,col1,ResetAll)) 
+                            elif Taal == "IT":
+                                bedragv = input("Inserisci una somma \"%s##.##%s\" o intervallo di somme \"%s##.## ##.##%s\"\n  : " % (col1,ResetAll,col1,ResetAll)) 
+                            else:
+                                bedragv = input("Geef een bedrag \"%s##.##%s\" of bedragbereik \"%s##.## ##.##%s\" op\n  : " % (col1,ResetAll,col1,ResetAll)) 
                         if bedragv.upper() in afsluitlijst:
                             bedragv1 = -99999.99
                             bedragv2 = 99999.99
