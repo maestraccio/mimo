@@ -904,16 +904,13 @@ while mimo == "Y":
         snelkeuze3 = keuze1[3]
         snelkeuze2 = keuze1[2]
         snelkeuze1 = keuze1[1]
-        #keuze1 = keuze1[0]
     except:
         try:
             snelkeuze2 = keuze1[2]
             snelkeuze1 = keuze1[1]
-            #keuze1 = keuze1[0]
         except:
             try:
                 snelkeuze1 = keuze1[1]
-                #keuze1 = keuze1[0]
             except(Exception) as error:
                 pass
                 #print(error)
@@ -1121,7 +1118,6 @@ while mimo == "Y":
                             except(Exception) as error:
                                 #print(error)
                                 pass
-
                 else:
                     budgetcheck = "Y"
                     if keuze1[0].upper() == "M":
