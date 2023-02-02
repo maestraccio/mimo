@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.51"
+bouw = "2.52"
 plaats = "Amersfoort"
-hardedatum = "20230201"
+hardedatum = "20230202"
 
 versie = """
 Versie: %s
@@ -887,6 +887,11 @@ while mimo == "Y":
 
 ##### Hier volgt het eerste keuzemenu #####
 
+    snelkeuze3 = "Y"
+    snelkeuze2 = "Y"
+    snelkeuze1 = "Y"
+    snelkeuze0 = "Y"
+    keuze1 = "Y"
     if Taal == "EN":
         keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     elif Taal == "IT":
@@ -899,35 +904,33 @@ while mimo == "Y":
         pass
     elif len(keuze1) == 3 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[2] in afsluitlijst:
         doei()
-    snelkeuze1 = "Y"
+    if keuze1 == "": # BEKIJKEN
+        keuze1 = "1"
     try:
         snelkeuze3 = keuze1[3]
         snelkeuze2 = keuze1[2]
         snelkeuze1 = keuze1[1]
-        keuze1 = keuze1[0]
+        snelkeuze0 = keuze1[0]
     except:
         try:
             snelkeuze2 = keuze1[2]
             snelkeuze1 = keuze1[1]
-            keuze1 = keuze1[0]
+            snelkeuze0 = keuze1[0]
         except:
             try:
                 snelkeuze1 = keuze1[1]
-                keuze1 = keuze1[0]
+                snelkeuze0 = keuze1[0]
             except(Exception) as error:
-                pass
-                print(error)
-
-    if keuze1 == "": # BEKIJKEN
-        keuze1 = "1"
-    if keuze1 == "1" or keuze1[0].upper() == "M":
+                snelkeuze0 = keuze1[0]
+                #print(error)
+    if snelkeuze0 == "1" or snelkeuze0.upper() in ["M"," "]: # BEKIJKEN
         print()
         bekijken = "Y"
         while bekijken == "Y":
             budgetcheck = "N"
             dagsaldo = "N"
             col1 = LichtGeel
-            if keuze1[0].upper() == "M":
+            if snelkeuze0.upper() in ["M"," "]:
                 keuze2 = "1"
             else:
                 if Taal == "EN":
@@ -1123,7 +1126,7 @@ while mimo == "Y":
                                 pass
                 else:
                     budgetcheck = "Y"
-                    if keuze1[0].upper() == "M":
+                    if snelkeuze0.upper() in ["M"," "]:
                         maanden = "0"
                     else:
                         if Taal == "EN":
@@ -1231,7 +1234,7 @@ while mimo == "Y":
                                 j1 = j1 + j[1]
                                 maandtotaallijst[i] = round(j1,2)
 
-                if keuze1[0].upper() == "M":
+                if snelkeuze0.upper() in ["M"," "]:
                     keuze3 = ""
                 else:
                     if Taal == "EN":
@@ -1291,6 +1294,8 @@ while mimo == "Y":
                     keuze4 = ""
                 elif keuze1.upper() in ["MI","MO"]:
                     keuze4 = "1"
+                elif keuze1.upper() == " ":
+                    keuze4 = "2"
                 else:
                     if Taal == "EN":
                         keuze4 = input("%sSubselection%s\n  1 Amount\n  2 Other party\n  3 Note\n  : " % (col1,ResetAll))
@@ -1305,7 +1310,12 @@ while mimo == "Y":
                 elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
                     doei()
                 elif keuze4== "1":
-                    sel3 = "bedrag"
+                    if Taal == "EN":
+                        sel3 = "amount"
+                    elif Taal == "IT":
+                        sel3 = "somma"
+                    else:
+                        sel3 = "bedrag"
                     bedrag = "N"
                     while bedrag == "N":
                         if keuze1.upper() == "MI":
@@ -1381,15 +1391,29 @@ while mimo == "Y":
                             sel.append(i)
                             ID += 1
                 elif keuze4 == "2":
-                    sel3 = "wederpartij"
+                    if Taal == "EN":
+                        sel3 = "other party"
+                    elif Taal == "IT":
+                        sel3 = "controparte"
+                    else:
+                        sel3 = "wederpartij"
                     wederpartij = "N"
                     while wederpartij == "N":
-                        if Taal == "EN":
-                            wederpartijv = input("Enter a (part of the) %sother party%s\n  : " % (col1,ResetAll)).lower()
-                        elif Taal == "IT":
-                            wederpartijv = input("Inserisci (parte della) %scontroparte%s\n  : " % (col1,ResetAll)).lower()
+                        if keuze1.upper() == " ":
+                            sel3 = ""
+                            if Taal == "EN":
+                                wederpartijv = "No transactions, only totals"
+                            elif Taal == "IT":
+                                wederpartijv = "Nessuna transazione, solo totali"
+                            else:
+                                wederpartijv = "Geen transacties, alleen totalen"
                         else:
-                            wederpartijv = input("Geef een (deel van de) %swederpartij%s op\n  : " % (col1,ResetAll)).lower()
+                            if Taal == "EN":
+                                wederpartijv = input("Enter a (part of the) %sother party%s\n  : " % (col1,ResetAll)).lower()
+                            elif Taal == "IT":
+                                wederpartijv = input("Inserisci (parte della) %scontroparte%s\n  : " % (col1,ResetAll)).lower()
+                            else:
+                                wederpartijv = input("Geef een (deel van de) %swederpartij%s op\n  : " % (col1,ResetAll)).lower()
                         wederpartij = "Y"
                         if wederpartijv.upper() in afsluitlijst:
                             wederpartijv = ""
@@ -1417,7 +1441,12 @@ while mimo == "Y":
                             sel.append(i)
                             ID += 1
                 elif keuze4 == "3":
-                    sel3 = "aantekening"
+                    if Taal == "EN":
+                        sel3 = "note"
+                    if Taal == "IT":
+                        sel3 = "annotazione"
+                    else:
+                        sel3 = "aantekening"
                     aantekening = "N"
                     while aantekening == "N":
                         if Taal == "EN":
@@ -1824,7 +1853,7 @@ while mimo == "Y":
         print(toplijn)
         print()
 
-    elif keuze1 == "2": # TOEVOEGEN
+    elif snelkeuze0 == "2": # TOEVOEGEN
         print()
         col2 = LichtGroen
         if snelkeuze1 != "Y":
@@ -2132,7 +2161,7 @@ while mimo == "Y":
         print()
         print(toplijn)
         print()
-    elif keuze1 == "3": # WIJZIGEN
+    elif snelkeuze0 == "3": # WIJZIGEN
         print()
         col3 = LichtCyaan
         try:
@@ -2399,7 +2428,7 @@ while mimo == "Y":
         print()
         print(toplijn)
         print()
-    elif keuze1 == "4": # VERWIJDEREN
+    elif snelkeuze0 == "4": # VERWIJDEREN
         print()
         col4 = LichtRood
         try:
@@ -2474,7 +2503,7 @@ while mimo == "Y":
         print(toplijn)
         print()
 
-    elif keuze1 == "5": # SPAARPOTTEN
+    elif snelkeuze0 == "5": # SPAARPOTTEN
         print()
         spaarpotten = "Y"
         while spaarpotten == "Y":
@@ -2828,7 +2857,7 @@ while mimo == "Y":
                 except(Exception) as error:
                     pass
 
-    elif keuze1 == "0": # BEHEER
+    elif snelkeuze0 == "0": # BEHEER
         print()
         col5 = LichtMagenta
         beheer = "Y"
