@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.52"
+bouw = "2.53"
 plaats = "Amersfoort"
-hardedatum = "20230202"
+hardedatum = "20230203"
 
 versie = """
 Versie: %s
@@ -178,7 +178,7 @@ PROGRAMMASTRUCTUUR en snelkeuzes:
     4 Verwijder spaarpot
 
 Keuzes moeten worden bevestigd met "Enter".
-Snelkeuze "M" voor "Alles deze maand".
+Probeer ook eens snelkeuzes "M", "MI", "MO" en " ".
 "Terug" of "Verlaten" met "Q" (of "X").
 "Terug naar hoofdmenu" met "QQ", "Nu afsluiten" met "QQQ".
 """
@@ -229,7 +229,7 @@ PROGRAM STRUCTURE and quick choices:
     4 Remove piggy bank
 
 Choices must be confirmed with "Enter".
-Quick choice "M" for "All this month".
+Try also quick choices "M", "MI", "MO" and " ".
 "Back" or "Abort" with "Q" (or "X").
 "Back to main menu" with "QQ", "Exit now" with "QQQ".
 """
@@ -280,6 +280,7 @@ STRUTTURA DEL PROGRAMMA e selezioni rapidi:
     4 Rimuovere salvadanaio
 
 Le scelte devono essere confermate con "Invio".
+Prova anche selezioni rapidi "M", "MI", "MO" e " ".
 Selezione rapida "M" per "Tutto questo mese".
 "Indietro" o "Annulla" con "Q" (o "X").
 "Tornare al menu principale" con "QQ", "Uscire ora" con "QQQ".
@@ -1319,8 +1320,20 @@ while mimo == "Y":
                     bedrag = "N"
                     while bedrag == "N":
                         if keuze1.upper() == "MI":
+                            if Taal == "EN":
+                                sel3 = ", Only \"Money In\""
+                            elif Taal == "IT":
+                                sel3 = ", Solo \"Money In\""
+                            else:
+                                sel3 = ", Alleen \"Money In\""
                             bedragv = "0 99999.99"
                         elif keuze1.upper() == "MO":
+                            if Taal == "EN":
+                                sel3 = ", Only \"Money Out\""
+                            elif Taal == "IT":
+                                sel3 = ", Solo \"Money Out\""
+                            else:
+                                sel3 = ", Alleen \"Money Out\""
                             bedragv = "-99999.99 0"
                         else:
                             if Taal == "EN":
@@ -1341,7 +1354,6 @@ while mimo == "Y":
                         elif bedragv == "":
                             bedragv1 = -99999.99
                             bedragv2 = 99999.99
-                            print(bedragv1,bedragv2)
                             bedrag = "Y"
                         else:
                             bedragv = " ".join(bedragv.split())
@@ -1350,7 +1362,6 @@ while mimo == "Y":
                                 try:
                                     bedragv1 = float(bereik[0])
                                     bedragv2 = bedragv1
-                                    print(bedragv1,bedragv2)
                                     bedrag = "Y"
                                 except(Exception) as error:
                                     #print(error)
@@ -1359,13 +1370,11 @@ while mimo == "Y":
                                 try:
                                     bedragv1 = float(bereik[0])
                                     bedragv2 = float(bereik[1])
-                                    print(bedragv1,bedragv2)
                                     bedrag = "Y"
                                 except(Exception) as error:
                                     #print(error)
                                     bedragv1 = -99999.99
                                     bedragv2 = 99999.99
-                                    print(bedragv1,bedragv2)
                                     bedrag = "Y"
                     if bedrag == "Q":
                         break
@@ -1382,6 +1391,8 @@ while mimo == "Y":
                             kop = ", tutte le somme"
                         else:
                             kop = ", alle bedragen"
+                    if keuze1.upper() in ["MI","MO"]:
+                        kop = sel3
                     ID = 0
                     for i in seldat:
                         if bedragv1 <= i[1] <= bedragv2:
@@ -1490,11 +1501,11 @@ while mimo == "Y":
                 else:
                     sel3 = ""
                     if Taal == "EN":
-                        kop = ""
+                        kop = ", Everything"
                     elif Taal == "IT":
-                        kop = ""
+                        kop = ", Tutto"
                     else:
-                        kop = ""
+                        kop = ", Alles"
                     ID = 0
                     for i in seldat:
                         vier = i[4]+str(ID)
