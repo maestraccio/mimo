@@ -2532,17 +2532,17 @@ while mimo == "Y":
                         print("    Total in piggy banks: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
                         print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                         print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    A buffer of %s on payday (i.p) is recommended" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        print("    A buffer of %s on payday is recommended" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     elif Taal == "IT":
                         print("    Totale in salvadanai: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
                         print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                         print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    Un buffer di %s su giorno di paga (s.p.) è raccomandato" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        print("    Un buffer di %s su giorno di paga è raccomandato" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     else:
                         print("    Totaal in spaarpotten: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
                         print("    %s is gereserveerd voor maandelijkse uitgaven" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                         print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    Een buffer van %s op betaaldag wordt (i.m.) aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        print("    Een buffer van %s op betaaldag wordt aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                     print()
             except(Exception) as error:
                 if Taal == "EN":
