@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.53"
+bouw = "2.54"
 plaats = "Amersfoort"
-hardedatum = "20230203"
+hardedatum = "20230226"
 
 versie = """
 Versie: %s
