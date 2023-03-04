@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.53"
+bouw = "2.54"
 plaats = "Amersfoort"
-hardedatum = "20230203"
+hardedatum = "20230226"
 
 versie = """
 Versie: %s
@@ -713,28 +713,30 @@ if len(rekeningenlijst) == 0:
     with open("A","w") as w:
         print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
     rekeningenlijst = [[nieuwiban,nieuwjaar]]
-if len(rekeningenlijst) == 1:
-    os.chdir(basismap)
-    for d in os.listdir():
-        if "@" in d:
-            werkmap = os.path.join(basismap,d)
-    iban = rekeningenlijst[0][0]
-    jaar = rekeningenlijst[0][1]
-    os.chdir(werkmap)
-    with open("header","r") as f:
-        header = ast.literal_eval(f.read())
-else:
-    ibanjaar = rek()
-    iban = ibanjaar[0]
-    jaar = ibanjaar[1]
-    header = ibanjaar[2]
-    werkmap = ibanjaar[3]
-    Taal = updatetaal()
-    kleur = updatekleur()
-    Kleuren = kleur[0]
-    globals().update(Kleuren)
-    catcol = kleur[1]
-
+try:
+    if len(rekeningenlijst) == 1:
+        os.chdir(basismap)
+        for d in os.listdir():
+            if "@" in d:
+                werkmap = os.path.join(basismap,d)
+        iban = rekeningenlijst[0][0]
+        jaar = rekeningenlijst[0][1]
+        os.chdir(werkmap)
+        with open("header","r") as f:
+            header = ast.literal_eval(f.read())
+    else:
+        ibanjaar = rek()
+        iban = ibanjaar[0]
+        jaar = ibanjaar[1]
+        header = ibanjaar[2]
+        werkmap = ibanjaar[3]
+        Taal = updatetaal()
+        kleur = updatekleur()
+        Kleuren = kleur[0]
+        globals().update(Kleuren)
+        catcol = kleur[1]
+except:
+    exit()
 ##### Hier worden de standaarwaarden overschreven met de aangepaste waarden in header
 
 try:
