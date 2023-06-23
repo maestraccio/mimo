@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.54"
-plaats = "Amersfoort"
-hardedatum = "20230226"
+bouw = "2.55"
+plaats = "Pedara"
+hardedatum = "20230623"
 
 versie = """
 Versie: %s
@@ -15,7 +15,7 @@ Contact: maestraccio@musician.org
 
 +-----""" % (bouw,plaats,hardedatum)
 versieEN = """
-Versione: %s
+Version: %s
 Writer: Maestraccio
 Contact: maestraccio@musician.org
 %s %s
@@ -134,6 +134,8 @@ tre:
 info2 = """
 PROGRAMMASTRUCTUUR en snelkeuzes:
 
+De laatstgebruikte rekening wordt opnieuw geopend met ""+"Enter"
+
 0 Beheer rekeningopties
     0 Print versie en info
     1 Categoriebeheer
@@ -185,6 +187,8 @@ Probeer ook eens snelkeuzes "M", "MI", "MO" en " ".
 info2EN = """
 PROGRAM STRUCTURE and quick choices:
 
+The last used account is reopened with ""+"Enter"
+
 0 Manage account options
     0 Print version and info
     1 Category management
@@ -235,6 +239,8 @@ Try also quick choices "M", "MI", "MO" and " ".
 """
 info2IT = """
 STRUTTURA DEL PROGRAMMA e selezioni rapidi:
+
+L'ultimo usato conto si riapre con ""+"Enter"
 
 0 Gestire opzioni del conto
     0 Print versione ed info
@@ -452,7 +458,12 @@ def rknngnlst():
     for i in rekeningenlijst:
         print("  "+colslecht+for3(str(reking))+ResetAll+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll+" "+colslecht+i[2]+ResetAll)
         reking += 1
-    return rekeningenlijst
+    if "lastselected" not in os.listdir():
+        with open("lastselected","w") as l:
+            print(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1], end = "", file = l)
+    with open("lastselected","r") as l:
+        last = l.read()
+    return rekeningenlijst,last
 
 def rek():
     os.chdir(basismap)
@@ -466,24 +477,29 @@ def rek():
             break
         elif len(rekening) == 3 and rekening.upper()[0] in afsluitlijst and rekening.upper()[2] in afsluitlijst:
             doei()
+        elif rekening == "":
+            lastlist = rekeningenlijst[1].split("@")
+            iban = lastlist[0]
+            jaar = lastlist[1]
         else:
             try:
                 indrek = int(rekening)-1
-                iban = rekeningenlijst[indrek][0]
-                jaar = rekeningenlijst[indrek][1]
+                iban = rekeningenlijst[0][indrek][0]
+                jaar = rekeningenlijst[0][indrek][1]
             except(Exception) as error:
                 #print(error)
                 indrek = 0
-            finally:
-                iban = rekeningenlijst[indrek][0]
-                jaar = rekeningenlijst[indrek][1]
-                werkmap = os.path.join(basismap,iban+"@"+jaar)
-                os.chdir(werkmap)
-                with open("header","r") as f:
-                    header = ast.literal_eval(f.read())
-                with open("alternatievenamen","r") as g:
-                    alternatievenamenlijst = ast.literal_eval(g.read())
-                return iban,jaar,header,alternatievenamenlijst,werkmap
+            iban = rekeningenlijst[0][indrek][0]
+            jaar = rekeningenlijst[0][indrek][1]
+        with open("lastselected","w") as l:
+            print(iban+"@"+jaar, end = "", file = l)
+        werkmap = os.path.join(basismap,iban+"@"+jaar)
+        os.chdir(werkmap)
+        with open("header","r") as f:
+            header = ast.literal_eval(f.read())
+        with open("alternatievenamen","r") as g:
+            alternatievenamenlijst = ast.literal_eval(g.read())
+        return iban,jaar,header,alternatievenamenlijst,werkmap
 
 def printheaderall():
     for k,v in header.items():
@@ -1734,8 +1750,12 @@ while mimo == "Y":
                             yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","gen").replace("02","feb").replace("03","mar").replace("04","apr").replace("05","mag").replace("06","giu").replace("07","lug").replace("08","ago").replace("09","set").replace("10","ott").replace("11","nov").replace("12","dic")+"'"+str(yymd)[2:4]
                         else:
                             yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
-                    if i[1] <= -10000 or i[1] >= 10000:
+                    if i[1] <= -10000 or i[1] >= 10000 and len(str(i[4])) <= 3:
                         print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8(str(int(i[1]))[:-3]+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+                    elif i[1] <= -10000 or i[1] >= 10000 and len(str(i[4])) > 3:
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8(str(int(i[1]))[:-3]+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|"+col+for3(i[4])+ResetAll,"|")
+                    elif len(str(i[4])) > 3:
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|"+col+for3(i[4])+ResetAll,"|")
                     else:
                         print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
                 print(pluslijn)
