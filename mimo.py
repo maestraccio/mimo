@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.55"
+bouw = "2.56"
 plaats = "Pedara"
-hardedatum = "20230623"
+hardedatum = "20230624"
 
 versie = """
 Versie: %s
@@ -32,6 +32,8 @@ info1 = """
 Iedere rekeningmapnaam bestaat uit een rekeningnummer en een jaartal.
 In opzet bevat een map één kalenderjaar, hoewel het mogelijk is om
 onbeperkt door te schrijven; dit is door de gebruiker vrij te bepalen.
+In de hoofdmap bevindt zich het programma, de rekeningmappen en het
+bestand "lastselected" met naam van de laatstgebruikte rekeningmap.
 In de rekeningmap worden standaard de volgende bestanden aangemaakt:
   - zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
   - "alternatievenamen": de Nederlandse categorienamen bij die letters
@@ -64,8 +66,10 @@ Het aanpasbare startsaldo "0.0" staat in "A" op datum "11111111".
 info1EN = """
 Every account folder name is formed by an account number and a year.
 It is intended for details of one calendar year, although the user can
-decide otherwise and continue adding details to the same folder. In
-this account folder the following files are created by default:
+decide otherwise and continue adding details to the same folder. The
+main folder contains the program file, the account folders, and the
+file "lastselected" with the name of the last selected account folder.
+In the account folder the following files are created by default:
   - six category files "A"-"E" and "O" with financial mutations
   - "alternatievenamen": the Dutch category names to those letters
   - "header": account details and account related interface options
@@ -95,11 +99,14 @@ The customizable starting balance "0.0" is in "A" on date "11111111".
 
 +-----"""
 info1IT = """
-Il nome di ogni cartella del conto contiene un numero di conto ed un
-anno. Questa cartella è destinata ad elementi di un anno solare,
-sebbene l'utente possa decidere diversamente e continuare ad aggiun-
-gere elementi nella stessa cartella. In questa cartella del conto
-vengono creati i seguenti file per impostazione predefinita:
+Ogni nome della cartella del conto consiste in un numero di conto ed
+un anno. Nella configurazione, una cartella contiene un anno di
+calendario, anche se è possibile scrittura illimitata; questo può
+essere liberamente determinato dall'utente. La cartella principale
+contiene il programma, le cartelle dell'account ed il file
+"lastselected" con il nome dell'ultima cartella di account utilizzata.
+In questa cartella del conto vengono creati i seguenti file per
+impostazione predefinita:
   - sei file di categoria "A"-"E" e "O" con mutazioni finanziarie
   - "alternatievenamen": i nomi delle categorie (NL) a queste lettere
   - "header": dettagli del conto ed opzioni dell'interfaccia relative
