@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.56"
+bouw = "2.57"
 plaats = "Pedara"
-hardedatum = "20230624"
+hardedatum = "20230904"
 
 versie = """
 Versie: %s
@@ -2177,6 +2177,10 @@ while mimo == "Y":
                                     print([0.0], file = f, end = "")
                                 inhoudvancategorie = [0.0]
                         alternatievenaam = alternatievenamenlijst[categorie]
+                        if Taal == "EN":
+                            alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                        elif Taal == "IT":
+                            alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                         print(alternatievenaam)
                         col = catcol[categorie]
                         if Taal == "EN":
@@ -2464,6 +2468,7 @@ while mimo == "Y":
                         pass
                     print()
         except(Exception) as error:
+            #print(error)
             pass
         print()
         print(toplijn)
