@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.57"
+bouw = "2.58"
 plaats = "Pedara"
-hardedatum = "20230904"
+hardedatum = "20230924"
 
 versie = """
 Versie: %s
@@ -665,7 +665,10 @@ def doei():
 ##### Eerst moet je een rekening selecteren of aanmaken #####
 
 print()
-rekeningenlijst = rknngnlst()
+try:
+    rekeningenlijst = rknngnlst()
+except:
+    rekeningenlijst = []
 if len(rekeningenlijst) == 0:
     nieuwetaal = input("Choose your language\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
     print(ResetAll, end = "")
