@@ -3,28 +3,28 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.58"
+bouw = "2.59"
 plaats = "Pedara"
-hardedatum = "20230924"
+hardedatum = "20230925"
 
 versie = """
 Versie: %s
 Auteur: Maestraccio
-Contact: maestraccio@musician.org
+Contact: maestraccio (at) musician (dot) org
 %s %s
 
 +-----""" % (bouw,plaats,hardedatum)
 versieEN = """
 Version: %s
 Writer: Maestraccio
-Contact: maestraccio@musician.org
+Contact: maestraccio (at) musician (dot) org
 %s %s
 
 +-----""" % (bouw,plaats,hardedatum)
 versieIT = """
 Versione: %s
 Scrittore: Maestraccio
-Recapiti: maestraccio@musician.org
+Recapiti: maestraccio (at) musician (dot) org
 %s %s
 
 +-----""" % (bouw,plaats,hardedatum)
@@ -433,7 +433,7 @@ def updatekleur():
         catcol = {"A":Rood,"B":Groen,"C":Geel,"D":Blauw,"E":Magenta,"F":Cyaan,"G":LichtGrijs,"H":DonkerGrijs,"I":LichtRood,"J":LichtGroen,"K":LichtGeel,"L":LichtBlauw,"M":LichtMagenta,"N":LichtCyaan,"O":Wit}
     elif header["Kleur"] == "Regenboog":
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":"\033[31m","Groen":"\033[32m","Geel":"\033[33m","Blauw":"\033[34m","Magenta":"\033[35m","Cyaan":"\033[36m","LichtGrijs":"\033[37m","DonkerGrijs":"\033[90m","LichtRood":"\033[91m","LichtGroen":"\033[92m","LichtGeel":"\033[93m","LichtBlauw":"\033[94m","LichtMagenta":"\033[95m","LichtCyaan":"\033[96m","Wit":"\033[97m","colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
-        catcol = {"A":AchtergrondRood+Groen,"B":AchtergrondGeel+Blauw,"C":AchtergrondLichtGeel+Magenta,"D":AchtergrondGroen+Rood,"E":AchtergrondBlauw+Geel,"F":AchtergrondMagenta+LichtGeel,"G":AchtergrondRood+Groen,"H":AchtergrondGeel+Blauw,"I":AchtergrondLichtGeel+Magenta,"J":AchtergrondGroen+Rood,"K":AchtergrondBlauw+Geel,"L":AchtergrondMagenta+LichtGeel,"M":AchtergrondLichtGroen+LichtRood,"N":AchtergrondLichtRood+LichtGroen,"O":AchtergrondMagenta+LichtGeel}
+        catcol = {"A":AchtergrondRood+LichtGroen,"B":AchtergrondGeel+LichtBlauw,"C":AchtergrondLichtGeel+Blauw,"D":AchtergrondGroen+LichtRood,"E":AchtergrondBlauw+LichtGeel,"F":AchtergrondMagenta+LichtCyaan,"G":AchtergrondRood+LichtGroen,"H":AchtergrondGeel+LichtBlauw,"I":AchtergrondLichtGeel+Blauw,"J":AchtergrondGroen+LichtRood,"K":AchtergrondBlauw+LichtGeel,"L":AchtergrondMagenta+LichtCyaan,"M":AchtergrondLichtGroen+Rood,"N":AchtergrondLichtRood+Groen,"O":AchtergrondMagenta+LichtCyaan}
     else:
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":ResetAll,"Groen":ResetAll,"Geel":ResetAll,"Blauw":ResetAll,"Magenta":ResetAll,"Cyaan":ResetAll,"LichtGrijs":ResetAll,"DonkerGrijs":ResetAll,"LichtRood":ResetAll,"LichtGroen":ResetAll,"LichtGeel":ResetAll,"LichtBlauw":ResetAll,"LichtMagenta":ResetAll,"LichtCyaan":ResetAll,"Wit":ResetAll,"colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
         catcol = {"A":"\033[31m","B":"\033[32m","C":"\033[33m","D":"\033[34m","E":"\033[35m","F":"\033[36m","G":"\033[37m","H":"\033[90m","I":"\033[91m","J":"\033[92m","K":"\033[93m","L":"\033[94m","M":"\033[95m","N":"\033[96m","O":"\033[97m"}
