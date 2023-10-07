@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.00"
+bouw = "3.10"
 plaats = "Pedara"
 hardedatum = "20231007"
 
@@ -162,7 +162,8 @@ De laatstgebruikte rekening wordt opnieuw geopend met ""+"Enter"
         7 Markering Laag >< Hoog (Laag standaard omkering van Hoog)
         8 Kleur (standaard = "Categorie")
         9 Datumformaat (standaard = "JJJJMMDD")
-        A: Print maandoverzicht naar bestand (standaard "Nee")
+       10: Print maandoverzicht naar bestand (standaard "Nee")
+       11: Toon totaalsaldo op startscherm (standaard "Ja")
     3 Toon of verberg rekening
     4 Wissel van zichtbare rekening
     5 Nieuwe rekening toevoegen
@@ -215,7 +216,8 @@ The last used account is reopened with ""+"Enter"
         7 Marking Lower >< Upper (by default one inversion of other)
         8 Colour (default = "Category")
         9 Date formatting (default = "YYYYMMDD")
-        A: Print month overview to file (default "No")
+       10: Print month overview to file (default "No")
+       11: Show total amount on start screen (default "Yes")
     3 Show or hide account
     4 Switch visible account (!)
     5 Add new account
@@ -268,7 +270,8 @@ L'ultimo usato conto si riapre con ""+"Enter"
         7 Indicazione Inf. >< Sup. (Inf. predefinito inverso di Sup.)
         8 Colore (predefinito = "Categoria")
         9 Formato data (predefinito "AAAAMMGG")
-        A: Stampa riepilogo mensile in file (predefinito "No") 
+       10: Stampa riepilogo mensile in file (predefinito "No") 
+       11: Mostra totale sullo schermo iniziale (predefinito "Sì")
     3 Mostrare o nascondere conto
     4 Passare ad un altro conto visibile
     5 Aggiungere un nuovo conto
@@ -390,6 +393,7 @@ for i in logo:
 forn = "{0:>.2f}".format
 fornum = "{0:>8.2f}".format
 for3 = "{:3}".format
+for4 = "{:4}".format
 forc5 = "{:^5}".format
 forr7 = "{:>7}".format
 for8 = "{:8}".format
@@ -461,6 +465,8 @@ def updatedat():
 def rknngnlst():
     os.chdir(basismap)
     rekeningenlijst = []
+    nimo = 0.0
+    valutalijst = []
     for d in os.listdir():
         if "@" in d:
             with open(os.path.join(d,"header"),"r") as h:
@@ -480,6 +486,8 @@ def rknngnlst():
                     pass
             if Toon == "Nee":
                 moni = 0
+            valutalijst.append(Valuta)
+            nimo += moni
             e = d+"@"+Valuta+"@"+fornum(moni)+"@"+beschrijving
             rekeningenlijst.append(e.split("@"))
     rekeningenlijst = sorted(rekeningenlijst)
@@ -490,6 +498,9 @@ def rknngnlst():
             mo = " "*9
         print("  "+colslecht+for3(str(reking))+ResetAll+colgoed+for20(i[0])+colonbepaald+i[1]+ResetAll+" "+LichtGeel+mo+ResetAll+" "+colslecht+i[4]+ResetAll)
         reking += 1
+    valutalijst = sorted(valutalijst)
+    if valutalijst[0] == valutalijst[-1]:             # Toon totaal alleen als alle valuta gelijk zijn
+        print("  "+for3("")+for20("")+for4("")+" "+LichtGeel+Valuta+fornum(nimo))
     if "lastselected" not in os.listdir():
         with open("lastselected","w") as l:
             print(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1], end = "", file = l)
