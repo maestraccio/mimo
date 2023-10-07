@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "2.59"
+bouw = "2.60"
 plaats = "Pedara"
-hardedatum = "20230925"
+hardedatum = "20231007"
 
 versie = """
 Versie: %s
@@ -1114,7 +1114,7 @@ while mimo == "Y":
                             print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                         except(Exception) as error:
                             startdatum = 11111112
-                            einddatum = 99999999
+                            einddatum = 99991231
                             print(col1+str(startdatum)+ResetAll+" - "+col1+str(einddatum)+ResetAll)
                             #print(error)
                         if startdatum == einddatum:
@@ -1549,7 +1549,7 @@ while mimo == "Y":
                         print(toplijn, file = p)
                     with open(os.path.join(os.path.expanduser("~"),iban+"."+str(startdatum)[:6]+".txt"),"a") as p:
                         startdatumeinddatum = "%s-%s" % (startdatum,einddatum)
-                        if startdatum == 11111111 and einddatum == 99999999:
+                        if startdatum == 11111111 and einddatum == 99991231:
                             if Taal == "EN":
                                 startdatumeinddatum = "all dates"
                             elif Taal == "IT":
@@ -1713,7 +1713,7 @@ while mimo == "Y":
 
                 print(toplijn)
                 startdatumeinddatum = "%s-%s" % (startdatum,einddatum)
-                if startdatum == 11111111 and einddatum == 99999999:
+                if startdatum == 11111111 and einddatum == 99991231:
                     if Taal == "EN":
                         startdatumeinddatum = "all dates"
                     elif Taal == "IT":
