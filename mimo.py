@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.10"
+bouw = "3.11"
 plaats = "Pedara"
 hardedatum = "20231007"
 
@@ -461,7 +461,6 @@ def updatedat():
         header = ast.literal_eval(h.read())
     return header["Datumformaat"]
 
-
 def rknngnlst():
     os.chdir(basismap)
     rekeningenlijst = []
@@ -763,7 +762,7 @@ if len(rekeningenlijst) == 0:
         print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
     os.mkdir(nieuwiban+"@"+nieuwjaar)
     os.chdir(nieuwiban+"@"+nieuwjaar)
-    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€','Nulregels':'Nee','Markering L><H':[-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD','Print':'Nee'}
+    nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€','Nulregels':'Nee','Markering L><H':[-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD','Print':'Nee','Toon':'Ja'}
     with open("header","w") as f:
         print(nieuwheader, file = f, end = "")
     nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
