@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.11"
+bouw = "3.12"
 plaats = "Pedara"
 hardedatum = "20231007"
 
@@ -499,7 +499,11 @@ def rknngnlst():
         reking += 1
     valutalijst = sorted(valutalijst)
     if valutalijst[0] == valutalijst[-1]:             # Toon totaal alleen als alle valuta gelijk zijn
-        print("  "+for3("")+for20("")+for4("")+" "+LichtGeel+Valuta+fornum(nimo))
+        if nimo <= -10000 or nimo >= 10000:
+            nimo = "± "+str(round(nimo/1000))+"~K"
+            print("  "+for3("")+for20("")+for4("")+" "+Geel+Valuta+forr8(nimo))
+        else:
+            print("  "+for3("")+for20("")+for4("")+" "+Geel+Valuta+fornum(nimo))
     if "lastselected" not in os.listdir():
         with open("lastselected","w") as l:
             print(rekeningenlijst[0][0]+"@"+rekeningenlijst[0][1], end = "", file = l)
@@ -1633,7 +1637,7 @@ while mimo == "Y":
                                 else:
                                     yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
                             if i[1] <= -10000 or i[1] >= 10000:
-                                print("|",for8(str(yymd)),"|",Valuta,forr8(str(int(i[1]))[:-3]+"~K"),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
+                                print("|",for8(str(yymd)),"|",Valuta,forr8("± "+str(round(i[1]/1000))+"~K"),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
                             else:
                                 print("|",for8(str(yymd)),"|",Valuta,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|",for3(i[4]),"|", file = p)
                         print(pluslijn, file = p)
@@ -1797,9 +1801,9 @@ while mimo == "Y":
                         else:
                             yymd = str(yymd)[6:]+str(yymd)[4:6].replace("01","jan").replace("02","feb").replace("03","mrt").replace("04","apr").replace("05","mei").replace("06","jun").replace("07","jul").replace("08","aug").replace("09","sep").replace("10","okt").replace("11","nov").replace("12","dec")+"'"+str(yymd)[2:4]
                     if i[1] <= -10000 or i[1] >= 10000 and len(str(i[4])) <= 3:
-                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8(str(int(i[1]))[:-3]+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8("± "+str(round(i[1]/1000))+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|",col+for3(i[4])+ResetAll,"|")
                     elif i[1] <= -10000 or i[1] >= 10000 and len(str(i[4])) > 3:
-                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8(str(int(i[1]))[:-3]+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|"+col+for3(i[4])+ResetAll,"|")
+                        print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,colc+forr8("± "+str(round(i[1]/1000))+"~K")+ResetAll,"|",for15(i[2]),"|",for18(i[3]),"|"+col+for3(i[4])+ResetAll,"|")
                     elif len(str(i[4])) > 3:
                         print("|",for8(str(yymd)),"|",colc+Valuta+ResetAll,fornum(i[1]),"|",for15(i[2]),"|",for18(i[3]),"|"+col+for3(i[4])+ResetAll,"|")
                     else:
