@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.12"
+bouw = "3.25"
 plaats = "Pedara"
-hardedatum = "20231007"
+hardedatum = "20231008"
 
 versie = """
 Versie: %s
@@ -35,10 +35,10 @@ onbeperkt door te schrijven; dit is door de gebruiker vrij te bepalen.
 In de hoofdmap bevindt zich het programma, de rekeningmappen en het
 bestand "lastselected" met naam van de laatstgebruikte rekeningmap.
 In de rekeningmap worden standaard de volgende bestanden aangemaakt:
-  - zes categoriebestanden "A"-"E" en "O" met de financiële mutaties
-  - "alternatievenamen": de Nederlandse categorienamen bij die letters
+  - "alternatievenamen": de Nederlandse categorienamen
   - "header": rekeninggegevens en rekeninggebonden weergaveopties
 
+Voor huishoudelijke rekeningen:
 6 categorieën (uitbreid- en aanpasbaar):
 A: saldo & inkomen: in principe positieve bedragen, budget negatief
 B: vaste lasten   : verwachte en terugkerende uitgaven
@@ -46,9 +46,24 @@ C: boodschappen   : dagelijkse variabele uitgaven
 D: reis & verblijf: reiskosten, brandstof, overnachtingen, enz.
 E: leningen       : bedragen die worden voorgeschoten en terugbetaald
 O: overig         : overige mutaties
+Het aanpasbare startsaldo "0.0" staat in "A" op datum "11111111".
+
+Voor zakelijke rekeningen:
+10 categorieën (uitbreid- en aanpasbaar):
+0: vaste act/pass. 
+1: vlotte act/pass 
+2: tussenrekening  
+3: voorraden       
+4: kosten          
+5: kostenplaatsen  
+6: fabricagerek.   
+7: inkoopwaarde    
+8: omzet           
+9: privé           
+Het aanpasbare startsaldo "0.0" staat in "1" op datum "11111111".
+
 Andere categorieën kunnen worden toegevoegd door een nieuwe mutatie 
 toe te voegen of te wijzigen en toe te wijzen aan de nieuwe categorie.
-Het aanpasbare startsaldo "0.0" staat in "A" op datum "11111111".
 
 "header" bevat 11 items waarvan alleen de eerste drie worden getoond:
  1: Beschrijving
@@ -71,20 +86,35 @@ decide otherwise and continue adding details to the same folder. The
 main folder contains the program file, the account folders, and the
 file "lastselected" with the name of the last selected account folder.
 In the account folder the following files are created by default:
-  - six category files "A"-"E" and "O" with financial mutations
-  - "alternatievenamen": the Dutch category names to those letters
+  - "alternatievenamen": the Dutch category names
   - "header": account details and account related interface options
 
-6 categories (expandable and adjustable, translated from Dutch names):
+For household accounts:
+6 categories (expandable, adjustable, translated from Dutch names):
 A: funds & income : intentionally positive amounts, budget negative
 B: fixed costs    : expected and repeated expenses
 C: groceries      : daily variable expenses
 D: travel & stay  : traveling costs, fuel, hotel stays, etc.
 E: loans          : expenses to be returned and vice versa
 O: other          : other mutations
+The customizable starting balance "0.0" is in "A" on date "11111111".
+
+For business accounts:
+10 categories (expandable, adjustable, translated from Dutch names):
+0: fixd ass/equity
+1: cash (equiv.) 
+2: intermediary  
+3: inventory     
+4: expenses      
+5: cost centers  
+6: manufact.acc. 
+7: cost of goods 
+8: sales         
+9: private       
+The customizable starting balance "0.0" is in "1" on date "11111111".
+
 Other categories can be added by adding a new mutation or making a
 copy and assigning it to a new to be made category.
-The customizable starting balance "0.0" is in "A" on date "11111111".
 
 "header" contains 11 items of which only the first three are shown:
  1: Description
@@ -109,11 +139,11 @@ contiene il programma, le cartelle dell'account ed il file
 "lastselected" con il nome dell'ultima cartella di account utilizzata.
 In questa cartella del conto vengono creati i seguenti file per
 impostazione predefinita:
-  - sei file di categoria "A"-"E" e "O" con mutazioni finanziarie
-  - "alternatievenamen": i nomi delle categorie (NL) a queste lettere
+  - "alternatievenamen": i nomi delle categorie in Olandese
   - "header": dettagli del conto ed opzioni dell'interfaccia relative
-        al conto
+    al conto
 
+Per conti domestici:
 6 categorie (espandibili e regolabili, nomi olandesi del file):
 A: saldo & reddito: importi intenzionalmente positivi, budget negativo
 B: costi fissi: spese previste e ripetute
@@ -121,10 +151,25 @@ C: spese: spese variabili giornaliere/alimentari
 D: viaggioalloggio: spese di viaggio, carburante, soggiorni, ecc.
 E: prestiti: spese da restituire e viceversa
 O: altro: atre mutazioni
+Il personalizzabile saldo iniziale "0.0" è in "A" su data "11111111".
+
+Per conti aziendali:
+10 categorie (espandibili e regolabili, nomi olandesi del file):
+0: attiv. fisse
+1: dispon. liquide
+2: conti intermedi
+3: magazzino
+4: costi
+5: centri di costo
+6: contiproduzione
+7: costi vendute
+8: ricavi
+9: privato
+Il personalizzabile saldo iniziale "0.0" è in "1" su data "11111111".
+
 È possibile aggiungere altre categorie aggiungendo una nuova muta-
 zione o effettuando a copiarla ed assegnarla ad una nuova categoria
 da fare.
-Il personalizzabile saldo iniziale "0.0" è in "A" su data "11111111".
 
 "header" contiene 11 elementi di cui vengono mostrati solo i primi
 tre:
@@ -182,7 +227,7 @@ De laatstgebruikte rekening wordt opnieuw geopend met ""+"Enter"
     4 Betreft
     5 Categorie
 4 Mutatie verwijderen
-5 Spaarpotten
+5 Spaarpotten (alleen huishoudelijk)
     1 Bekijk spaarpotten
     2 Wijzig spaarpot
         1 Naam
@@ -236,7 +281,7 @@ The last used account is reopened with ""+"Enter"
     4 About
     5 Category
 4 Remove mutation
-5 Piggy banks
+5 Piggy banks (only household)
     1 View piggy banks
     2 Modify piggy bank
         1 Name
@@ -290,7 +335,7 @@ L'ultimo usato conto si riapre con ""+"Enter"
     4 Riguarda
     5 Categoria
 4 Rimuovere mutazione
-5 Salvadanai
+5 Salvadanai (solo domestico)
     1 Vedere salvadanai
     2 Modificare salvadanaio
         1 Nome
@@ -418,7 +463,7 @@ forr37 = "{:>37}".format
 forc70 = "{:^70}".format
 toplijn = "+"+"-"*10+"-"+"-"*12+"-"+"-"*17+"-"+"-"*20+"-"+"-"*5+"+"
 pluslijn = "+"+"-"*10+"+"+"-"*12+"+"+"-"*17+"+"+"-"*20+"+"+"-"*5+"+"
-lijst = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
+lijst = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 afsluitlijst = ["X","Q",":Q"]
 jalijst = ["J","S","Y",":W"]
 neelijst = ["N"]
@@ -434,16 +479,16 @@ def updatekleur():
         header = ast.literal_eval(h.read())
     if header["Kleur"] == "Alle":
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":"\033[31m","Groen":"\033[32m","Geel":"\033[33m","Blauw":"\033[34m","Magenta":"\033[35m","Cyaan":"\033[36m","LichtGrijs":"\033[37m","DonkerGrijs":"\033[90m","LichtRood":"\033[91m","LichtGroen":"\033[92m","LichtGeel":"\033[93m","LichtBlauw":"\033[94m","LichtMagenta":"\033[95m","LichtCyaan":"\033[96m","Wit":"\033[97m","colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
-        catcol = {"A":Rood,"B":Groen,"C":Geel,"D":Blauw,"E":Magenta,"F":Cyaan,"G":LichtGrijs,"H":DonkerGrijs,"I":LichtRood,"J":LichtGroen,"K":LichtGeel,"L":LichtBlauw,"M":LichtMagenta,"N":LichtCyaan,"O":Wit}
+        catcol = {"0":Rood,"1":Groen,"2":Geel,"3":Blauw,"4":Magenta,"5":Cyaan,"6":LichtGrijs,"7":DonkerGrijs,"8":LichtRood,"9":LichtGroen,"A":Rood,"B":Groen,"C":Geel,"D":Blauw,"E":Magenta,"F":Cyaan,"G":LichtGrijs,"H":DonkerGrijs,"I":LichtRood,"J":LichtGroen,"K":LichtGeel,"L":LichtBlauw,"M":LichtMagenta,"N":LichtCyaan,"O":Wit}
     elif header["Kleur"] == "Mono":
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":ResetAll,"Groen":ResetAll,"Geel":ResetAll,"Blauw":ResetAll,"Magenta":ResetAll,"Cyaan":ResetAll,"LichtGrijs":ResetAll,"DonkerGrijs":ResetAll,"LichtRood":ResetAll,"LichtGroen":ResetAll,"LichtGeel":ResetAll,"LichtBlauw":ResetAll,"LichtMagenta":ResetAll,"LichtCyaan":ResetAll,"Wit":ResetAll,"colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
-        catcol = {"A":Rood,"B":Groen,"C":Geel,"D":Blauw,"E":Magenta,"F":Cyaan,"G":LichtGrijs,"H":DonkerGrijs,"I":LichtRood,"J":LichtGroen,"K":LichtGeel,"L":LichtBlauw,"M":LichtMagenta,"N":LichtCyaan,"O":Wit}
+        catcol = {"0":Rood,"1":Groen,"2":Geel,"3":Blauw,"4":Magenta,"5":Cyaan,"6":LichtGrijs,"7":DonkerGrijs,"8":LichtRood,"9":LichtGroen,"A":Rood,"B":Groen,"C":Geel,"D":Blauw,"E":Magenta,"F":Cyaan,"G":LichtGrijs,"H":DonkerGrijs,"I":LichtRood,"J":LichtGroen,"K":LichtGeel,"L":LichtBlauw,"M":LichtMagenta,"N":LichtCyaan,"O":Wit}
     elif header["Kleur"] == "Regenboog":
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":"\033[31m","Groen":"\033[32m","Geel":"\033[33m","Blauw":"\033[34m","Magenta":"\033[35m","Cyaan":"\033[36m","LichtGrijs":"\033[37m","DonkerGrijs":"\033[90m","LichtRood":"\033[91m","LichtGroen":"\033[92m","LichtGeel":"\033[93m","LichtBlauw":"\033[94m","LichtMagenta":"\033[95m","LichtCyaan":"\033[96m","Wit":"\033[97m","colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
-        catcol = {"A":AchtergrondRood+LichtGroen,"B":AchtergrondGeel+LichtBlauw,"C":AchtergrondLichtGeel+Blauw,"D":AchtergrondGroen+LichtRood,"E":AchtergrondBlauw+LichtGeel,"F":AchtergrondMagenta+LichtCyaan,"G":AchtergrondRood+LichtGroen,"H":AchtergrondGeel+LichtBlauw,"I":AchtergrondLichtGeel+Blauw,"J":AchtergrondGroen+LichtRood,"K":AchtergrondBlauw+LichtGeel,"L":AchtergrondMagenta+LichtCyaan,"M":AchtergrondLichtGroen+Rood,"N":AchtergrondLichtRood+Groen,"O":AchtergrondMagenta+LichtCyaan}
+        catcol = {"0":AchtergrondRood+LichtGroen,"1":AchtergrondGeel+LichtBlauw,"2":AchtergrondLichtGeel+Blauw,"3":AchtergrondGroen+LichtRood,"4":AchtergrondBlauw+LichtGeel,"5":AchtergrondMagenta+LichtCyaan,"6":AchtergrondRood+LichtGroen,"7":AchtergrondGeel+LichtBlauw,"8":AchtergrondLichtGeel+Blauw,"9":AchtergrondGroen+LichtRood,"A":AchtergrondRood+LichtGroen,"B":AchtergrondGeel+LichtBlauw,"C":AchtergrondLichtGeel+Blauw,"D":AchtergrondGroen+LichtRood,"E":AchtergrondBlauw+LichtGeel,"F":AchtergrondMagenta+LichtCyaan,"G":AchtergrondRood+LichtGroen,"H":AchtergrondGeel+LichtBlauw,"I":AchtergrondLichtGeel+Blauw,"J":AchtergrondGroen+LichtRood,"K":AchtergrondBlauw+LichtGeel,"L":AchtergrondMagenta+LichtCyaan,"M":AchtergrondLichtGroen+Rood,"N":AchtergrondLichtRood+Groen,"O":AchtergrondMagenta+LichtCyaan}
     else:
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":ResetAll,"Groen":ResetAll,"Geel":ResetAll,"Blauw":ResetAll,"Magenta":ResetAll,"Cyaan":ResetAll,"LichtGrijs":ResetAll,"DonkerGrijs":ResetAll,"LichtRood":ResetAll,"LichtGroen":ResetAll,"LichtGeel":ResetAll,"LichtBlauw":ResetAll,"LichtMagenta":ResetAll,"LichtCyaan":ResetAll,"Wit":ResetAll,"colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
-        catcol = {"A":"\033[31m","B":"\033[32m","C":"\033[33m","D":"\033[34m","E":"\033[35m","F":"\033[36m","G":"\033[37m","H":"\033[90m","I":"\033[91m","J":"\033[92m","K":"\033[93m","L":"\033[94m","M":"\033[95m","N":"\033[96m","O":"\033[97m"}
+        catcol = {"0":"\033[31m","1":"\033[32m","2":"\033[33m","3":"\033[34m","4":"\033[35m","5":"\033[36m","6":"\033[37m","7":"\033[90m","8":"\033[91m","9":"\033[92m","A":"\033[31m","B":"\033[32m","C":"\033[33m","D":"\033[34m","E":"\033[35m","F":"\033[36m","G":"\033[37m","H":"\033[90m","I":"\033[91m","J":"\033[92m","K":"\033[93m","L":"\033[94m","M":"\033[95m","N":"\033[96m","O":"\033[97m"}
     return kleuren,catcol
 
 def toontotaal():
@@ -464,8 +509,8 @@ def updatedat():
 def rknngnlst():
     os.chdir(basismap)
     rekeningenlijst = []
-    nimo = 0.0
     valutalijst = []
+    nimo = 0.0
     for d in os.listdir():
         if "@" in d:
             with open(os.path.join(d,"header"),"r") as h:
@@ -588,13 +633,12 @@ def printheader():
         regel += 1
         if regel == 3:
             break
-
 def alt():
     alternatievenamenlijst = {}
-    try:
-        with open("alternatievenamen","r") as f:
-            alternatievenamen = ast.literal_eval(f.read())
-            for k,v in sorted(alternatievenamen.items()):
+    with open("alternatievenamen","r") as f:
+        alternatievenamen = ast.literal_eval(f.read())
+        for k,v in sorted(alternatievenamen.items()):
+            try:
                 with open(k,"r") as g:
                     lengte = ast.literal_eval(g.read())
                     tot = 0
@@ -604,14 +648,14 @@ def alt():
                     budget = lengte[0]
                     col = catcol[k]
                     if Taal == "EN":
-                        v = v.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                        v = v.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                     elif Taal == "IT":
-                        v = v.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                        v = v.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                     print(col+forc70(forl20(k+": "+forc15(v))+forr20(Valuta+fornum(tot)+"/"+fornum(budget)))+ResetAll)
                     alternatievenamenlijst[k] = v
-    except(Exception) as error:
-        #print(error)
-        pass
+            except(Exception) as error:
+                #print(error)
+                pass
 
 def nieuwerekening():
     Taal = updatetaal()
@@ -633,6 +677,15 @@ def nieuwerekening():
             Taal = "IT"
         else:
             Taal = "NL"
+        if Taal == "EN":
+            huza = input("Is this a household or a business account?\n >1 household\n  2 business\n  : ")
+        elif Taal == "IT":
+            huza = input("Si tratta di un conto domestico o aziendale?\n >1 domestico\n  2 aziendale\n  : ")
+        else:
+            huza = input("Betreft dit een huishoudelijke of een zakelijke rekening?\n >1 huishoudelijk\n  2 zakelijk\n  : ")
+        print(ResetAll, end = "")
+        if huza.upper() in afsluitlijst:
+            break
         if Taal == "EN":
             nieuwiban = input("Enter the %saccount number%s (%sIBAN%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
         elif Taal == "IT":
@@ -667,22 +720,36 @@ def nieuwerekening():
             print("Nieuwe rekening: %s%s@%s%s" % (colgoed,nieuwiban,nieuwjaar,ResetAll))
         os.mkdir(nieuwiban+"@"+nieuwjaar)
         os.chdir(nieuwiban+"@"+nieuwjaar)
-        nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Markering L><H': [-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD','Print':'Nee'}
+        nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€', 'Nulregels':'Nee','Markering L><H': [-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD','Print':'Nee','Toon':'Ja'}
         with open("header","w") as f:
             print(nieuwheader, file = f, end = "")
-        nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
+        nieuwalternatievenamenlijst = {'0':'vaste act/pass.','1':'vlotte act/pass','2':'tussenrekening','3':'voorraden','4':'kosten','5':'kostenplaatsen','6':'fabricagerek.','7':'inkoopwaarde','8':'omzet','9':'privé','A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
         with open("alternatievenamen","w") as g:
             print(nieuwalternatievenamenlijst, file = g, end = "")
-        for k,v in nieuwalternatievenamenlijst.items():
-            with open(k,"w") as h:
-                print([0.0], file = h, end = "")
-        with open("A","w") as w:
-            if Taal == "EN":
-                print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
-            elif Taal == "IT":
-                print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
-            else:
-                print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+        if huza == "2":
+            for k in lijst:
+                if k in ["0","1","2","3","4","5","6","7","8","9"]:
+                    with open(k,"w") as h:
+                        print([0.0], file = h, end = "")
+            with open("1","w") as w:
+                if Taal == "EN":
+                    print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
+                elif Taal == "IT":
+                    print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
+                else:
+                    print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+        else:
+            for k in lijst:
+                if k in ["A","B","C","D","E","O"]:
+                    with open(k,"w") as h:
+                        print([0.0], file = h, end = "")
+            with open("A","w") as w:
+                if Taal == "EN":
+                    print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
+                elif Taal == "IT":
+                    print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
+                else:
+                    print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
         nieuw = "N"
     os.chdir(basismap)
 
@@ -709,7 +776,7 @@ try:
 except:
     rekeningenlijst = []
 if len(rekeningenlijst) == 0:
-    nieuwetaal = input("Choose your language\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
+    nieuwetaal = input("Kies uw taal | Choose your language | Scegli la tua lingua\n >1 NL\n  2 EN\n  3 IT\n  : %s" % (colgoed))
     print(ResetAll, end = "")
     if nieuwetaal.upper() in afsluitlijst:
         doei()
@@ -734,6 +801,15 @@ if len(rekeningenlijst) == 0:
         print(info2)
         input(toplijn)
         print()
+    if Taal == "EN":
+        huza = input("Is this a household or a business account?\n >1 household\n  2 business\n  : ")
+    elif Taal == "IT":
+        huza = input("Si tratta di un conto domestico o aziendale?\n >1 domestico\n  2 aziendale\n  : ")
+    else:
+        huza = input("Betreft dit een huishoudelijke of een zakelijke rekening?\n >1 huishoudelijk\n  2 zakelijk\n  : ")
+    print(ResetAll, end = "")
+    if huza.upper() in afsluitlijst:
+        doei()
     if Taal == "EN":
         nieuwiban = input("Enter the %saccount number%s (%sIBAN%s)\n  : %s" % (LichtGroen,ResetAll,LichtGroen,ResetAll,LichtGroen)).upper()
     elif Taal == "IT":
@@ -769,14 +845,33 @@ if len(rekeningenlijst) == 0:
     nieuwheader = {'Beschrijving':'','Rekeninghouder':'','Plaats':'','Taal':Taal,'Valuta':'€','Nulregels':'Nee','Markering L><H':[-100,100],'Kleur':'Categorie','Datumformaat':'YYYYMMDD','Print':'Nee','Toon':'Ja'}
     with open("header","w") as f:
         print(nieuwheader, file = f, end = "")
-    nieuwalternatievenamenlijst = {'A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
+    nieuwalternatievenamenlijst = {'0':'vaste act/pass.','1':'vlotte act/pass','2':'tussenrekening','3':'voorraden','4':'kosten','5':'kostenplaatsen','6':'fabricagerek.','7':'inkoopwaarde','8':'omzet','9':'privé','A':'saldo & inkomen','B':'vaste lasten','C':'boodschappen','D':'reis & verblijf','E':'leningen','O':'overig'}
     with open("alternatievenamen","w") as g:
         print(nieuwalternatievenamenlijst, file = g, end = "")
-    for k,v in nieuwalternatievenamenlijst.items():
-        with open(k,"w") as h:
-            print([0.0], file = h, end = "")
-    with open("A","w") as w:
-        print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+    if huza == "2":
+        for k in lijst:
+            if k in ["0","1","2","3","4","5","6","7","8","9"]:
+                with open(k,"w") as h:
+                    print([0.0], file = h, end = "")
+        with open("1","w") as w:
+            if Taal == "EN":
+                print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
+            elif Taal == "IT":
+                print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
+            else:
+                print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
+    else:
+        for k in lijst:
+            if k in ["A","B","C","D","E","O"]:
+                with open(k,"w") as h:
+                    print([0.0], file = h, end = "")
+        with open("A","w") as w:
+            if Taal == "EN":
+                print([0.0, [11111111, 0.0, "Balance", "StartingBalance"]], file = w, end = "")
+            elif Taal == "IT":
+                print([0.0, [11111111, 0.0, "Saldo", "SaldoIniziale"]], file = w, end = "")
+            else:
+                print([0.0, [11111111, 0.0, "Saldo", "Startsaldo"]], file = w, end = "")
     rekeningenlijst = [[nieuwiban,nieuwjaar]]
 try:
     if len(rekeningenlijst) == 1:
@@ -962,11 +1057,11 @@ while mimo == "Y":
     snelkeuze0 = "Y"
     keuze1 = "Y"
     if Taal == "EN":
-        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
+        keuze1 = input("Make a choice\n%s  0 Manage account options%s\n%s >1 View mutations%s\n%s  2 Add mutation%s\n%s  3 Modify mutation%s\n%s  4 Remove mutation%s\n%s  5 Piggy banks (only household)%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     elif Taal == "IT":
-        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n%s  5 Salvadanai%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
+        keuze1 = input("Scegli\n%s  0 Gestire opzioni del conto%s\n%s >1 Vedere mutazioni%s\n%s  2 Aggiungere mutazione%s\n%s  3 Modificare mutazione%s\n%s  4 Cancellare mutazione%s\n%s  5 Salvadanai (solo domestico)%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     else:
-        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n%s  5 Spaarpotten%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
+        keuze1 = input("Maak een keuze\n%s  0 Beheer rekeningopties%s\n%s >1 Mutaties bekijken%s\n%s  2 Mutatie toevoegen%s\n%s  3 Mutatie wijzigen%s\n%s  4 Mutatie verwijderen%s\n%s  5 Spaarpotten (alleen huishoudelijk)%s\n  : " % (LichtMagenta,ResetAll,LichtGeel,ResetAll,LichtGroen,ResetAll,LichtCyaan,ResetAll,LichtRood,ResetAll,col5,ResetAll))
     if keuze1.upper() in afsluitlijst:
         doei()
     elif len(keuze1) == 2 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[1] in afsluitlijst:
@@ -1994,10 +2089,10 @@ while mimo == "Y":
                             for k in sortcat1:
                                 inhoudvancategorie.append(k)
                             if Taal == "EN":
-                                alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col2,i[0],ResetAll,for15("Amount: "),col2,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col2,i[2],ResetAll,for15("About: "),col2,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                             elif Taal == "IT":
-                                alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col2,i[0],ResetAll,for15("Somma: "),col2,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col2,i[2],ResetAll,for15("Riguarda: "),col2,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                             else:
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col2,i[0],ResetAll,for15("Bedrag: "),col2,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col2,i[2],ResetAll,for15("Betreft: "),col2,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -2066,10 +2161,10 @@ while mimo == "Y":
                             for k in sortcat1:
                                 inhoudvancategoriev.append(k)
                             if Taal == "EN":
-                                alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col2,i[0],ResetAll,for15("Amount: "),col2,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col2,i[2],ResetAll,for15("About: "),col2,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                             elif Taal == "IT":
-                                alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col2,i[0],ResetAll,for15("Somma: "),col2,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col2,i[2],ResetAll,for15("Riguarda: "),col2,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                             else:
                                 print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col2,i[0],ResetAll,for15("Bedrag: "),col2,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col2,i[2],ResetAll,for15("Betreft: "),col2,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -2221,9 +2316,9 @@ while mimo == "Y":
                                 inhoudvancategorie = [0.0]
                         alternatievenaam = alternatievenamenlijst[categorie]
                         if Taal == "EN":
-                            alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                            alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                         elif Taal == "IT":
-                            alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                            alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                         print(alternatievenaam)
                         col = catcol[categorie]
                         if Taal == "EN":
@@ -2291,10 +2386,10 @@ while mimo == "Y":
                                     snelkeuze1 = "Y"
                                 else:
                                     if Taal == "EN":
-                                        alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                        alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                         wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                                     elif Taal == "IT":
-                                        alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                        alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                         wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                                     else:
                                         wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -2491,10 +2586,10 @@ while mimo == "Y":
                                                 else:
                                                     print("%sHet ID is gewijzigd, genereer nieuwe %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
                                                 if Taal == "EN":
-                                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                                    alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
                                                 elif Taal == "IT":
-                                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                                    alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
                                                 else:
                                                     print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
@@ -2544,10 +2639,10 @@ while mimo == "Y":
                         for i in sel:
                             if i[4] == teverwijderen[0].upper()+teverwijderen[1:]:
                                 if Taal == "EN":
-                                    alternatievenaam= alternatievenaam.replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                    alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nConfirm\n  : %s" % (for15("Date: "),col4+str(i[0])+ResetAll,for15("Amount: "),col4+Valuta,str(i[1])+ResetAll,for15("Other party: "),col4+i[2]+ResetAll,for15("About: "),col4+i[3]+ResetAll,for15("Category: "),col4+alternatievenaam,ResetAll))
                                 elif Taal == "IT":
-                                    alternatievenaam = alternatievenaam.replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                    alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nConferma\n  : %s" % (for15("Data: "),col4+str(i[0])+ResetAll,for15("Somma: "),col4+Valuta,str(i[1])+ResetAll,for15("Controparte: "),col4+i[2]+ResetAll,for15("Riguarda: "),col4+i[3]+ResetAll,for15("Categoria: "),col4+alternatievenaam,ResetAll))
                                 else:
                                     wat = input("  %s %s\n  %s %s %s\n  %s %s\n  %s %s\n  %s %s\nBevestig\n  : %s" % (for15("Datum: "),col4+str(i[0])+ResetAll,for15("Bedrag: "),col4+Valuta,str(i[1])+ResetAll,for15("Wederpartij: "),col4+i[2]+ResetAll,for15("Betreft: "),col4+i[3]+ResetAll,for15("Categorie: "),col4+alternatievenaam,ResetAll))
@@ -2592,358 +2687,361 @@ while mimo == "Y":
         print()
 
     elif snelkeuze0 == "5": # SPAARPOTTEN
-        print()
-        spaarpotten = "Y"
-        while spaarpotten == "Y":
-            spaartotaal = 0
-            with open("A","r") as a:
-                Uitgaven = ast.literal_eval(a.read())[0]
-            try:
-                with open("spaarpotten","r") as s:
-                    spaar = ast.literal_eval(s.read())
-                    spaartel = 0
-                    for i,j in spaar.items():
-                        spaartel += 1
-                        spaartotaal += j
-                    if Taal == "EN":
-                        print("    Total in piggy banks: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
-                        print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                        print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    A buffer of %s on payday is recommended" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    elif Taal == "IT":
-                        print("    Totale in salvadanai: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
-                        print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                        print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    Un buffer di %s su giorno di paga è raccomandato" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    else:
-                        print("    Totaal in spaarpotten: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
-                        print("    %s is gereserveerd voor maandelijkse uitgaven" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                        print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
-                        print("    Een buffer van %s op betaaldag wordt aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
-                    print()
-            except(Exception) as error:
-                if Taal == "EN":
-                    print("There are no piggy banks (yet)")
-                    print()
-                elif Taal == "IT":
-                    print("Non ci sono (ancora) salvadanai")
-                    print()
-                else:
-                    print("Er zijn (nog) geen spaarpotten")
-                    print()
-            if moni-Uitgaven < spaartotaal:
-                col5 = Rood
-            if snelkeuze1 != "Y":
-                keuze2 = snelkeuze1
-                snelkeuze1 = "Y"
-            else:
-                if Taal == "EN":
-                    keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
-                elif Taal == "IT":
-                    keuze2 = input("%s Fai una scelta%s\n  >1 %sVedere salvadanai%s\n   2 %sModificare salvadanaio%s\n   3 %sAggiungere salvadanaio%s\n   4 %sEliminare salvadanaio%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
-                else:
-                    keuze2 = input("%s Maak een keuze%s\n  >1 %sBekijk spaarpotten%s\n   2 %sWijzig spaarpot%s\n   3 %sVoeg nieuwe spaarpot toe%s\n   4 %sVerwijder spaarpot%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
-            if keuze2.upper() in afsluitlijst:
-                break
-            elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
-                break
-            elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
-                doei()
-            elif keuze2 == "2":
-                potwijzig = "Y"
-                while potwijzig == "Y":
-                    if Taal == "EN":
-                        print("  Which %spiggy bank%s do you want to %smodify%s" % (col5,ResetAll,LichtCyaan,ResetAll))
-                    elif Taal == "IT":
-                        print("  Quale %ssalvadanaio%s vuoi %smodificare%s" % (col5,ResetAll,LichtCyaan,ResetAll))
-                    else:
-                        print("  Welke %sspaarpot%s wil je %swijzigen%s" % (col5,ResetAll,LichtCyaan,ResetAll))
-                    spaartel = 0
-                    try:
-                        with open("spaarpotten","r") as s:
-                            spaar = ast.literal_eval(s.read())
-                            spaarlijst = []
-                            for i,j in spaar.items():
-                                spaartel += 1
-                                if Taal == "EN":
-                                    print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                elif Taal == "IT":
-                                    print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                else:
-                                    print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                spaarlijst.append(i)
-                        keuze3 = input("    : ")
-                        if keuze3.upper() in afsluitlijst:
-                            break
-                        elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
-                            spaarpotten = "N"
-                            break
-                        elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
-                            doei()
-                        else:
-                            try:
-                                keuze3 = int(keuze3)-1
-                                if keuze3 in range(spaartel):
-                                    if Taal == "EN":
-                                        keuze4 = input("   What do you want to modify\n     1 Name   %s\n    >2 Value %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
-                                    elif Taal == "IT":
-                                        keuze4 = input("   Cosa vuoi modificare\n     1 Nome   %s\n    >2 Valore %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
-                                    else:
-                                        keuze4 = input("   Wat wil je wijzigen\n     1 Naam   %s\n    >2 Waarde %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
-                                    if keuze4.upper() in afsluitlijst:
-                                        break
-                                    elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
-                                        spaarpotten = "N"
-                                        break
-                                    elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
-                                        doei()
-                                    elif keuze4 == "1":
-                                        if Taal == "EN":
-                                            nieuwekey = input("    Rename this piggy bank %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
-                                        elif Taal == "IT":
-                                            nieuwekey = input("    Rinomina questo salvadanaio %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
-                                        else:
-                                            nieuwekey = input("    Geef deze spaarpot %s een nieuwe naam\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
-                                        print(ResetAll, end = "")
-                                        if nieuwekey.upper() in afsluitlijst:
-                                            break
-                                        elif len(nieuwekey) == 2 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[1] in afsluitlijst:
-                                            spaarpotten = "N"
-                                            break
-                                        elif len(nieuwekey) == 3 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[2] in afsluitlijst:
-                                            doei()
-                                        spaar[nieuwekey] = spaar[spaarlijst[keuze3]]
-                                        del spaar[spaarlijst[keuze3]]
-                                        with open("spaarpotten","w") as s:
-                                            print(spaar, file = s, end = "")
-                                    else:
-                                        inspaarpotlijst = []
-                                        for i,j in spaar.items():
-                                            if i != spaarlijst[keuze3]:
-                                                inspaarpotlijst.append(j)
-                                        inspaarpot = 0
-                                        for i in inspaarpotlijst:
-                                            inspaarpot += i
-                                        beschikbaar = round(moni,2) + Uitgaven - inspaarpot
-                                        nieuwewaarde = "Y"
-                                        while nieuwewaarde == "Y":
-                                            if Taal == "EN":
-                                                nieuwevalue = input("    Enter a new value\n      : %s" % (col5))
-                                            elif Taal == "IT":
-                                                nieuwevalue = input("    Inserire un nuovo valore\n      : %s" % (col5))
-                                            else:
-                                                nieuwevalue = input("    Geef een nieuwe waarde op\n      : %s" % (col5))
-                                            print(ResetAll, end = "")
-                                            if nieuwevalue.upper() in afsluitlijst:
-                                                break
-                                            elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
-                                                spaarpotten = "N"
-                                                potwijzig = "N"
-                                                break
-                                            elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
-                                                doei()
-                                            try:
-                                                nieuwevalue = round(float(nieuwevalue),2)
-                                                if nieuwevalue > beschikbaar and nieuwevalue != 0:
-                                                    if Taal == "EN":
-                                                        print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
-                                                    elif Taal == "IT":
-                                                        print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
-                                                    else:
-                                                        print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
-                                                elif nieuwevalue < 0:
-                                                    if Taal == "EN":
-                                                        print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
-                                                    elif Taal == "IT":
-                                                        print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
-                                                    else:
-                                                        print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
-                                                else:
-                                                    spaar[spaarlijst[keuze3]] = nieuwevalue
-                                                    with open("spaarpotten","w") as s:
-                                                        print(spaar, file = s, end = "")
-                                                    if Taal == "EN":
-                                                        print("%s contains %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
-                                                    elif Taal == "IT":
-                                                        print("%s contiene %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
-                                                    else:
-                                                        print("%s bevat %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
-                                                    break
-                                            except:
-                                                if Taal == "EN":
-                                                    print("%sThat is not a valid value%s" % (colslecht,ResetAll))
-                                                elif Taal == "IT":
-                                                    print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
-                                                else:
-                                                    print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
-                                else:
-                                    if Taal == "EN":
-                                        print("That piggy bank doesn't exist (yet)")
-                                    elif Taal == "IT":
-                                        print("Questo salvadanaio non existe (ancora)")
-                                    else:
-                                        print("Die spaarpot bestaat (nog) niet")
-                            except(Exception) as error:
-                                print(error)
-                    except(Exception) as error:
-                        pass
-            elif keuze2 == "3":
-                potnieuw = "Y"
-                while potnieuw == "Y":
-                    try:
-                        with open("spaarpotten","r") as s:
-                            spaar = ast.literal_eval(s.read())
-                            spaarlijst = []
-                            for i,j in spaar.items():
-                                if Taal == "EN":
-                                    print("%s contains %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                elif Taal == "IT":
-                                    print("%s contiene %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                else:
-                                    print("%s bevat %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                spaarlijst.append(i)
-                    except:
-                        spaar = {}
-                        spaarlijst = []
-                    if Taal == "EN":
-                        nieuwespaarpot = input("  Enter the %sname%s of the new piggy bank\n    : %s" % (col5,ResetAll,col5))[:15]
-                        print(ResetAll, end = "")
-                    elif Taal == "IT":
-                        nieuwespaarpot = input("  Inserisci il %snome%s del nuovo salvadanaio\n    : %s" % (col5,ResetAll,col5))[:15]
-                        print(ResetAll, end = "")
-                    else:
-                        nieuwespaarpot = input("  Typ de %snaam%s van de nieuwe spaarpot\n    : %s" % (col5,ResetAll,col5))[:15]
-                        print(ResetAll, end = "")
-                    if nieuwespaarpot.upper() in afsluitlijst:
-                        break
-                    elif len(nieuwespaarpot) == 2 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[1] in afsluitlijst:
-                        spaarpotten = "N"
-                        break
-                    elif len(nieuwespaarpot) == 3 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[2] in afsluitlijst:
-                        doei()
-                    else:
-                        with open("A","r") as a:
-                            Uitgaven = ast.literal_eval(a.read())[0]
-                        inspaarpotlijst = []
-                        for i,j in spaar.items():
-                            inspaarpotlijst.append(j)
-                        inspaarpot = 0
-                        for i in inspaarpotlijst:
-                            inspaarpot += i
-                        beschikbaar = round(moni,2) + Uitgaven - inspaarpot
-                        nieuwewaarde = "Y"
-                        while nieuwewaarde == "Y":
-                            if Taal == "EN":
-                                nieuwevalue = input("  Enter a new value\n    : %s" % (col5))
-                            elif Taal == "IT":
-                                nieuwevalue = input("  Inserire un nuovo valore\n    : %s" % (col5))
-                            else:
-                                nieuwevalue = input("  Geef een nieuwe waarde op\n    : %s" % (col5))
-                            print(ResetAll, end = "")
-                            if nieuwevalue.upper() in afsluitlijst:
-                                break
-                            elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
-                                spaarpotten = "N"
-                                potnieuw = "N"
-                                break
-                            elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
-                                doei()
-                            try:
-                                nieuwevalue = round(float(nieuwevalue),2)
-                                if nieuwevalue > beschikbaar:
-                                    if Taal == "EN":
-                                        print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
-                                    elif Taal == "IT":
-                                        print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
-                                    else:
-                                        print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
-                                elif nieuwevalue < 0:
-                                    if Taal == "EN":
-                                        print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
-                                    elif Taal == "IT":
-                                        print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
-                                    else:
-                                        print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
-                                else:
-                                    spaar[nieuwespaarpot] = nieuwevalue
-                                    with open("spaarpotten","w") as s:
-                                        print(spaar, file = s, end = "")
-                                    if Taal == "EN":
-                                        print("%s contains %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
-                                    elif Taal == "IT":
-                                        print("%s contiene %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
-                                    else:
-                                        print("%s bevat %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
-                                    break
-                            except:
-                                if Taal == "EN":
-                                    print("%sThat is not a valid value%s" % (colslecht,ResetAll))
-                                elif Taal == "IT":
-                                    print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
-                                else:
-                                    print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
-            elif keuze2 == "4":
-                potverwijder = "Y"
-                while potverwijder == "Y":
-                    if Taal == "EN":
-                        print("  Which %spiggy bank%s do you want to %sremove%s" % (col5,ResetAll,colslecht,ResetAll))
-                    elif Taal == "IT":
-                        print("  Quale %ssalvadanaio%s vuoi %seliminare%s" % (col5,ResetAll,colslecht,ResetAll))
-                    else:
-                        print("  Welke %sspaarpot%s wil je %sverwijderen%s" % (col5,ResetAll,colslecht,ResetAll))
-                    spaartel = 0
-                    try:
-                        with open("spaarpotten","r") as s:
-                            spaar = ast.literal_eval(s.read())
-                            spaarlijst = []
-                            for i,j in spaar.items():
-                                spaartel += 1
-                                if Taal == "EN":
-                                    print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                elif Taal == "IT":
-                                    print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                else:
-                                    print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                                spaarlijst.append(i)
-                        keuze3 = input("    : ")
-                        if keuze3.upper() in afsluitlijst:
-                            break
-                        elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
-                            spaarpotten = "N"
-                            break
-                        elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
-                            doei()
-                        else:
-                            keuze3 = int(keuze3)-1
-                            if keuze3 in range(spaartel):
-                                del spaar[spaarlijst[keuze3]]
-                                if len(spaar) == 0:
-                                    os.remove("spaarpotten")
-                                else:
-                                    with open("spaarpotten","w") as s:
-                                        print(spaar, file = s, end = "")
-                            break
-                    except:
-                        pass
-            else:
+        try:
+            print()
+            spaarpotten = "Y"
+            while spaarpotten == "Y":
+                spaartotaal = 0
+                with open("A","r") as a:
+                    Uitgaven = ast.literal_eval(a.read())[0]
                 try:
                     with open("spaarpotten","r") as s:
-                        print()
                         spaar = ast.literal_eval(s.read())
                         spaartel = 0
-                        spaartotaal = 0
                         for i,j in spaar.items():
                             spaartel += 1
                             spaartotaal += j
-                            if Taal == "EN":
-                                print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                            elif Taal == "IT":
-                                print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
-                            else:
-                                print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                        if Taal == "EN":
+                            print("    Total in piggy banks: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                            print("    %s is reserved for monthly expenses" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                            print("    Remains %s unpiggied" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                            print("    A buffer of %s on payday is recommended" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        elif Taal == "IT":
+                            print("    Totale in salvadanai: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                            print("    %s è riservato per spese mensili" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                            print("    Rimane %s nonsalvadanato" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                            print("    Un buffer di %s su giorno di paga è raccomandato" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                        else:
+                            print("    Totaal in spaarpotten: %s" % (col5+Valuta+fornum(spaartotaal)+ResetAll))
+                            print("    %s is gereserveerd voor maandelijkse uitgaven" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
+                            print("    Er blijft %s ongespaarpot over" % (col5+Valuta+fornum(moni-spaartotaal+Uitgaven)+ResetAll))
+                            print("    Een buffer van %s op betaaldag wordt aanbevolen" % (col5+Valuta+fornum(Uitgaven*-1)+ResetAll))
                         print()
                 except(Exception) as error:
-                    pass
+                    if Taal == "EN":
+                        print("There are no piggy banks (yet)")
+                        print()
+                    elif Taal == "IT":
+                        print("Non ci sono (ancora) salvadanai")
+                        print()
+                    else:
+                        print("Er zijn (nog) geen spaarpotten")
+                        print()
+                if moni-Uitgaven < spaartotaal:
+                    col5 = Rood
+                if snelkeuze1 != "Y":
+                    keuze2 = snelkeuze1
+                    snelkeuze1 = "Y"
+                else:
+                    if Taal == "EN":
+                        keuze2 = input("%s Make a choice%s\n  >1 %sView piggy banks%s\n   2 %sModify piggy bank%s\n   3 %sAdd new piggy bank%s\n   4 %sRemove piggy bank%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                    elif Taal == "IT":
+                        keuze2 = input("%s Fai una scelta%s\n  >1 %sVedere salvadanai%s\n   2 %sModificare salvadanaio%s\n   3 %sAggiungere salvadanaio%s\n   4 %sEliminare salvadanaio%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                    else:
+                        keuze2 = input("%s Maak een keuze%s\n  >1 %sBekijk spaarpotten%s\n   2 %sWijzig spaarpot%s\n   3 %sVoeg nieuwe spaarpot toe%s\n   4 %sVerwijder spaarpot%s\n   : " % (col5,ResetAll,LichtGeel,ResetAll,LichtCyaan,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll))
+                if keuze2.upper() in afsluitlijst:
+                    break
+                elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
+                    break
+                elif len(keuze2) == 3 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[2] in afsluitlijst:
+                    doei()
+                elif keuze2 == "2":
+                    potwijzig = "Y"
+                    while potwijzig == "Y":
+                        if Taal == "EN":
+                            print("  Which %spiggy bank%s do you want to %smodify%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                        elif Taal == "IT":
+                            print("  Quale %ssalvadanaio%s vuoi %smodificare%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                        else:
+                            print("  Welke %sspaarpot%s wil je %swijzigen%s" % (col5,ResetAll,LichtCyaan,ResetAll))
+                        spaartel = 0
+                        try:
+                            with open("spaarpotten","r") as s:
+                                spaar = ast.literal_eval(s.read())
+                                spaarlijst = []
+                                for i,j in spaar.items():
+                                    spaartel += 1
+                                    if Taal == "EN":
+                                        print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    elif Taal == "IT":
+                                        print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    else:
+                                        print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    spaarlijst.append(i)
+                            keuze3 = input("    : ")
+                            if keuze3.upper() in afsluitlijst:
+                                break
+                            elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                                spaarpotten = "N"
+                                break
+                            elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
+                                doei()
+                            else:
+                                try:
+                                    keuze3 = int(keuze3)-1
+                                    if keuze3 in range(spaartel):
+                                        if Taal == "EN":
+                                            keuze4 = input("   What do you want to modify\n     1 Name   %s\n    >2 Value %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                        elif Taal == "IT":
+                                            keuze4 = input("   Cosa vuoi modificare\n     1 Nome   %s\n    >2 Valore %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                        else:
+                                            keuze4 = input("   Wat wil je wijzigen\n     1 Naam   %s\n    >2 Waarde %s\n     : " % (col5+for15(spaarlijst[keuze3])+ResetAll,col5+Valuta+fornum(spaar[spaarlijst[keuze3]])+ResetAll))
+                                        if keuze4.upper() in afsluitlijst:
+                                            break
+                                        elif len(keuze4) == 2 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[1] in afsluitlijst:
+                                            spaarpotten = "N"
+                                            break
+                                        elif len(keuze4) == 3 and keuze4.upper()[0] in afsluitlijst and keuze4.upper()[2] in afsluitlijst:
+                                            doei()
+                                        elif keuze4 == "1":
+                                            if Taal == "EN":
+                                                nieuwekey = input("    Rename this piggy bank %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                            elif Taal == "IT":
+                                                nieuwekey = input("    Rinomina questo salvadanaio %s\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                            else:
+                                                nieuwekey = input("    Geef deze spaarpot %s een nieuwe naam\n      : %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,col5))[:15]
+                                            print(ResetAll, end = "")
+                                            if nieuwekey.upper() in afsluitlijst:
+                                                break
+                                            elif len(nieuwekey) == 2 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[1] in afsluitlijst:
+                                                spaarpotten = "N"
+                                                break
+                                            elif len(nieuwekey) == 3 and nieuwekey.upper()[0] in afsluitlijst and nieuwekey.upper()[2] in afsluitlijst:
+                                                doei()
+                                            spaar[nieuwekey] = spaar[spaarlijst[keuze3]]
+                                            del spaar[spaarlijst[keuze3]]
+                                            with open("spaarpotten","w") as s:
+                                                print(spaar, file = s, end = "")
+                                        else:
+                                            inspaarpotlijst = []
+                                            for i,j in spaar.items():
+                                                if i != spaarlijst[keuze3]:
+                                                    inspaarpotlijst.append(j)
+                                            inspaarpot = 0
+                                            for i in inspaarpotlijst:
+                                                inspaarpot += i
+                                            beschikbaar = round(moni,2) + Uitgaven - inspaarpot
+                                            nieuwewaarde = "Y"
+                                            while nieuwewaarde == "Y":
+                                                if Taal == "EN":
+                                                    nieuwevalue = input("    Enter a new value\n      : %s" % (col5))
+                                                elif Taal == "IT":
+                                                    nieuwevalue = input("    Inserire un nuovo valore\n      : %s" % (col5))
+                                                else:
+                                                    nieuwevalue = input("    Geef een nieuwe waarde op\n      : %s" % (col5))
+                                                print(ResetAll, end = "")
+                                                if nieuwevalue.upper() in afsluitlijst:
+                                                    break
+                                                elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                                    spaarpotten = "N"
+                                                    potwijzig = "N"
+                                                    break
+                                                elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
+                                                    doei()
+                                                try:
+                                                    nieuwevalue = round(float(nieuwevalue),2)
+                                                    if nieuwevalue > beschikbaar and nieuwevalue != 0:
+                                                        if Taal == "EN":
+                                                            print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
+                                                        elif Taal == "IT":
+                                                            print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
+                                                        else:
+                                                            print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
+                                                    elif nieuwevalue < 0:
+                                                        if Taal == "EN":
+                                                            print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
+                                                        elif Taal == "IT":
+                                                            print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
+                                                        else:
+                                                            print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
+                                                    else:
+                                                        spaar[spaarlijst[keuze3]] = nieuwevalue
+                                                        with open("spaarpotten","w") as s:
+                                                            print(spaar, file = s, end = "")
+                                                        if Taal == "EN":
+                                                            print("%s contains %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                        elif Taal == "IT":
+                                                            print("%s contiene %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                        else:
+                                                            print("%s bevat %s" % (col5+for15(spaarlijst[keuze3])+ResetAll,Valuta+fornum(spaar[spaarlijst[keuze3]])))
+                                                        break
+                                                except:
+                                                    if Taal == "EN":
+                                                        print("%sThat is not a valid value%s" % (colslecht,ResetAll))
+                                                    elif Taal == "IT":
+                                                        print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
+                                                    else:
+                                                        print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
+                                    else:
+                                        if Taal == "EN":
+                                            print("That piggy bank doesn't exist (yet)")
+                                        elif Taal == "IT":
+                                            print("Questo salvadanaio non existe (ancora)")
+                                        else:
+                                            print("Die spaarpot bestaat (nog) niet")
+                                except(Exception) as error:
+                                    print(error)
+                        except(Exception) as error:
+                            pass
+                elif keuze2 == "3":
+                    potnieuw = "Y"
+                    while potnieuw == "Y":
+                        try:
+                            with open("spaarpotten","r") as s:
+                                spaar = ast.literal_eval(s.read())
+                                spaarlijst = []
+                                for i,j in spaar.items():
+                                    if Taal == "EN":
+                                        print("%s contains %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    elif Taal == "IT":
+                                        print("%s contiene %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    else:
+                                        print("%s bevat %s" % (col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    spaarlijst.append(i)
+                        except:
+                            spaar = {}
+                            spaarlijst = []
+                        if Taal == "EN":
+                            nieuwespaarpot = input("  Enter the %sname%s of the new piggy bank\n    : %s" % (col5,ResetAll,col5))[:15]
+                            print(ResetAll, end = "")
+                        elif Taal == "IT":
+                            nieuwespaarpot = input("  Inserisci il %snome%s del nuovo salvadanaio\n    : %s" % (col5,ResetAll,col5))[:15]
+                            print(ResetAll, end = "")
+                        else:
+                            nieuwespaarpot = input("  Typ de %snaam%s van de nieuwe spaarpot\n    : %s" % (col5,ResetAll,col5))[:15]
+                            print(ResetAll, end = "")
+                        if nieuwespaarpot.upper() in afsluitlijst:
+                            break
+                        elif len(nieuwespaarpot) == 2 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[1] in afsluitlijst:
+                            spaarpotten = "N"
+                            break
+                        elif len(nieuwespaarpot) == 3 and nieuwespaarpot.upper()[0] in afsluitlijst and nieuwespaarpot.upper()[2] in afsluitlijst:
+                            doei()
+                        else:
+                            with open("A","r") as a:
+                                Uitgaven = ast.literal_eval(a.read())[0]
+                            inspaarpotlijst = []
+                            for i,j in spaar.items():
+                                inspaarpotlijst.append(j)
+                            inspaarpot = 0
+                            for i in inspaarpotlijst:
+                                inspaarpot += i
+                            beschikbaar = round(moni,2) + Uitgaven - inspaarpot
+                            nieuwewaarde = "Y"
+                            while nieuwewaarde == "Y":
+                                if Taal == "EN":
+                                    nieuwevalue = input("  Enter a new value\n    : %s" % (col5))
+                                elif Taal == "IT":
+                                    nieuwevalue = input("  Inserire un nuovo valore\n    : %s" % (col5))
+                                else:
+                                    nieuwevalue = input("  Geef een nieuwe waarde op\n    : %s" % (col5))
+                                print(ResetAll, end = "")
+                                if nieuwevalue.upper() in afsluitlijst:
+                                    break
+                                elif len(nieuwevalue) == 2 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[1] in afsluitlijst:
+                                    spaarpotten = "N"
+                                    potnieuw = "N"
+                                    break
+                                elif len(nieuwevalue) == 3 and nieuwevalue.upper()[0] in afsluitlijst and nieuwevalue.upper()[2] in afsluitlijst:
+                                    doei()
+                                try:
+                                    nieuwevalue = round(float(nieuwevalue),2)
+                                    if nieuwevalue > beschikbaar:
+                                        if Taal == "EN":
+                                            print("%sThat is too much to set aside%s" % (colslecht,ResetAll))
+                                        elif Taal == "IT":
+                                            print("%sQuesto è troppo per mettere da parte%s" % (colslecht,ResetAll))
+                                        else:
+                                            print("%sDat is teveel om weg te zetten%s" % (colslecht,ResetAll))
+                                    elif nieuwevalue < 0:
+                                        if Taal == "EN":
+                                            print("%sThat is too little to set aside%s" % (colslecht,ResetAll))
+                                        elif Taal == "IT":
+                                            print("%sQuesto è troppo poco per mettere da parte%s" % (colslecht,ResetAll))
+                                        else:
+                                            print("%sDat is te weinig om weg te zetten%s" % (colslecht,ResetAll))
+                                    else:
+                                        spaar[nieuwespaarpot] = nieuwevalue
+                                        with open("spaarpotten","w") as s:
+                                            print(spaar, file = s, end = "")
+                                        if Taal == "EN":
+                                            print("%s contains %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                        elif Taal == "IT":
+                                            print("%s contiene %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                        else:
+                                            print("%s bevat %s" % (col5+for15(nieuwespaarpot)+ResetAll,Valuta+fornum(nieuwevalue)))
+                                        break
+                                except:
+                                    if Taal == "EN":
+                                        print("%sThat is not a valid value%s" % (colslecht,ResetAll))
+                                    elif Taal == "IT":
+                                        print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
+                                    else:
+                                        print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
+                elif keuze2 == "4":
+                    potverwijder = "Y"
+                    while potverwijder == "Y":
+                        if Taal == "EN":
+                            print("  Which %spiggy bank%s do you want to %sremove%s" % (col5,ResetAll,colslecht,ResetAll))
+                        elif Taal == "IT":
+                            print("  Quale %ssalvadanaio%s vuoi %seliminare%s" % (col5,ResetAll,colslecht,ResetAll))
+                        else:
+                            print("  Welke %sspaarpot%s wil je %sverwijderen%s" % (col5,ResetAll,colslecht,ResetAll))
+                        spaartel = 0
+                        try:
+                            with open("spaarpotten","r") as s:
+                                spaar = ast.literal_eval(s.read())
+                                spaarlijst = []
+                                for i,j in spaar.items():
+                                    spaartel += 1
+                                    if Taal == "EN":
+                                        print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    elif Taal == "IT":
+                                        print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    else:
+                                        print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                    spaarlijst.append(i)
+                            keuze3 = input("    : ")
+                            if keuze3.upper() in afsluitlijst:
+                                break
+                            elif len(keuze3) == 2 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[1] in afsluitlijst:
+                                spaarpotten = "N"
+                                break
+                            elif len(keuze3) == 3 and keuze3.upper()[0] in afsluitlijst and keuze3.upper()[2] in afsluitlijst:
+                                doei()
+                            else:
+                                keuze3 = int(keuze3)-1
+                                if keuze3 in range(spaartel):
+                                    del spaar[spaarlijst[keuze3]]
+                                    if len(spaar) == 0:
+                                        os.remove("spaarpotten")
+                                    else:
+                                        with open("spaarpotten","w") as s:
+                                            print(spaar, file = s, end = "")
+                                break
+                        except:
+                            pass
+                else:
+                    try:
+                        with open("spaarpotten","r") as s:
+                            print()
+                            spaar = ast.literal_eval(s.read())
+                            spaartel = 0
+                            spaartotaal = 0
+                            for i,j in spaar.items():
+                                spaartel += 1
+                                spaartotaal += j
+                                if Taal == "EN":
+                                    print("%s %s contains %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                elif Taal == "IT":
+                                    print("%s %s contiene %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                                else:
+                                    print("%s %s bevat %s" % (spaartel,col5+for15(i)+ResetAll,Valuta+fornum(j)))
+                            print()
+                    except(Exception) as error:
+                        pass
+        except:
+            pass
 
     elif snelkeuze0 == "0": # BEHEER
         print()
@@ -3697,10 +3795,10 @@ while mimo == "Y":
                                     budget = kat[0]
                                 col = catcol[kategorie.upper()]
                                 if Taal == "EN":
-                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
                                     wat = input("Choose\n  1 Modify %scategory name%s (now %s)\n  2 Modify %smonth budget%s (now %s)\n  3 %sRemove category%s %s %sand everything in it%s\n  : " % (LichtCyaan,ResetAll,col+kategorienaam+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+kategorienaam+ResetAll,colslecht, ResetAll))
                                 elif Taal == "IT":
-                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                    kategorienaam = alternatievenamenlijst[kategorie.upper()].replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
                                     wat = input("Scegli\n  1 Modificare %snome di categoria%s (ora %s)\n  2 Modificare %sbudget mensile%s (ora %s)\n  3 %sEliminare categoria%s %s %scon tutto dentro%s\n  : " % (LichtCyaan,ResetAll,col+kategorienaam+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+kategorienaam+ResetAll,colslecht, ResetAll))
                                 else:
                                     wat = input("Kies\n  1 %sCategorienaam%s wijzigen (nu %s)\n  2 %sMaandbudget%s wijzigen (nu %s)\n  3 %sCategorie%s %s %sverwijderen en alles wat daarin staat%s\n  : " % (LichtCyaan,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,LichtCyaan,ResetAll,col+Valuta+fornum(budget)+ResetAll,colslecht,ResetAll,col+alternatievenamenlijst[kategorie.upper()]+ResetAll,colslecht,ResetAll))
