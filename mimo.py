@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.25"
+bouw = "3.26"
 plaats = "Pedara"
-hardedatum = "20231008"
+hardedatum = "20231022"
 
 versie = """
 Versie: %s
@@ -1946,34 +1946,37 @@ while mimo == "Y":
                             alternatievenamenlijst = ast.literal_eval(f.read())
                             totbud = 0
                             for k,v in alternatievenamenlijst.items():
-                                with open(k,"r") as g:
-                                    inhoudvancategorie = ast.literal_eval(g.read())
-                                    budget = inhoudvancategorie[0]
-                                    col = catcol[k]
-                                    for i in maandtotaallijst:
-                                        if k in i[-1]:
-                                            if round(budget+maandtotaallijst[k],2) > 0.00:
-                                                colsaldo = colgoed
-                                            elif round(budget+maandtotaallijst[k],2) == 0.00:
-                                                colsaldo = colonbepaald
-                                            else:
-                                                colsaldo = colslecht
-                                            try:
-                                                if k == "A":
-                                                    colpos = colslecht
-                                                    colneg = colgoed
+                                try:
+                                    with open(k,"r") as g:
+                                        inhoudvancategorie = ast.literal_eval(g.read())
+                                        budget = inhoudvancategorie[0]
+                                        col = catcol[k]
+                                        for i in maandtotaallijst:
+                                            if k in i[-1]:
+                                                if round(budget+maandtotaallijst[k],2) > 0.00:
+                                                    colsaldo = colgoed
+                                                elif round(budget+maandtotaallijst[k],2) == 0.00:
+                                                    colsaldo = colonbepaald
                                                 else:
-                                                    colpos = colgoed
-                                                    colneg = colslecht
-                                                if maandtotaallijst[k]/budget < -1:
-                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+"+"*25+"|+"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
-                                                else:
-                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("-"*int(round(maandtotaallijst[k]/budget*-25,0)))+"|-"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
-                                            except(Exception) as error:
-                                                if maandtotaallijst[k] != 0:
-                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|X"+forr7(" ")+" "+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
-                                                else:
-                                                    print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25(" "*25)+"|="+forr7(" ")+" "+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                                    colsaldo = colslecht
+                                                try:
+                                                    if k == "A":
+                                                        colpos = colslecht
+                                                        colneg = colgoed
+                                                    else:
+                                                        colpos = colgoed
+                                                        colneg = colslecht
+                                                    if maandtotaallijst[k]/budget < -1:
+                                                        print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+"+"*25+"|+"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                                    else:
+                                                        print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("-"*int(round(maandtotaallijst[k]/budget*-25,0)))+"|-"+forr7(int(round(((maandtotaallijst[k]/budget)+1)*-100,0)))+"%"+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                                except(Exception) as error:
+                                                    if maandtotaallijst[k] != 0:
+                                                        print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25("."*25)+"|X"+forr7(" ")+" "+colneg+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                                    else:
+                                                        print(col+k+": "+Valuta+fornum(maandtotaallijst[k])+"/"+fornum(budget)+" |"+forl25(" "*25)+"|="+forr7(" ")+" "+colpos+" ("+Valuta+fornum(budget+maandtotaallijst[k])+")"+ResetAll)
+                                except(Exception) as error:
+                                    pass
                         budtot = 0
                         for i in lijst:
                             try:
