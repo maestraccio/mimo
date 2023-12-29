@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.26"
-plaats = "Pedara"
-hardedatum = "20231022"
+bouw = "3.30"
+plaats = "Nuenen"
+hardedatum = "20231229"
 
 versie = """
 Versie: %s
@@ -2351,263 +2351,261 @@ while mimo == "Y":
         col3 = LichtCyaan
         try:
             int(sel[0][0])
-            wijzig = "N"
-            while wijzig == "N":
-                if Taal == "EN":
-                    tewijzigen = input("Which ID do you want to %smodify%s\n  : %s" % (col3, ResetAll,col3))
-                elif Taal == "IT":
-                    tewijzigen = input("Quale ID vuoi %modificare%s\n  : %s" % (col3, ResetAll,col3))
-                else:
-                    tewijzigen = input("Welk ID wil je %swijzigen%s\n  : %s" % (col3, ResetAll,col3))
-                print(ResetAll, end = "")
-                if tewijzigen.upper() in afsluitlijst:
-                    del keuze1
-                    break
-                elif len(tewijzigen) == 2 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[1] in afsluitlijst:
-                    del keuze1
-                    break
-                elif len(tewijzigen) == 3 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[2] in afsluitlijst:
-                    doei()
-                else:
-                    if tewijzigen != "":
-                        twloop = tewijzigen
-                    elif tewijzigen == "":
-                        try:
-                            tewijzigen = twloop
-                        except(Exception) as error:
-                            #print(error)
-                            pass
+            if Taal == "EN":
+                tewijzigen = input("Which ID do you want to %smodify%s\n  : %s" % (col3, ResetAll,col3))
+            elif Taal == "IT":
+                tewijzigen = input("Quale ID vuoi %modificare%s\n  : %s" % (col3, ResetAll,col3))
+            else:
+                tewijzigen = input("Welk ID wil je %swijzigen%s\n  : %s" % (col3, ResetAll,col3))
+            print(ResetAll, end = "")
+            if tewijzigen.upper() in afsluitlijst:
+                del keuze1
+                break
+            elif len(tewijzigen) == 2 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[1] in afsluitlijst:
+                del keuze1
+                break
+            elif len(tewijzigen) == 3 and tewijzigen.upper()[0] in afsluitlijst and tewijzigen.upper()[2] in afsluitlijst:
+                doei()
+            else:
+                if tewijzigen != "":
+                    twloop = tewijzigen
+                elif tewijzigen == "":
                     try:
-                        with open(tewijzigen[0].upper(),"r") as f:
-                            inhoudvancategorie = ast.literal_eval(f.read())
-                        alternatievenaam = alternatievenamenlijst[tewijzigen[0].upper()]
-                        col = catcol[tewijzigen[0].upper()]
-                        for i in sel:
-                            if i[4] == tewijzigen.upper():
-                                if snelkeuze1 != "Y":
-                                    wat = snelkeuze1
-                                    snelkeuze1 = "Y"
-                                else:
-                                    if Taal == "EN":
-                                        alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
-                                        wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                    elif Taal == "IT":
-                                        alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
-                                        wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                    else:
-                                        wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                if wat.upper() in afsluitlijst:
-                                    break
-                                elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
-                                    break
-                                elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
-                                    doei()
-                                elif wat == "1":
-                                    try:
-                                        if Taal == "EN":
-                                            datum = input("%sDate%s (YYYYMMDD)\n  : %s" % (col3,ResetAll,col3))
-                                        elif Taal == "IT":
-                                            datum = input("%sData%s (AAAAMMGG)\n  : %s" % (col3,ResetAll,col3))
-                                        else:
-                                            datum = input("%sDatum%s (JJJJMMDD)\n  : %s" % (col3,ResetAll,col3))
-                                        print(ResetAll, end = "")
-                                        if datum.upper() in afsluitlijst:
-                                            break
-                                        elif len(datum) == 2 and datum.upper()[0] in afsluitlijst and datum.upper()[1] in afsluitlijst:
-                                            break
-                                        elif len(datum) == 3 and datum.upper()[0] in afsluitlijst and datum.upper()[2] in afsluitlijst:
-                                            doei()
-                                        elif datum == "":
-                                            datum = nu
-                                            print(col3+"    "+str(datum)+ResetAll)
-                                        else:
-                                            datumstr = datum.replace("-","").replace("/","").replace(" ","")
-                                            datum = int(str(datetime.strptime(datumstr,"%Y%m%d")).replace("-","")[:8])
-                                        for j in inhoudvancategorie[1:]:
-                                            if i[:4] == j:
-                                                inhoudvancategorie.remove(j)
-                                                inhoudvancategorie.append([datum,i[1],i[2],i[3]])
-                                                break
-                                        with open(tewijzigen[0].upper(),"w") as f:
-                                            print(inhoudvancategorie, file = f, end = "")
-                                        if Taal == "EN":
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,datum,ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                        elif Taal == "IT":
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,datum,ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                        else:
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,datum,ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                    except(Exception) as error:
-                                        #print(error)
-                                        pass
-                                elif wat == "2":
-                                    try:
-                                        if Taal == "EN":
-                                            bedrag = input("%sAmount%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
-                                        elif Taal == "IT":
-                                            bedrag = input("%sSomma%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
-                                        else:
-                                            bedrag = input("%sBedrag%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
-                                        print(ResetAll, end = "")
-                                        if bedrag.upper() in afsluitlijst:
-                                            break
-                                        elif len(bedrag) == 2 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[1] in afsluitlijst:
-                                            break
-                                        elif len(bedrag) == 3 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[2] in afsluitlijst:
-                                            doei()
-                                        elif bedrag == "":
-                                            bedrag = 0.0
-                                            print(col3+"    "+forn(bedrag)+ResetAll)
-                                        elif bedrag == "+" or bedrag == "-":
-                                            bedrag = i[1] * -1
-                                        else:
-                                            bedrag = float(bedrag)
-                                        for j in inhoudvancategorie:
-                                            if i[:4] == j:
-                                                inhoudvancategorie.remove(j)
-                                                i[1] = bedrag
-                                                inhoudvancategorie.append(i[:4])
-                                                break
-                                        with open(tewijzigen[0].upper(),"w") as f:
-                                            print(inhoudvancategorie, file = f, end = "")
-                                        if Taal == "EN":
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(bedrag),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                        elif Taal == "IT":
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(bedrag),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                        else:
-                                            print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(bedrag),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                    except(Exception) as error:
-                                        #print(error)
-                                        pass
-                                elif wat == "3":
-                                    if Taal == "EN":
-                                        wederpartij = input("%sOther party%s\n  : %s" % (col3,ResetAll,col3))
-                                    elif Taal == "IT":
-                                        wederpartij = input("%sControparte%s\n  : %s" % (col3,ResetAll,col3))
-                                    else:
-                                        wederpartij = input("%sWederpartij%s\n  : %s" % (col3,ResetAll,col3))
-                                    print(ResetAll, end = "")
-                                    if wederpartij.upper() in afsluitlijst:
-                                        break
-                                    elif len(wederpartij) == 2 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[1] in afsluitlijst:
-                                        break
-                                    elif len(wederpartij) == 3 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[2] in afsluitlijst:
-                                        doei()
-                                    for j in inhoudvancategorie:
-                                        if i[:4] == j:
-                                            inhoudvancategorie.remove(j)
-                                            i[2] = wederpartij[:15]
-                                            inhoudvancategorie.append(i[:4])
-                                            break
-                                    with open(tewijzigen[0].upper(),"w") as f:
-                                        print(inhoudvancategorie, file = f, end = "")
-                                    if Taal == "EN":
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,wederpartij,ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                    elif Taal == "IT":
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,wederpartij,ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                    else:
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,wederpartij,ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                elif wat == "4":
-                                    if Taal == "EN":
-                                        betreft = input("%sAbout%s\n  : %s" % (col3,ResetAll,col3))
-                                    elif Taal == "IT":
-                                        betreft = input("%sRiguarda%s\n  : %s" % (col3,ResetAll,col3))
-                                    else:
-                                        betreft = input("%sBetreft%s\n  : %s" % (col3,ResetAll,col3))
-                                    print(ResetAll, end = "")
-                                    if betreft.upper() in afsluitlijst:
-                                        break
-                                    elif len(betreft) == 2 and betreft.upper()[0] in afsluitlijst and betreft.upper()[1] in afsluitlijst:
-                                        break
-                                    elif len(betreft) == 3 and betreft.upper()[0] in afsluitlijst and betreft.upper()[2] in afsluitlijst:
-                                        doei()
-                                    for j in inhoudvancategorie:
-                                        if i[:4] == j:
-                                            inhoudvancategorie.remove(j)
-                                            i[3] = betreft[:18]
-                                            inhoudvancategorie.append(i[:4])
-                                            break
-                                    with open(tewijzigen[0].upper(),"w") as f:
-                                        print(inhoudvancategorie, file = f, end = "")
-                                    if Taal == "EN":
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,betreft,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                    elif Taal == "IT":
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,betreft,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                    else:
-                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,betreft,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                elif wat == "5":
-                                    if Taal == "EN":
-                                        print("To which category do you want to transfer %s" % (col+tewijzigen.upper()+ResetAll))
-                                    elif Taal == "IT":
-                                        print("In quale categoria vuoi trasferire %s" % (col+tewijzigen.upper()+ResetAll))
-                                    else:
-                                        print("Naar welke categorie wil je %s overzetten" % (col+tewijzigen.upper()+ResetAll))
-                                    alt()
-                                    waar = input("  : ")
-                                    if waar.upper() in afsluitlijst or waar.upper() not in lijst:
-                                        break
-                                    elif len(waar) == 2 and waar.upper()[0] in afsluitlijst and waar.upper()[1] in afsluitlijst:
-                                        break
-                                    elif len(waar) == 3 and waar.upper()[0] in afsluitlijst and waar.upper()[2] in afsluitlijst:
-                                        doei()
-                                    else:
-                                        waar = waar.upper()
-                                        try:
-                                            with open(waar,"r") as f:
-                                                inhoudvancategorie = ast.literal_eval(f.read())
-                                        except(Exception) as error:
-                                            #print(error)
-                                            if Taal == "EN":
-                                                nieuwecategorie = input("Give the %snew category%s %s a name\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
-                                            elif Taal == "IT":
-                                                nieuwecategorie = input("Dai la %snuova categoria%s %s un nome\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
-                                            else:
-                                                nieuwecategorie = input("Geef de %snieuwe categorie%s %s een naam\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
-                                            if nieuwecategorie.upper() in afsluitlijst:
-                                                break
-                                            elif len(nieuwecategorie) == 2 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[1] in afsluitlijst:
-                                                break
-                                            elif len(nieuwecategorie) == 3 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[2] in afsluitlijst:
-                                                doei()
-                                            else:
-                                                alternatievenamenlijst[waar] = nieuwecategorie[:15].lower()
-                                                with open("alternatievenamen","w") as f:
-                                                    print(alternatievenamenlijst, file = f, end = "")
-                                                with open(waar,"w") as f:
-                                                    print([0.0], file = f, end = "")
-                                                inhoudvancategorie = [0.0]
-                                        alternatievenaam = alternatievenamenlijst[waar]
-                                        print(catcol[waar]+"%s: " % waar+alternatievenaam+ResetAll)
-                                        for i in sel:
-                                            i4 = tewijzigen[0].upper()+tewijzigen[1:]
-                                            if i4 == i[4]:
-                                                inhoudvancategorie.append(i[:4])
-                                                col = catcol[waar]
-                                                if Taal == "EN":
-                                                    print("%sThe ID changed, generate new %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-                                                elif Taal == "IT":
-                                                    print("%sL\'ID è cambiato, genera nuovi %sID%s!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-                                                else:
-                                                    print("%sHet ID is gewijzigd, genereer nieuwe %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
-                                                if Taal == "EN":
-                                                    alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
-                                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
-                                                elif Taal == "IT":
-                                                    alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
-                                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
-                                                else:
-                                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
-                                                with open(waar.upper(),"w") as w:
-                                                    print(inhoudvancategorie, file = w, end = "")
-                                                with open(tewijzigen[0].upper(),"r") as r:
-                                                    hierweg = ast.literal_eval(r.read())
-                                                    hierweg.remove(i[:4])
-                                                with open(tewijzigen[0].upper(),"w") as v:
-                                                    print(hierweg, file = v, end = "")
-                                                break
+                        tewijzigen = twloop
                     except(Exception) as error:
                         #print(error)
                         pass
-                    print()
+                try:
+                    with open(tewijzigen[0].upper(),"r") as f:
+                        inhoudvancategorie = ast.literal_eval(f.read())
+                    alternatievenaam = alternatievenamenlijst[tewijzigen[0].upper()]
+                    col = catcol[tewijzigen[0].upper()]
+                    for i in sel:
+                        if i[4] == tewijzigen.upper():
+                            if snelkeuze1 != "Y":
+                                wat = snelkeuze1
+                                snelkeuze1 = "Y"
+                            else:
+                                if Taal == "EN":
+                                    alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                    wat = input("What do you want to %schange%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Date: "),i[0],col3,ResetAll,for15("Amount: "),Valuta,i[1],col3,ResetAll,for15("Other party: "),i[2],col3,ResetAll,for15("About: "),i[3],col3,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                elif Taal == "IT":
+                                    alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                    wat = input("Cosa vuoi %smodificare%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Data: "),i[0],col3,ResetAll,for15("Somma: "),Valuta,i[1],col3,ResetAll,for15("Controparte: "),i[2],col3,ResetAll,for15("Riguarda: "),i[3],col3,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                else:
+                                    wat = input("Wat wil je %swijzigen%s\n  %s1%s %s %s\n  %s2%s %s %s %s\n  %s3%s %s %s\n  %s4%s %s %s\n  %s5%s %s %s%s%s\n  : " % (col3,ResetAll,col3,ResetAll,for15("Datum: "),i[0],col3,ResetAll,for15("Bedrag: "),Valuta,i[1],col3,ResetAll,for15("Wederpartij: "),i[2],col3,ResetAll,for15("Betreft: "),i[3],col3,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                            if wat.upper() in afsluitlijst:
+                                break
+                            elif len(wat) == 2 and wat.upper()[0] in afsluitlijst and wat.upper()[1] in afsluitlijst:
+                                break
+                            elif len(wat) == 3 and wat.upper()[0] in afsluitlijst and wat.upper()[2] in afsluitlijst:
+                                doei()
+                            elif wat == "1":
+                                try:
+                                    if Taal == "EN":
+                                        datum = input("%sDate%s (YYYYMMDD)\n  : %s" % (col3,ResetAll,col3))
+                                    elif Taal == "IT":
+                                        datum = input("%sData%s (AAAAMMGG)\n  : %s" % (col3,ResetAll,col3))
+                                    else:
+                                        datum = input("%sDatum%s (JJJJMMDD)\n  : %s" % (col3,ResetAll,col3))
+                                    print(ResetAll, end = "")
+                                    if datum.upper() in afsluitlijst:
+                                        break
+                                    elif len(datum) == 2 and datum.upper()[0] in afsluitlijst and datum.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(datum) == 3 and datum.upper()[0] in afsluitlijst and datum.upper()[2] in afsluitlijst:
+                                        doei()
+                                    elif datum == "":
+                                        datum = nu
+                                        print(col3+"    "+str(datum)+ResetAll)
+                                    else:
+                                        datumstr = datum.replace("-","").replace("/","").replace(" ","")
+                                        datum = int(str(datetime.strptime(datumstr,"%Y%m%d")).replace("-","")[:8])
+                                    for j in inhoudvancategorie[1:]:
+                                        if i[:4] == j:
+                                            inhoudvancategorie.remove(j)
+                                            inhoudvancategorie.append([datum,i[1],i[2],i[3]])
+                                            break
+                                    with open(tewijzigen[0].upper(),"w") as f:
+                                        print(inhoudvancategorie, file = f, end = "")
+                                    if Taal == "EN":
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,datum,ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                    elif Taal == "IT":
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,datum,ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                    else:
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,datum,ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                                except(Exception) as error:
+                                    #print(error)
+                                    pass
+                            elif wat == "2":
+                                try:
+                                    if Taal == "EN":
+                                        bedrag = input("%sAmount%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
+                                    elif Taal == "IT":
+                                        bedrag = input("%sSomma%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
+                                    else:
+                                        bedrag = input("%sBedrag%s\n  : %s" % (col3,ResetAll,col3)).replace(",",".").replace(Valuta,"").strip()
+                                    print(ResetAll, end = "")
+                                    if bedrag.upper() in afsluitlijst:
+                                        break
+                                    elif len(bedrag) == 2 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[1] in afsluitlijst:
+                                        break
+                                    elif len(bedrag) == 3 and bedrag.upper()[0] in afsluitlijst and bedrag.upper()[2] in afsluitlijst:
+                                        doei()
+                                    elif bedrag == "":
+                                        bedrag = 0.0
+                                        print(col3+"    "+forn(bedrag)+ResetAll)
+                                    elif bedrag == "+" or bedrag == "-":
+                                        bedrag = i[1] * -1
+                                    else:
+                                        bedrag = float(bedrag)
+                                    for j in inhoudvancategorie:
+                                        if i[:4] == j:
+                                            inhoudvancategorie.remove(j)
+                                            i[1] = bedrag
+                                            inhoudvancategorie.append(i[:4])
+                                            break
+                                    with open(tewijzigen[0].upper(),"w") as f:
+                                        print(inhoudvancategorie, file = f, end = "")
+                                    if Taal == "EN":
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(bedrag),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                    elif Taal == "IT":
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(bedrag),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                    else:
+                                        print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(bedrag),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                                except(Exception) as error:
+                                    #print(error)
+                                    pass
+                            elif wat == "3":
+                                if Taal == "EN":
+                                    wederpartij = input("%sOther party%s\n  : %s" % (col3,ResetAll,col3))
+                                elif Taal == "IT":
+                                    wederpartij = input("%sControparte%s\n  : %s" % (col3,ResetAll,col3))
+                                else:
+                                    wederpartij = input("%sWederpartij%s\n  : %s" % (col3,ResetAll,col3))
+                                print(ResetAll, end = "")
+                                if wederpartij.upper() in afsluitlijst:
+                                    break
+                                elif len(wederpartij) == 2 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[1] in afsluitlijst:
+                                    break
+                                elif len(wederpartij) == 3 and wederpartij.upper()[0] in afsluitlijst and wederpartij.upper()[2] in afsluitlijst:
+                                    doei()
+                                for j in inhoudvancategorie:
+                                    if i[:4] == j:
+                                        inhoudvancategorie.remove(j)
+                                        i[2] = wederpartij[:15]
+                                        inhoudvancategorie.append(i[:4])
+                                        break
+                                with open(tewijzigen[0].upper(),"w") as f:
+                                    print(inhoudvancategorie, file = f, end = "")
+                                if Taal == "EN":
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,wederpartij,ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                elif Taal == "IT":
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,wederpartij,ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                else:
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,wederpartij,ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                            elif wat == "4":
+                                if Taal == "EN":
+                                    betreft = input("%sAbout%s\n  : %s" % (col3,ResetAll,col3))
+                                elif Taal == "IT":
+                                    betreft = input("%sRiguarda%s\n  : %s" % (col3,ResetAll,col3))
+                                else:
+                                    betreft = input("%sBetreft%s\n  : %s" % (col3,ResetAll,col3))
+                                print(ResetAll, end = "")
+                                if betreft.upper() in afsluitlijst:
+                                    break
+                                elif len(betreft) == 2 and betreft.upper()[0] in afsluitlijst and betreft.upper()[1] in afsluitlijst:
+                                    break
+                                elif len(betreft) == 3 and betreft.upper()[0] in afsluitlijst and betreft.upper()[2] in afsluitlijst:
+                                    doei()
+                                for j in inhoudvancategorie:
+                                    if i[:4] == j:
+                                        inhoudvancategorie.remove(j)
+                                        i[3] = betreft[:18]
+                                        inhoudvancategorie.append(i[:4])
+                                        break
+                                with open(tewijzigen[0].upper(),"w") as f:
+                                    print(inhoudvancategorie, file = f, end = "")
+                                if Taal == "EN":
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,betreft,ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                elif Taal == "IT":
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,betreft,ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                else:
+                                    print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,betreft,ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                            elif wat == "5":
+                                if Taal == "EN":
+                                    print("To which category do you want to transfer %s" % (col+tewijzigen.upper()+ResetAll))
+                                elif Taal == "IT":
+                                    print("In quale categoria vuoi trasferire %s" % (col+tewijzigen.upper()+ResetAll))
+                                else:
+                                    print("Naar welke categorie wil je %s overzetten" % (col+tewijzigen.upper()+ResetAll))
+                                alt()
+                                waar = input("  : ")
+                                if waar.upper() in afsluitlijst or waar.upper() not in lijst:
+                                    break
+                                elif len(waar) == 2 and waar.upper()[0] in afsluitlijst and waar.upper()[1] in afsluitlijst:
+                                    break
+                                elif len(waar) == 3 and waar.upper()[0] in afsluitlijst and waar.upper()[2] in afsluitlijst:
+                                    doei()
+                                else:
+                                    waar = waar.upper()
+                                    try:
+                                        with open(waar,"r") as f:
+                                            inhoudvancategorie = ast.literal_eval(f.read())
+                                    except(Exception) as error:
+                                        #print(error)
+                                        if Taal == "EN":
+                                            nieuwecategorie = input("Give the %snew category%s %s a name\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
+                                        elif Taal == "IT":
+                                            nieuwecategorie = input("Dai la %snuova categoria%s %s un nome\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
+                                        else:
+                                            nieuwecategorie = input("Geef de %snieuwe categorie%s %s een naam\n  : " % (col3,ResetAll,catcol[waar]+waar+ResetAll))
+                                        if nieuwecategorie.upper() in afsluitlijst:
+                                            break
+                                        elif len(nieuwecategorie) == 2 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[1] in afsluitlijst:
+                                            break
+                                        elif len(nieuwecategorie) == 3 and nieuwecategorie.upper()[0] in afsluitlijst and nieuwecategorie.upper()[2] in afsluitlijst:
+                                            doei()
+                                        else:
+                                            alternatievenamenlijst[waar] = nieuwecategorie[:15].lower()
+                                            with open("alternatievenamen","w") as f:
+                                                print(alternatievenamenlijst, file = f, end = "")
+                                            with open(waar,"w") as f:
+                                                print([0.0], file = f, end = "")
+                                            inhoudvancategorie = [0.0]
+                                    alternatievenaam = alternatievenamenlijst[waar]
+                                    print(catcol[waar]+"%s: " % waar+alternatievenaam+ResetAll)
+                                    for i in sel:
+                                        i4 = tewijzigen[0].upper()+tewijzigen[1:]
+                                        if i4 == i[4]:
+                                            inhoudvancategorie.append(i[:4])
+                                            col = catcol[waar]
+                                            if Taal == "EN":
+                                                print("%sThe ID changed, generate new %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+                                            elif Taal == "IT":
+                                                print("%sL\'ID è cambiato, genera nuovi %sID%s!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+                                            else:
+                                                print("%sHet ID is gewijzigd, genereer nieuwe %sID%s's!%s" % (colslecht,LichtGeel,colslecht,ResetAll))
+                                            if Taal == "EN":
+                                                alternatievenaam= alternatievenaam.replace("vaste act/pass.","fixd ass/equity").replace("vlotte act/pass","cash (equiv.)").replace("tussenrekening","intermediary").replace("voorraden","inventory").replace("kostenplaatsen","cost centers").replace("kosten","expenses").replace("fabricagerek.","manufact.acc.").replace("inkoopwaarde","cost of goods").replace("omzet","sales").replace("privé","private").replace("saldo & inkomen","funds & income").replace("vaste lasten","fixed costs").replace("boodschappen","groceries").replace("reis & verblijf","travel & stay").replace("leningen","loans").replace("overig","other")
+                                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Date: "),col3,i[0],ResetAll,for15("Amount: "),col3,Valuta,forn(i[1]),ResetAll,for15("Other party: "),col3,i[2],ResetAll,for15("About: "),col3,i[3],ResetAll,for15("Category: "),col,alternatievenaam,ResetAll))
+                                            elif Taal == "IT":
+                                                alternatievenaam = alternatievenaam.replace("vaste act/pass.","attiv. fisse").replace("vlotte act/pass","dispon. liquide").replace("tussenrekening","conti intermedi").replace("voorraden","magazzino").replace("kostenplaatsen","centri di costo").replace("kosten","costi").replace("fabricagerek.","contiproduzione").replace("inkoopwaarde","costi vendute").replace("omzet","ricavi").replace("privé","privato").replace("saldo & inkomen","saldo & reddito").replace("vaste lasten","costi fissi").replace("boodschappen","spese").replace("reis & verblijf","viaggioalloggio").replace("leningen","prestiti").replace("overig","altro")
+                                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Data: "),col3,i[0],ResetAll,for15("Somma: "),col3,Valuta,forn(i[1]),ResetAll,for15("Controparte: "),col3,i[2],ResetAll,for15("Riguarda: "),col3,i[3],ResetAll,for15("Categoria: "),col,alternatievenaam,ResetAll))
+                                            else:
+                                                print("%s %s%d%s\n%s %s%s %s%s\n%s %s%s%s\n%s %s%s%s\n%s %s%s%s" % (for15("Datum: "),col3,i[0],ResetAll,for15("Bedrag: "),col3,Valuta,forn(i[1]),ResetAll,for15("Wederpartij: "),col3,i[2],ResetAll,for15("Betreft: "),col3,i[3],ResetAll,for15("Categorie: "),col,alternatievenaam,ResetAll))
+                                            with open(waar.upper(),"w") as w:
+                                                print(inhoudvancategorie, file = w, end = "")
+                                            with open(tewijzigen[0].upper(),"r") as r:
+                                                hierweg = ast.literal_eval(r.read())
+                                                hierweg.remove(i[:4])
+                                            with open(tewijzigen[0].upper(),"w") as v:
+                                                print(hierweg, file = v, end = "")
+                                            break
+                except(Exception) as error:
+                    #print(error)
+                    pass
+                print()
         except(Exception) as error:
             #print(error)
             pass
