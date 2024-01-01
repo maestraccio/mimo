@@ -3,9 +3,9 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.40"
+bouw = "3.41"
 plaats = "Nuenen"
-hardedatum = "20231231"
+hardedatum = "20240101"
 
 versie = """
 Versie: %s
@@ -212,6 +212,7 @@ De laatstgebruikte rekening wordt opnieuw geopend met ""+"Enter"
         9 Datumformaat (standaard = "JJJJMMDD")
        10: Print maandoverzicht naar bestand (standaard "Nee")
        11: Toon totaalsaldo op startscherm (standaard "Ja")
+       12: Exporteer alles naar csv-bestand (standaard "Nee")
     3 Toon of verberg rekening
     4 Wissel van zichtbare rekening
     5 Nieuwe rekening toevoegen
@@ -266,6 +267,7 @@ The last used account is reopened with ""+"Enter"
         9 Date formatting (default = "YYYYMMDD")
        10: Print month overview to file (default "No")
        11: Show total amount on start screen (default "Yes")
+       12: Export all to csv file (default "No")
     3 Show or hide account
     4 Switch visible account (!)
     5 Add new account
@@ -320,6 +322,7 @@ L'ultimo usato conto si riapre con ""+"Enter"
         9 Formato data (predefinito "AAAAMMGG")
        10: Stampa riepilogo mensile in file (predefinito "No") 
        11: Mostra totale sullo schermo iniziale (predefinito "Sì")
+       12: Esporta tutto in file csv (predefinito "No") 
     3 Mostrare o nascondere conto
     4 Passare ad un altro conto visibile
     5 Aggiungere un nuovo conto
@@ -936,7 +939,7 @@ def exportcsv():
             try:
                 with open(i,"r") as z:
                     Z = ast.literal_eval(z.read())
-                    print(i+": "+alternatievenamendict[i]+",", file = e)
+                    print(i+": "+alternatievenamendict[i]+","+str(Z[0]), file = e)
                     for j in Z[1:]:
                         for k in j:
                             print(str(k), file = e, end = ",")
@@ -3878,10 +3881,14 @@ while mimo == "Y":
                                 elif wat == "2":
                                     budlijst = []
                                     for k,v in alternatievenamenlijst.items():
-                                        with open(k,"r") as f:
-                                            cat = ast.literal_eval(f.read())
-                                            budlijst.append(cat[0])
-                                            print(k,forc17(v),Valuta,fornum(cat[0]))
+                                        try:
+                                            with open(k,"r") as f:
+                                                cat = ast.literal_eval(f.read())
+                                                budlijst.append(cat[0])
+                                                print(k,forc17(v),Valuta,fornum(cat[0]))
+                                        except(Exception) as f:
+                                            #print(f)
+                                            pass
                                     balans = 0
                                     for i in budlijst:
                                         balans += i 
