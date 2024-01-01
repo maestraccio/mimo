@@ -3,7 +3,7 @@ import pathlib, os, ast, calendar
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.41"
+bouw = "3.42"
 plaats = "Nuenen"
 hardedatum = "20240101"
 
@@ -761,6 +761,8 @@ def nieuwerekening():
 
 def doei():
     print()
+    if header["CSV"] == "Ja":
+        exportcsv()
     try:
         if Taal == "EN":
             print(coltekst+forc70("Thank you for having used mimo an have a nice day")+ResetAll)
@@ -947,8 +949,6 @@ def exportcsv():
                     print(file = e)
             except:
                 pass
-if header["CSV"] == "Ja":
-    exportcsv()
 
 
 ##### HIER BEGINT HET PROGRAMMA #####
