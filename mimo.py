@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-import pathlib, os, ast, calendar
+import pathlib, os, ast, calendar, textwrap
 from time import sleep
 from datetime import datetime, date, timedelta
 
-bouw = "3.42"
-plaats = "Nuenen"
-hardedatum = "20240101"
+bouw = "3.43"
+plaats = "Pedara"
+hardedatum = "20240225"
 
+w=70
 versie = """
 Versie: %s
 Auteur: Maestraccio
@@ -28,6 +29,144 @@ Recapiti: maestraccio (at) musician (dot) org
 %s %s
 
 +-----""" % (bouw,plaats,hardedatum)
+menu = {
+        "0": "Beheer rekeningopties",
+            "0,0": "Print versie en info",
+            "0,1": "Categoriebeheer",
+                "0,1,1": "Categorienaam wijzigen",
+                "0,1,2": "Maandbudget wijzigen",
+                "0,1,3": "Categorie verwijderen",
+            "0,2": "Rekeninginstellingen aanpassen",
+                "0,2,1": "Beschrijving",
+                "0,2,2": "Rekeninghouder",
+                "0,2,3": "Plaats",
+                "0,2,4": "Taal",
+                "0,2,5": "Valuta",
+                "0,2,6": "Nulregels",
+                "0,2,7": "Markering Laag >< Hoog",
+                "0,2,8": "Kleur",
+                "0,2,9": "Datumformaat",
+                "0,2,10": "Print maandoverzicht naar bestand",
+                "0,2,11": "Toon totaalsaldo op startscherm",
+                "0,2,12": "Exporteer alles naar csv-bestand",
+            "0,3": "Toon of verberg rekening",
+            "0,4": "Wissel van rekening",
+            "0,5": "Nieuwe rekening toevoegen",
+            "0,6": "Verwijder rekening",
+            "0,7": "Instellingen overzetten",
+        "1": "Mutaties bekijken",
+        "2": "Mutatie toevoegen",
+            "2,1": "Nieuw",
+            "2,2": "Kopie naar vandaag",
+            "2,3": "Kopie naar andere rekening",
+        "3": "Mutatie wijzigen",
+            "3,1": "Wijzig datum",
+            "3,2": "Wijzig bedrag",
+            "3,3": "Wijzig wederpartij",
+            "3,4": "Wijzig betreft",
+            "3,5": "Wijzig categorie",
+        "4": "Mutatie verwijderen",
+        "5": "Spaarpotten",
+            "5,1": "Bekijk spaarpotten",
+            "5,2": "Wijzig spaarpot",
+                "5,2,1": "Naam",
+                "5,2,2": "Waarde",
+            "5,3": "Voeg nieuwe spaarpot toe",
+            "5,4": "Verwijder spaarpot"
+        }
+menuEN = {
+        "0": "Manage account options",
+            "0,0": "Print version and info",
+            "0,1": "Category management",
+                "0,1,1": "Modify category name",
+                "0,1,2": "Modify month budget",
+                "0,1,3": "Remove category",
+            "0,2": "Alter account settings",
+                "0,2,1": "Description",
+                "0,2,2": "Account holder",
+                "0,2,3": "City",
+                "0,2,4": "Language",
+                "0,2,5": "Currency",
+                "0,2,6": "Zero lines",
+                "0,2,7": "Marking Lower >< Upper",
+                "0,2,8": "Colour",
+                "0,2,9": "Date formatting",
+                "0,2,10": "Print month overview to file",
+                "0,2,11": "Show total amount on start screen",
+                "0,2,12": "Export all to csv file",
+            "0,3": "Show or hide account",
+            "0,4": "Switch account",
+            "0,5": "Add new account",
+            "0,6": "Delete account",
+            "0,7": "Transfer account settings",
+        "1": "View mutations",
+        "2": "Add mutation",
+            "2,1": "New",
+            "2,2": "Copy to today",
+            "2,3": "Copy to another account",
+        "3": "Modify mutation",
+            "3,1": "Change date",
+            "3,2": "Change amount",
+            "3,3": "Change other party",
+            "3,4": "Change about",
+            "3,5": "Change category",
+        "4": "Remove mutation",
+        "5": "Piggy banks",
+            "5,1": "View piggy banks",
+            "5,2": "Modify piggy bank",
+                "5,2,1": "Name",
+                "5,2,2": "Value",
+            "5,3": "Add new piggy bank",
+            "5,4": "Remove piggy bank"
+        }
+menuIT = {
+        "0": "Gestire opzioni del conto",
+            "0,0": "Print versione ed info",
+            "0,1": "Gestione categorie",
+                "0,1,1": "Modificare nome di categoria",
+                "0,1,2": "Modificare budget mensile",
+                "0,1,3": "Eliminare categoria",
+            "0,2": "Modificare impostazioni del conto",
+                "0,2,1": "Descrizione",
+                "0,2,2": "Intestatario",
+                "0,2,3": "Città",
+                "0,2,4": "Lingua",
+                "0,2,5": "Valuta",
+                "0,2,6": "Linee a zero",
+                "0,2,7": "Indicazione Inferiore >< Superiore",
+                "0,2,8": "Colore",
+                "0,2,9": "Formato data",
+                "0,2,10": "Stampa riepilogo mensile in file",
+                "0,2,11": "Mostra totale sullo schermo iniziale",
+                "0,2,12": "Esporta tutto in file csv",
+            "0,3": "Mostrare o nascondere conto",
+            "0,4": "Passare ad un altro conto",
+            "0,5": "Aggiungere un nuovo conto",
+            "0,6": "Eliminare conto",
+            "0,7": "Trasferire impostazioni",
+        "1": "Vedere mutazioni",
+        "2": "Aggiungere mutazione",
+            "2,1": "Nuova",
+            "2,2": "Copia colla data di oggi",
+            "2,3": "Copia su un altro conto",
+        "3": "Modificare mutazione",
+            "3,1": "Modifica data",
+            "3,2": "Modifica somma",
+            "3,3": "Modifica controparte",
+            "3,4": "Modifica riguarda",
+            "3,5": "Modifica categoria",
+        "4": "Rimuovere mutazione",
+        "5": "Salvadanai",
+            "5,1": "Vedere salvadanai",
+            "5,2": "Modificare salvadanaio",
+                "5,2,1": "Nome",
+                "5,2,2": "Valore",
+            "5,3": "Aggiungere salvadanaio",
+            "5,4": "Rimuovere salvadanaio"
+        }
+
+
+
 info1 = """
 Iedere rekeningmapnaam bestaat uit een rekeningnummer en een jaartal.
 In opzet bevat een map één kalenderjaar, hoewel het mogelijk is om
@@ -66,20 +205,20 @@ Andere categorieën kunnen worden toegevoegd door een nieuwe mutatie
 toe te voegen of te wijzigen en toe te wijzen aan de nieuwe categorie.
 
 "header" bevat 12 items waarvan alleen de eerste drie worden getoond:
- 1: Beschrijving
- 2: Rekeninghouder
- 3: Plaats
- 4: Taal
- 5: Valuta (standaard "€")
- 6: Nulregels (standaard "Nee")
- 7: Markering Laag >< Hoog (standaard "-100 >< 100")
- 8: Kleur (standaard "Categorie")
- 9: Datumformaat (standaard "JJJJMMDD")
-10: Print maandoverzicht naar bestand (standaard "Nee")
-11: Toon totaalsaldo op startscherm (standaard "Ja")
-12: Exporteer alles naar csv-bestand (standaard "Nee")
+ 1: %s 
+ 2: %s 
+ 3: %s 
+ 4: %s 
+ 5: %s 
+ 6: %s 
+ 7: %s 
+ 8: %s 
+ 9: %s 
+10: %s 
+11: %s 
+12: %s 
 
-+-----"""
++-----""" % (menu["0,2,1"],menu["0,2,2"],menu["0,2,3"],menu["0,2,4"],menu["0,2,5"],menu["0,2,6"],menu["0,2,7"],menu["0,2,8"],menu["0,2,9"],menu["0,2,10"],menu["0,2,11"],menu["0,2,12"])
 info1EN = """
 Every account folder name is formed by an account number and a year.
 It is intended for details of one calendar year, although the user can
@@ -118,20 +257,20 @@ Other categories can be added by adding a new mutation or making a
 copy and assigning it to a new to be made category.
 
 "header" contains 12 items of which only the first three are shown:
- 1: Description
- 2: Account holder
- 3: City
- 4: Language
- 5: Currency (default "€")
- 6: Zero lines (default "No")
- 7: Marking Low >< High (default "-100 >< 100")
- 8: Colour (default "Category")
- 9: Date formatting (default "YYYYMMDD")
-10: Print month overview to file (default "No")
-11: Show total amount on start screen (default "Yes")
-12: Export all to csv file (default "No")
+ 1: %s 
+ 2: %s 
+ 3: %s 
+ 4: %s 
+ 5: %s 
+ 6: %s 
+ 7: %s 
+ 8: %s 
+ 9: %s 
+10: %s 
+11: %s 
+12: %s 
 
-+-----"""
++-----""" % (menuEN["0,2,1"],menuEN["0,2,2"],menuEN["0,2,3"],menuEN["0,2,4"],menuEN["0,2,5"],menuEN["0,2,6"],menuEN["0,2,7"],menuEN["0,2,8"],menuEN["0,2,9"],menuEN["0,2,10"],menuEN["0,2,11"],menuEN["0,2,12"])
 info1IT = """
 Ogni nome della cartella del conto consiste in un numero di conto ed
 un anno. Nella configurazione, una cartella contiene un anno di
@@ -175,186 +314,192 @@ da fare.
 
 "header" contiene 11 elementi di cui vengono mostrati solo i primi
 tre:
- 1: Descrizione
- 2: Intestatario
- 3: Città
- 4: Lingua
- 5: Valuta (predefinito "€")
- 6: Linee a zero (predefinito "No")
- 7: Indicazione Inferiore >< Superiore (predefinito "-100 >< 100")
- 8: Colore (predefinito "Categoria")
- 9: Formato data (predefinito "AAAAMMGG")
-10: Stampa riepilogo mensile in file (predefinito "No") 
-11: Mostra totale sullo schermo iniziale (predefinito "Sì") 
-12: Esporta tutto in file csv (predefinito "No") 
+ 1: %s 
+ 2: %s 
+ 3: %s 
+ 4: %s 
+ 5: %s 
+ 6: %s 
+ 7: %s 
+ 8: %s 
+ 9: %s 
+10: %s 
+11: %s 
+12: %s 
 
-+-----"""
++-----""" % (menuIT["0,2,1"],menuIT["0,2,2"],menuIT["0,2,3"],menuIT["0,2,4"],menuIT["0,2,5"],menuIT["0,2,6"],menuIT["0,2,7"],menuIT["0,2,8"],menuIT["0,2,9"],menuIT["0,2,10"],menuIT["0,2,11"],menuIT["0,2,12"])
 info2 = """
 PROGRAMMASTRUCTUUR en snelkeuzes:
 
 De laatstgebruikte rekening wordt opnieuw geopend met ""+"Enter"
 
-0 Beheer rekeningopties
-    0 Print versie en info
-    1 Categoriebeheer
-        1 Categorienaam wijzigen
-        2 Maandbudget wijzigen
-        3 Categorie verwijderen
-    2 Rekeninginstellingen aanpassen
-        1 Beschrijving
-        2 Rekeninghouder
-        3 Plaats
-        4 Taal (standaard = "NL")
-        5 Valuta (standaard = "€")
-        6 Nulregels (standaard "Nee")
-        7 Markering Laag >< Hoog (Laag standaard omkering van Hoog)
-        8 Kleur (standaard = "Categorie")
-        9 Datumformaat (standaard = "JJJJMMDD")
-       10: Print maandoverzicht naar bestand (standaard "Nee")
-       11: Toon totaalsaldo op startscherm (standaard "Ja")
-       12: Exporteer alles naar csv-bestand (standaard "Nee")
-    3 Toon of verberg rekening
-    4 Wissel van zichtbare rekening
-    5 Nieuwe rekening toevoegen
-    6 Verwijder rekening
-    7 Instellingen overzetten
-1 Mutaties bekijken
+Interactieve hulp: H
+
+0 %s
+    0 %s
+    1 %s
+        1 %s
+        2 %s
+        3 %s
+    2 %s
+        1 %s
+        2 %s
+        3 %s
+        4 %s
+        5 %s
+        6 %s
+        7 %s
+        8 %s
+        9 %s
+       10 %s
+       11 %s
+       12 %s
+    3 %s
+    4 %s
+    5 %s
+    6 %s
+    7 %s
+1 %s
     Datumselectie -> Categorieselectie -> Subselectie -> Toon + ID
-2 Mutatie toevoegen
-    1 Nieuw
-    2 Kopie naar vandaag
-    3 Kopie naar andere rekening
-3 Mutatie wijzigen
-    1 Datum (standaard = vandaag)
-    2 Bedrag (standaard = "0.0", "+" of "-" = omkering)
-    3 Wederpartij
-    4 Betreft
-    5 Categorie
-4 Mutatie verwijderen
-5 Spaarpotten (alleen huishoudelijk)
-    1 Bekijk spaarpotten
-    2 Wijzig spaarpot
-        1 Naam
-        2 Waarde
-    3 Voeg nieuwe spaarpot toe
-    4 Verwijder spaarpot
+2 %s
+    1 %s
+    2 %s
+    3 %s
+3 %s
+    1 %s
+    2 %s
+    3 %s
+    4 %s
+    5 %s
+4 %s
+5 %s
+    1 %s
+    2 %s
+        1 %s
+        2 %s
+    3 %s
+    4 %s
 
 Keuzes moeten worden bevestigd met "Enter".
 Probeer ook eens snelkeuzes "M", "MI", "MO" en " ".
 "Terug" of "Verlaten" met "Q" (of "X").
 "Terug naar hoofdmenu" met "QQ", "Nu afsluiten" met "QQQ".
-"""
+""" % (menu["0"],menu["0,0"],menu["0,1"],menu["0,1,1"],menu["0,1,2"],menu["0,1,3"],menu["0,2"],menu["0,2,1"],menu["0,2,2"],menu["0,2,3"],menu["0,2,4"],menu["0,2,5"],menu["0,2,6"],menu["0,2,7"],menu["0,2,8"],menu["0,2,9"],menu["0,2,10"],menu["0,2,11"],menu["0,2,12"],menu["0,3"],menu["0,4"],menu["0,5"],menu["0,6"],menu["0,7"],menu["1"],menu["2"],menu["2,1"],menu["2,2"],menu["2,3"],menu["3"],menu["3,1"],menu["3,2"],menu["3,3"],menu["3,4"],menu["3,5"],menu["4"],menu["5"],menu["5,1"],menu["5,2"],menu["5,2,1"],menu["5,2,2"],menu["5,3"],menu["5,4"])
 info2EN = """
 PROGRAM STRUCTURE and quick choices:
 
 The last used account is reopened with ""+"Enter"
 
-0 Manage account options
-    0 Print version and info
-    1 Category management
-        1 Modify category name
-        2 Modify month budget
-        3 Remove category
-    2 Alter account settings
-        1 Description
-        2 Account holder
-        3 City
-        4 Language (default "NL")
-        5 Currency (default "€")
-        6 Zero lines (default "No")
-        7 Marking Lower >< Upper (by default one inversion of other)
-        8 Colour (default = "Category")
-        9 Date formatting (default = "YYYYMMDD")
-       10: Print month overview to file (default "No")
-       11: Show total amount on start screen (default "Yes")
-       12: Export all to csv file (default "No")
-    3 Show or hide account
-    4 Switch visible account (!)
-    5 Add new account
-    6 Delete account
-    7 Transfer account settings
-1 View mutations
+Interactive help: H
+
+0 %s
+    0 %s
+    1 %s
+        1 %s
+        2 %s
+        3 %s
+    2 %s
+        1 %s
+        2 %s
+        3 %s
+        4 %s
+        5 %s
+        6 %s
+        7 %s
+        8 %s
+        9 %s
+       10 %s
+       11 %s
+       12 %s
+    3 %s
+    4 %s
+    5 %s
+    6 %s
+    7 %s
+1 %s
     Date selection -> Category selection -> Subselection -> Show + ID
-2 Add mutation
-    1 New
-    2 Copy to today
-    3 Copy to another account
-3 Modify mutation
-    1 Date (default = today)
-    2 Amount (default = "0.0", "+" or "-" = opposite)
-    3 Other party
-    4 About
-    5 Category
-4 Remove mutation
-5 Piggy banks (only household)
-    1 View piggy banks
-    2 Modify piggy bank
-        1 Name
-        2 Value
-    3 Add new piggy bank
-    4 Remove piggy bank
+2 %s
+    1 %s
+    2 %s
+    3 %s
+3 %s
+    1 %s
+    2 %s
+    3 %s
+    4 %s
+    5 %s
+4 %s
+5 %s
+    1 %s
+    2 %s
+        1 %s
+        2 %s
+    3 %s
+    4 %s
 
 Choices must be confirmed with "Enter".
 Try also quick choices "M", "MI", "MO" and " ".
 "Back" or "Abort" with "Q" (or "X").
 "Back to main menu" with "QQ", "Exit now" with "QQQ".
-"""
+""" % (menuEN["0"],menuEN["0,0"],menuEN["0,1"],menuEN["0,1,1"],menuEN["0,1,2"],menuEN["0,1,3"],menuEN["0,2"],menuEN["0,2,1"],menuEN["0,2,2"],menuEN["0,2,3"],menuEN["0,2,4"],menuEN["0,2,5"],menuEN["0,2,6"],menuEN["0,2,7"],menuEN["0,2,8"],menuEN["0,2,9"],menuEN["0,2,10"],menuEN["0,2,11"],menuEN["0,2,12"],menuEN["0,3"],menuEN["0,4"],menuEN["0,5"],menuEN["0,6"],menuEN["0,7"],menuEN["1"],menuEN["2"],menuEN["2,1"],menuEN["2,2"],menuEN["2,3"],menuEN["3"],menuEN["3,1"],menuEN["3,2"],menuEN["3,3"],menuEN["3,4"],menuEN["3,5"],menuEN["4"],menuEN["5"],menuEN["5,1"],menuEN["5,2"],menuEN["5,2,1"],menuEN["5,2,2"],menuEN["5,3"],menuEN["5,4"])
 info2IT = """
 STRUTTURA DEL PROGRAMMA e selezioni rapidi:
 
 L'ultimo usato conto si riapre con ""+"Enter"
 
-0 Gestire opzioni del conto
-    0 Print versione ed info
-    1 Gestione categorie
-        1 Modificare nome di categoria
-        2 Modificare budget mensile
-        3 Eliminare categoria
-    2 Modificare impostazioni del conto
-        1 Descrizione
-        2 Intestatario
-        3 Città
-        4 Lingua (predefinito "NL")
-        5 Valuta (predefinito "€")
-        6 Linee a zero (predefinito "No")
-        7 Indicazione Inf. >< Sup. (Inf. predefinito inverso di Sup.)
-        8 Colore (predefinito = "Categoria")
-        9 Formato data (predefinito "AAAAMMGG")
-       10: Stampa riepilogo mensile in file (predefinito "No") 
-       11: Mostra totale sullo schermo iniziale (predefinito "Sì")
-       12: Esporta tutto in file csv (predefinito "No") 
-    3 Mostrare o nascondere conto
-    4 Passare ad un altro conto visibile
-    5 Aggiungere un nuovo conto
-    6 Eliminare conto
-    7 Trasferire impostazioni
-1 Vedere mutazioni
+Assistenza interattiva: H
+
+0 %s
+    0 %s
+    1 %s
+        1 %s
+        2 %s
+        3 %s
+    2 %s
+        1 %s
+        2 %s
+        3 %s
+        4 %s
+        5 %s
+        6 %s
+        7 %s
+        8 %s
+        9 %s
+       10 %s
+       11 %s
+       12 %s
+    3 %s
+    4 %s
+    5 %s
+    6 %s
+    7 %s
+1 %s
     Selezione data > Selezione categoria > Sottoselezione > Mostra+ID
-2 Aggiungere mutazione
-    1 Nuova
-    2 Copia colla data di oggi
-    3 Copia su un altro conto
-3 Modificare mutazione
-    1 Data (impostazione predefinita = oggi)
-    2 Somma (predefinito = "0.0", "+" o "-" = inversione)
-    3 Controparte
-    4 Riguarda
-    5 Categoria
-4 Rimuovere mutazione
-5 Salvadanai (solo domestico)
-    1 Vedere salvadanai
-    2 Modificare salvadanaio
-        1 Nome
-        2 Valore
-    3 Aggiungere salvadanaio
-    4 Rimuovere salvadanaio
+2 %s
+    1 %s
+    2 %s
+    3 %s
+3 %s
+    1 %s
+    2 %s
+    3 %s
+    4 %s
+    5 %s
+4 %s
+5 %s
+    1 %s
+    2 %s
+        1 %s
+        2 %s
+    3 %s
+    4 %s
 
 Le scelte devono essere confermate con "Invio".
 Prova anche selezioni rapidi "M", "MI", "MO" e " ".
 Selezione rapida "M" per "Tutto questo mese".
 "Indietro" o "Annulla" con "Q" (o "X").
 "Tornare al menu principale" con "QQ", "Uscire ora" con "QQQ".
-"""
+""" % (menuIT["0"],menuIT["0,0"],menuIT["0,1"],menuIT["0,1,1"],menuIT["0,1,2"],menuIT["0,1,3"],menuIT["0,2"],menuIT["0,2,1"],menuIT["0,2,2"],menuIT["0,2,3"],menuIT["0,2,4"],menuIT["0,2,5"],menuIT["0,2,6"],menuIT["0,2,7"],menuIT["0,2,8"],menuIT["0,2,9"],menuIT["0,2,10"],menuIT["0,2,11"],menuIT["0,2,12"],menuIT["0,3"],menuIT["0,4"],menuIT["0,5"],menuIT["0,6"],menuIT["0,7"],menuIT["1"],menuIT["2"],menuIT["2,1"],menuIT["2,2"],menuIT["2,3"],menuIT["3"],menuIT["3,1"],menuIT["3,2"],menuIT["3,3"],menuIT["3,4"],menuIT["3,5"],menuIT["4"],menuIT["5"],menuIT["5,1"],menuIT["5,2"],menuIT["5,2,1"],menuIT["5,2,2"],menuIT["5,3"],menuIT["5,4"])
 
 basismap = os.path.dirname(os.path.realpath(__file__)) # de map waar het pythonscript in staat moet schrijfbaar zijn
 os.chdir(basismap)
@@ -496,6 +641,7 @@ def updatekleur():
         kleuren = {"ResetAll":"\033[0m","Omkeren":"\033[7m","Rood":ResetAll,"Groen":ResetAll,"Geel":ResetAll,"Blauw":ResetAll,"Magenta":ResetAll,"Cyaan":ResetAll,"LichtGrijs":ResetAll,"DonkerGrijs":ResetAll,"LichtRood":ResetAll,"LichtGroen":ResetAll,"LichtGeel":ResetAll,"LichtBlauw":ResetAll,"LichtMagenta":ResetAll,"LichtCyaan":ResetAll,"Wit":ResetAll,"colgoed":LichtGroen,"colslecht":LichtRood,"colonbepaald":Blauw}
         catcol = {"0":"\033[31m","1":"\033[32m","2":"\033[33m","3":"\033[34m","4":"\033[35m","5":"\033[36m","6":"\033[37m","7":"\033[90m","8":"\033[91m","9":"\033[92m","A":"\033[31m","B":"\033[32m","C":"\033[33m","D":"\033[34m","E":"\033[35m","F":"\033[36m","G":"\033[37m","H":"\033[90m","I":"\033[91m","J":"\033[92m","K":"\033[93m","L":"\033[94m","M":"\033[95m","N":"\033[96m","O":"\033[97m"}
     return kleuren,catcol
+
 
 def toontotaal():
     with open("header","r") as h:
@@ -951,6 +1097,478 @@ def exportcsv():
                 pass
 
 
+def aid():
+    if Taal == "EN":
+        print(info2EN)
+    elif Taal == "IT":
+        print(info2IT)
+    else:
+        print(info2)
+    if Taal == "EN":
+        warp = textwrap.wrap("Choose - for example - \"2 1\" for help with adding a new mutation. Separate the menu options with a space \" \", hyphen \"-\", or comma \",\".", width = w)
+    elif Taal == "IT":
+        warp = textwrap.wrap("Scegli - ad esempio - \"2 1\" per ottenere assistenza nell'aggiunta di una nuova mutazione. Separa le opzioni del menu con uno spazio \" \", un trattino \"-\" o una virgola \",\".", width = w)
+    else:
+        warp = textwrap.wrap("Kies - bijvoorbeeld - \"2 1\" voor hulp bij het toevoegen van een nieuwe mutatie. Scheid de menu-opties met een spatie \" \", koppelteken \"-\"of komma \",\".", width = w)
+    for i in warp:
+        print(i)
+    loop = True
+    while loop == True:
+        warp = ""
+        op = ""
+        wat = input().replace(" ",",").replace("-",",").split(",")
+        while '' in wat:
+            wat.remove('')
+        if len(wat) == 0 or wat[0].upper() in afsluitlijst:
+            break
+        if wat == ['0']:
+            if Taal == "EN":
+                op = menuEN["0"]
+                warp = textwrap.wrap("View and change environmental variables, mainly for this specific account.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]
+                warp = textwrap.wrap("Visualizzare e modificare le variabili ambientali, principalmente per questo account specifico.", width = w)
+            else:
+                op = menu["0"]
+                warp = textwrap.wrap("Bekijk en verander omgevingsvariabelen, voornamelijk voor dit specifieke account.", width = w)
+        elif wat == ['0','0']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,0"]
+                warp = textwrap.wrap("Information about the program version and this Help menu. Choose - for example - \"2 1\" for help with adding a new mutation. Separate the menu options with a space \" \", hyphen \"-\", or comma \",\".", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,0"]
+                warp = textwrap.wrap("Informazioni sulla versione del programma e su questo menu di aiuto. Scegli - ad esempio - \"2 1\" per ottenere assistenza nell'aggiunta di una nuova mutazione. Separa le opzioni del menu con uno spazio \" \", un trattino \"-\" o una virgola \",\".", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,0"]
+                warp = textwrap.wrap("Informatie over de programmaversie en dit Helpmenu. Kies - bijvoorbeeld - \"2 1\" voor hulp bij het toevoegen van een nieuwe mutatie. Scheid de menu-opties met een spatie \" \", koppelteken \"-\"of komma \",\".", width = w)
+        elif wat == ['0','1']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,1"]
+                warp = textwrap.wrap("Change the name of, or an available budget for a category, or delete it. A NEW category is created by adding a new mutation to a new category; it is created at that time.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,1"]
+                warp = textwrap.wrap("Modifica il nome, o un budget disponibile per una categoria, o rimuovila. Una NUOVA categoria viene creata aggiungendo una nuova mutazione a una nuova categoria; questa viene creata in quel momento.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,1"]
+                warp = textwrap.wrap("Wijzig de naam van, of een beschikbaar budget voor een categorie, of verwijder die. Een NIEUWE categorie maakt men aan door een nieuwe mutatie toe te voegen aan een nieuwe categorie; die wordt op dat moment aangemaakt.", width = w)
+        elif wat == ['0','1','1']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,1"]+" - "+menuEN["0,1,1"]
+                warp = textwrap.wrap("Change the name of the category.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,1"]+" - "+menuIT["0,1,1"]
+                warp = textwrap.wrap("Cambia il nome della categoria.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,1"]+" - "+menu["0,1,1"]
+                warp = textwrap.wrap("Wijzig de naam van de categorie", width = w)
+        elif wat == ['0','1','2']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,1"]+" - "+menuEN["0,1,2"]
+                warp = textwrap.wrap("Adjust the budget for this category. It will be automatically calculated whether the budgets are balanced; make sure the balance is always 0.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,1"]+" - "+menuIT["0,1,2"]
+                warp = textwrap.wrap("Modifica il budget per questa categoria. Verrà calcolato automaticamente se i budget sono equilibrati; assicurati che il bilancio sia sempre 0.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,1"]+" - "+menu["0,1,2"]
+                warp = textwrap.wrap("Pas het budget voor deze categorie aan. Er wordt automatisch berekend of de budgetten sluitend zijn; zorg ervoor dat de balans altijd 0 is.", width = w)
+        elif wat == ['0','1','3']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,1"]+" - "+menuEN["0,1,3"]
+                warp = textwrap.wrap("Completely delete a category, including all transactions in that category. NOTE: the bank balance will be increased or decreased by the total amount of this category. So, make sure that any transactions in this category are first distributed among one or more other categories!", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,1"]+" - "+menuIT["0,1,3"]
+                warp = textwrap.wrap("Elimina completamente una categoria, inclusi tutti le transazioni in quella categoria. NOTA: il saldo bancario verrà aumentato o diminuito dell'importo totale di questa categoria. Assicurati quindi che tutte le eventuali transazioni in questa categoria siano state prima distribuite tra una o più altre categorie!", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,1"]+" - "+menu["0,1,3"]
+                warp = textwrap.wrap("Verwijder een categorie compleet, inclusief alle transacties in die categorie. LET OP: het banksaldo wordt verhoogd of verlaagd met het totaalbedrag van deze categorie. Zorg er dus eerst voor dat alle eventuele transacties in deze categorie zijn verdeeld over één of meer andere categorie(-ën)!", width = w)
+        elif wat == ['0','2']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]
+                warp = textwrap.wrap("Adjust various display settings of this account, and create export files with useful overviews or reusable data.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]
+                warp = textwrap.wrap("Modifica le diverse impostazioni di visualizzazione di questo account e crea file di esportazione con panorami utili o dati riutilizzabili.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]
+                warp = textwrap.wrap("Pas verschillende weergave-instellingen van dit account aan, en stel exportbestanden met handige overzichten of herbruikbare gegevens in.", width = w)
+        elif wat == ['0','2','1']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,1"]
+                warp = textwrap.wrap("Here you can adjust the account name.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,1"]
+                warp = textwrap.wrap("Qui puoi modificare il nome del conto.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,1"]
+                warp = textwrap.wrap("Hier kunt u de rekeningnaam aanpassen.", width = w)
+        elif wat == ['0','2','2']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,2"]
+                warp = textwrap.wrap("Here you can adjust the account holder name.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,2"]
+                warp = textwrap.wrap("Qui puoi modificare il nome del intestario del conto.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,2"]
+                warp = textwrap.wrap("Hier kunt u de rekeninghoudernaam aanpassen.", width = w)
+        elif wat == ['0','2','3']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,3"]
+                warp = textwrap.wrap("Here you can adjust the place of business.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,3"]
+                warp = textwrap.wrap("Qui puoi modificare la sede legale.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,3"]
+                warp = textwrap.wrap("Hier kunt u de vestigingsplaats aanpassen.", width = w)
+        elif wat == ['0','2','4']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,4"]
+                warp = textwrap.wrap("You can adjust the language of the program per account. Currently, you can choose from \"NL\" (Dutch, default), \"EN\" (English), or \"IT\" (Italian).", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,4"]
+                warp = textwrap.wrap("È possibile modificare la lingua del programma per account. Attualmente è possibile scegliere tra \"NL\" (olandese, predefinito), \"EN\" (inglese) o \"IT\" (italiano).", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,4"]
+                warp = textwrap.wrap("U kunt de taal van het programma per rekening aanpassen. Op dit moment kunt u kiezen uit \"NL\" (Nederlands, standaard), \"EN\" (Engels) of \"IT\" (Italiaans).", width = w)
+        elif wat == ['0','2','5']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,5"]
+                warp = textwrap.wrap("Here you can enter any currency symbol. Choose a currency symbol - it can also be a letter or another symbol - that occupies exactly one position. The Euro symbol \"€\" is used by default, commonly used other currency symbols are for example \"$\" and \"¥\".", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,5"]
+                warp = textwrap.wrap("ValutaQui puoi inserire qualsiasi simbolo di valuta. Scegli un simbolo di valuta - che può essere anche una lettera o un altro simbolo - che occupi una sola posizionea. Di default viene utilizzato il simbolo dell'euro \"€\", altri simboli di valuta comunemente utilizzati sono ad esempio \"$\" e \"¥\".", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,5"]
+                warp = textwrap.wrap("Hier kunt u ieder valutateken invoeren. Kies een valutateken - dat kan ook een letter of een ander symbool zijn - dat precies één positie inneemt. Standaard wordt het Euroteken \"€\" gebruikt, veelgebruikte andere valutatekens zijn bijvoorbeeld \"$\" en \"¥\"", width = w)
+        elif wat == ['0','2','6']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,6"]
+                warp = textwrap.wrap("Choose here whether you want to see empty categories in the totals.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,6"]
+                warp = textwrap.wrap("Scegli qui se vuoi vedere anche le categorie vuote nei totali.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,6"]
+                warp = textwrap.wrap("Kies hier of u in de totalen ook lege categorieën wilt zien.", width = w)
+        elif wat == ['0','2','7']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,7"]
+                warp = textwrap.wrap("The currency symbol can be highlighted if a mutation is higher or lower than a certain amount. By default, these are set to \"lower than -100\" and \"higher than 100\".", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,7"]
+                warp = textwrap.wrap("Il simbolo di valuta può essere evidenziato se una variazione è superiore o inferiore a un determinato importo. Di default, questi sono impostati su \"inferiore a -100\" e \"superiore a 100\".", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,7"]
+                warp = textwrap.wrap("Het valutateken kan worden geaccentueerd als een mutatie hoger of lager is dan een hier bepaald bedrag. Standaard staan deze op \"lager dan -100\" en \"hoger dan 100\".", width = w)
+        elif wat == ['0','2','8']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,8"]
+                warp = textwrap.wrap("The account and the environment can be displayed in different color palettes. Try them out!", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,8"]
+                warp = textwrap.wrap("Il conto e l'ambiente possono essere visualizzati in diverse tavolozze di colori. Provali!", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,8"]
+                warp = textwrap.wrap("De rekening en de omgeving kunnen in verschillende kleurenpaletten worden weergegeven. Probeer ze uit!", width = w)
+        elif wat == ['0','2','9']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,9"]
+                warp = textwrap.wrap("Here you can choose the date formatting. Default \"YYYYMMDD\": %s" % nu, width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,9"]
+                warp = textwrap.wrap("Qui puoi scegliere il formato di visualizzazione della data. Predefinito \"AAAAMMGG\": %s" % nu, width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,9"]
+                warp = textwrap.wrap("Hier kunt u de datumweergave kiezen. Standaard \"JJJJMMDD\": %s" % nu, width = w)
+        elif wat == ['0','2','10']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuen["0,2"]+" - "+menuEN["0,2,10"]
+                warp = textwrap.wrap("A monthly overview (one month) can be exported to a file in the account folder. The account folder is located in the directory where the program is running and always contains a \"@\". By default, this is turned off. When you enable this, every monthly overview will be automatically exported; if it already exists, it will be overwritten.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,10"]
+                warp = textwrap.wrap("Una visualizzazione mensile (un mese) può essere esportata in un file nella cartella del conto. La cartella del conto si trova nella cartella in cui il programma è in esecuzione e contiene sempre un \"@\". Di default, questa opzione è disattivata. Quando si attiva questo, ogni riepilogo mensile verrà sempre esportato automaticamente; se esiste già, verrà sovrascritto.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,10"]
+                warp = textwrap.wrap("Een maandoverzicht (één maand) kan naar een bestand in de rekeningmap worden geëxporteerd. De rekeningmap bevindt zich in de map waar het programma draait, en bevat altijd een \"@\". Standaard staat dit uit. Wanneer u dit aanzet wordt ieder maandoverzicht steeds automatisch geëxporteerd; als het al bestaat wordt het overschreven.", width = w)
+        elif wat == ['0','2','11']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,11"]
+                warp = textwrap.wrap("The account balance can be displayed on the start screen. Also, the total of all different accounts where this is activated will be shown. By default, this is enabled. PLEASE NOTE: The total balance of multiple accounts may be incorrect if different currencies are used!", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,11"]
+                warp = textwrap.wrap("Il saldo del conto può essere visualizzato nella schermata iniziale. Inoltre, verrà mostrato il totale di tutti i diversi conti in cui questa opzione è attiva. Di default, questa opzione è attiva. ATTENZIONE: Il saldo totale di più conti può essere impreciso se vengono utilizzate valute diverse!", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,11"]
+                warp = textwrap.wrap("Het rekeningsaldo kan op het startscherm worden getoond. Tevens wordt het totaal getoond van alle verschillende rekeningen waarbij dit is geactiveerd. Standaard staat dit aan. LET OP: Het totaalsaldo van meerdere rekeningen kan onjuist zijn als er verschillende valuta worden gebruikt!", width = w)
+        elif wat == ['0','2','12']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,2"]+" - "+menuEN["0,2,12"]
+                warp = textwrap.wrap("The entire account can be exported in one CSV file: export.csv, which is placed in the account folder. The account folder is located in the directory where the program runs, and always contains an \"@\". By default, this is disabled. When you enable this, each CSV file is automatically exported when the program is closed; if it already exists, it will be overwritten.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,2"]+" - "+menuIT["0,2,12"]
+                warp = textwrap.wrap("L'intero conto può essere esportato in un unico file CSV: export.csv, che verrà posizionato nella cartella del conto. La cartella del conto si trova nella directory in cui il programma è in esecuzione e contiene sempre una \"@\". Di default, questa opzione è disattivata. Quando la si attiva, ogni file CSV viene esportato automaticamente alla chiusura del programma; se esiste già, verrà sovrascritto.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,2"]+" - "+menu["0,2,12"]
+                warp = textwrap.wrap("De hele rekening kan worden geëxporteerd in één csv-bestand: export.csv, dat in de rekeningmap wordt geplaatst. De rekeningmap bevindt zich in de map waar het programma draait, en bevat altijd een \"@\". Standaard staat dit uit. Wanneer u dit aanzet wordt ieder csv-bestand bij het afsluiten van het programma automatisch geëxporteerd; als het al bestaat wordt het overschreven.", width = w)
+        elif wat == ['0','3']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,3"]
+                warp = textwrap.wrap("\"Showing an account\" roughly means \"making it available\". One can only edit an account, add transactions, etc., if the account is \"visible\". \"Hidden\" accounts can be archived accounts, draft accounts, and so on. Choose here which accounts should be shown or hidden.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,3"]
+                warp = textwrap.wrap("\"Mostrare\" un conto significa approssimativamente \"rendere disponibile\". Si può modificare un conto, aggiungere transazioni, ecc., solo se il conto è \"visibile\". I conti \"nascosti\" possono essere conti archiviati, conti di progetto, ecc. Scegli qui quali conti devono essere mostrati o nascosti.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,3"]
+                warp = textwrap.wrap("Een rekening \"tonen\" betekent ongeveer \"beschikbaar maken\". Men kan alleen een rekening bewerken, er mutaties aan toevoegen, enzovoorts, als de rekening \"zichtbaar\" is. \"Verborgen\" rekeningen kunnen gearchiveerde rekeningen zijn, conceptrekeningen, enzovoorts. Kies hier welke rekeningen getoond of verborgen moeten worden.", width = w)
+        elif wat == ['0','4']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,4"]
+                warp = textwrap.wrap("You don't have to exit the program to switch accounts. Choose another one here. PLEASE NOTE: if you cancel this prematurely, you will still exit the program!", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,4"]
+                warp = textwrap.wrap("Non è necessario uscire dal programma per cambiare conto. Scegliene un altro qui. ATTENZIONE: se interrompi prematuramente, uscirai comunque dal programma!", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,4"]
+                warp = textwrap.wrap("U hoeft het programma niet te verlaten om van rekening te wisselen. Kies hier een andere. LET OP: als u dit voortijdig afbreekt verlaat u het programma alsnog!", width = w)
+        elif wat == ['0','5']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,5"]
+                warp = textwrap.wrap("Add a new account here.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,5"]
+                warp = textwrap.wrap("Aggiungi qui un nuovo conto.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,5"]
+                warp = textwrap.wrap("Voeg hier een nieuwe rekening toe.", width = w)
+        elif wat == ['0','6']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,6"]
+                warp = textwrap.wrap("First consider whether the account should be \"hidden\" (\"archived\"), but here an account can be completely deleted.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,6"]
+                warp = textwrap.wrap("Prima considera se il conto deve essere \"nascosto\" (\"archiviato\"), ma qui un conto può essere completamente eliminato.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,6"]
+                warp = textwrap.wrap("Overweeg eerst of de rekening \"verborgen\" (\"gearchiveerd\") moet worden, maar hier kan een rekening volledig worden verwijderd.", width = w)
+        elif wat == ['0','7']:
+            if Taal == "EN":
+                op = menuEN["0"]+" - "+menuEN["0,7"]
+                warp = textwrap.wrap("Here you can transfer the current settings of this account to another one. The existing settings of the other account will be overwritten.", width = w)
+            elif Taal == "IT":
+                op = menuIT["0"]+" - "+menuIT["0,7"]
+                warp = textwrap.wrap("Qui puoi trasferire le impostazioni attuali di questo conto su un altro. Le impostazioni esistenti dell'altro conto saranno sovrascritte.", width = w)
+            else:
+                op = menu["0"]+" - "+menu["0,7"]
+                warp = textwrap.wrap("Hier kunt u de huidige instellingen van deze rekening overzetten naar een andere. De bestaande instellingen van de andere rekening worden daarmee overschreven.", width = w)
+        elif wat == ['1']:
+            if Taal == "EN":
+                op = menuEN["1"]
+                warp = textwrap.wrap("Transactions can be filtered based on various criteria, such as time period, category, amount, and so on. The results are displayed in a clear table where the transactions are assigned a unique ID. This ID can be used for various operations, such as copying, modifying, or deleting.", width = w)
+            elif Taal == "IT":
+                op = menuIT["1"]
+                warp = textwrap.wrap("Le mutazioni possono essere filtrate in base a vari criteri, come periodo di tempo, categoria, importo, e così via. I risultati vengono mostrati in una tabella chiara, in cui le mutazioni ricevono un ID univoco. Questo ID può essere utilizzato per varie operazioni, come copiare, modificare o eliminare.", width = w)
+            else:
+                op = menu["1"]
+                warp = textwrap.wrap("Mutaties kunnen op verschillende criteria worden gefilterd, zoals tijdvak, categorie, bedrag, enzovoorts. Het resultaat wordt in een overzichtelijke tabel getoond waarbij de mutaties een uniek ID krijgen. Dit ID kan worden gebruikt voor verschillende bewerkingen, zoals kopiëren, wijzigen of verwijderen.", width = w)
+        elif wat == ['2']:
+            if Taal == "EN":
+                op = menuEN["2"]
+                warp = textwrap.wrap("Here you can add or copy new transactions.", width = w)
+            elif Taal == "IT":
+                op = menuIT["2"]
+                warp = textwrap.wrap("Qui è possibile aggiungere o copiare nuove mutazioni.", width = w)
+            else:
+                op = menu["2"]
+                warp = textwrap.wrap("Hier kunt u nieuwe mutaties toevoegen of kopiëren.", width = w)
+        elif wat == ['2','1']:
+            if Taal == "EN":
+                op = menuEN["2"]+" - "+menuEN["2,1"]
+                warp = textwrap.wrap("Adding a new, blank transaction. It is possible to fill in \"Date\", \"Amount\", \"Other party\", and \"About\" on one line, comma-separated in CSV style, and then assign it to a category, or line by line. Leaving the date empty will use today's date, leaving the amount empty will input a transaction of 0.00 in the specified currency.", width = w)
+            elif Taal == "IT":
+                op = menuIT["2"]+" - "+menuIT["2,1"]
+                warp = textwrap.wrap("Aggiungere una nuova transazione vuota. È possibile inserire su una riga, separati da virgola in stile CSV, in successione \"Data\", \"Somma\", \"Controparte\" e \"Riguarda\", e quindi assegnarli a una categoria, o riga per riga. Lasciare vuota la data imposterà la data odierna, lasciare vuoto l'importo creerà una transazione di 0.00 nella valuta specificata.", width = w)
+            else:
+                op = menu["2"]+" - "+menu["2,1"]
+                warp = textwrap.wrap("Een nieuwe, blanco mutatie toevoegen. Men kan op één regel, kommagescheiden in csv-stijl, achtereenvolgens \"Datum\",\"Bedrag\",\"Wederpartij\" en \"Betreft\" invullen en die vervolgens aan een categorie toekennen, of regel voor regel. Het leeg laten van de datum geeft de datum van vandaag, het bedrag leeg laten geeft een mutatie van 0.00 in de opgegeven valuta.", width = w)
+        elif wat == ['2','2']:
+            if Taal == "EN":
+                op = menuEN["2"]+" - "+menuEN["2,2"]
+                warp = textwrap.wrap("Make a copy of an existing mutation based on a previously generated ID. The date of the original will be replaced by today's date in the copy; this can be changed later if desired (3,1), just like any other element.", width = w)
+            elif Taal == "IT":
+                op = menuIT["2"]+" - "+menuIT["2,2"]
+                warp = textwrap.wrap("Creare una copia di una mutazione esistente basata su un ID generato in precedenza. La data dell'originale viene sostituita dalla data odierna nella copia; questa può essere modificata in un secondo momento se necessario (3,1), come ogni altro elemento.", width = w)
+            else:
+                op = menu["2"]+" - "+menu["2,2"]
+                warp = textwrap.wrap("Maak een kopie van een bestaande mutatie op basis van een eerder gegenereerd ID. De datum van het origineel wordt in de kopie vervangen door de datum van vandaag; die kan indien gewenst later gewijzigd worden (3,1), net als ieder ander element.", width = w)
+        elif wat == ['2','3']:
+            if Taal == "EN":
+                op = menuEN["2"]+" - "+menuEN["2,3"]
+                warp = textwrap.wrap("Make a copy to another account of an existing mutation based on a previously generated ID. The date of the original will be replaced by today's date in the copy; this can be changed later if desired (3,1: %s), just like any other element in the mutation." % menuEN["3,1"], width = w)
+            elif Taal == "IT":
+                op = menuIT["2"]+" - "+menuIT["2,3"]
+                warp = textwrap.wrap("Creare una copia in un altro conto di una mutazione esistente basata su un ID generato in precedenza. La data dell'originale viene sostituita dalla data odierna nella copia; questa può essere modificata in un secondo momento se necessario (3,1: %s), come ogni altro elemento nella mutazione." % menuIT["3,1"], width = w)
+            else:
+                op = menu["2"]+" - "+menu["2,3"]
+                warp = textwrap.wrap("Maak een kopie naar een andere rekening van een bestaande mutatie op basis van een eerder gegenereerd ID. De datum van het origineel wordt in de kopie vervangen door de datum van vandaag; die kan indien gewenst later gewijzigd worden (3,1: %s), net als ieder ander element in de mutatie." % (menu["3,1"]), width = w)
+        elif wat == ['3']:
+            if Taal == "EN":
+                op = menuEN["3"]
+                warp = textwrap.wrap("Make changes to an existing mutation, based on a previously generated ID.", width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]
+                warp = textwrap.wrap("Apportare modifiche a una mutazione esistente basata su un ID generato in precedenza.", width = w)
+            else:
+                op = menu["3"]
+                warp = textwrap.wrap("Breng wijzigingen aan in een bestaande mutatie op basis van een eerder gegenereerd ID.", width = w)
+        elif wat == ['3','1']:
+            if Taal == "EN":
+                op = menuEN["3"]+" - "+menuEN["3,1"]
+                warp = textwrap.wrap("Change the date of an existing mutation. Enter the date as \"YYYYMMDD\". So today's date is %s. You can customize the date format in the overviews to your personal preference (0,2,9: %s)." % (nu,menuEN["0,2,9"]), width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]+" - "+menuIT["3,1"]
+                warp = textwrap.wrap("Cambia la data di una mutazione esistente. Inserisci la data come \"AAAAMMGG\". Quindi la data di oggi è %s. Puoi personalizzare il formato della data nelle viste secondo le tue preferenze personali (0,2,9: %s)." % (nu,menuIT["0,2,9"]), width = w)
+            else:
+                op = menu["3"]+" - "+menu["3,1"]
+                warp = textwrap.wrap("Wijzig de datum van een bestaande mutatie. Voer de datum in als \"JJJJMMDD\". De datum van vandaag is aldus %s. De datumopmaak in de overzichten kunt u aanpassen naar uw persoonlijke voorkeur (0,2,9: %s)." % (nu,menu["0,2,9"]), width = w)
+        elif wat == ['3','2']:
+            if Taal == "EN":
+                op = menuEN["3"]+" - "+menuEN["3,2"]
+                warp = textwrap.wrap("Change the amount of an existing mutation. If you do not fill in anything here, the amount will be 0.00, according to the set currency (0,2,5: %s). Only a plus or minus sign (\"+\" or \"-\") inverts the existing amount." % (menuEN["0,2,5"]), width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]+" - "+menuIT["3,2"]
+                warp = textwrap.wrap("Modifica l'importo di una mutazione esistente. Se non inserisci nulla qui, l'importo sarà 0,00, secondo la valuta impostata (0,2,5: %s). Solo un segno più o meno (\"+\" o \"-\") inverte l'importo esistente." % (menuIT["0,2,5"]), width = w)
+            else:
+                op = menu["3"]+" - "+menu["3,2"]
+                warp = textwrap.wrap("Wijzig het bedrag van een bestaande mutatie. Vult u hier niets in, dan is het bedrag op 0.00, volgens de ingestelde valuta (0,2,5: %s). Alleen een plus- of minteken (\"+\" of \"-\") inverteert het bestaande bedrag." % (menu["0,2,5"]), width = w)
+        elif wat == ['3','3']:
+            if Taal == "EN":
+                op = menuEN["3"]+" - "+menuEN["3,3"]
+                warp = textwrap.wrap("Change the name of the creditor or debtor. The maximum length is 15 characters, including spaces and punctuation marks.", width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]+" - "+menuIT["3,3"]
+                warp = textwrap.wrap("Modifica il nome del creditore o debitore. La lunghezza massima è di 15 caratteri, spazi e segni di punteggiatura inclusi.", width = w)
+            else:
+                op = menu["3"]+" - "+menu["3,3"]
+                warp = textwrap.wrap("Wijzig de naam van de crediteur of debiteur. De maximale lengte is 15 karakters, inclusief spaties en leestekens.", width = w)
+        elif wat == ['3','4']:
+            if Taal == "EN":
+                op = menuEN["3"]+" - "+menuEN["3,4"]
+                warp = textwrap.wrap("Change the the description. The maximum length is 15 characters, including spaces and punctuation marks.", width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]+" - "+menuIT["3,4"]
+                warp = textwrap.wrap("Modifica la descrizione. La lunghezza massima è di 15 caratteri, spazi e segni di punteggiatura inclusi.", width = w)
+            else:
+                op = menu["3"]+" - "+menu["3,4"]
+                warp = textwrap.wrap("Wijzig de omschrijving. De maximale lengte is 15 karakters, inclusief spaties en leestekens.", width = w)
+        elif wat == ['3','5']:
+            if Taal == "EN":
+                op = menuEN["3"]+" - "+menuEN["3,5"]
+                warp = textwrap.wrap("Assign the mutation to a different category. PLEASE NOTE: This will result in a different ID for the mutation!", width = w)
+            elif Taal == "IT":
+                op = menuIT["3"]+" - "+menuIT["3,5"]
+                warp = textwrap.wrap("Assegna la mutazione a un'altra categoria. ATTENZIONE: ciò comporterà un cambio di ID per la mutazione!", width = w)
+            else:
+                op = menu["3"]+" - "+menu["3,5"]
+                warp = textwrap.wrap("Wijs de mutatie aan een andere categorie toe. LET OP: de mutatie krijgt hierdoor een ander ID!", width = w)
+        elif wat == ['4']:
+            if Taal == "EN":
+                op = menuEN["4"]
+                warp = textwrap.wrap("Delete a mutation based on a previously generated ID. You must confirm this command again, after which the mutation will be permanently deleted. This action cannot be undone.", width = w)
+            elif Taal == "IT":
+                op = menuIT["4"]
+                warp = textwrap.wrap("Elimina una mutazione in base a un ID generato in precedenza. Dovrai confermare nuovamente questo comando, dopodiché la mutazione verrà definitivamente eliminata. Questa azione non può essere annullata.", width = w)
+            else:
+                op = menu["4"]
+                warp = textwrap.wrap("Verwijder een mutatie op basis van een eerder gegenereerd ID. U moet deze opdracht nogmaals bevestigen, daarna is de mutatie definitief verwijderd. Dit kan niet worden teruggedraaid.", width = w)
+        elif wat == ['5']:
+            try:
+                with open("A","r") as a:
+                    A = ast.literal_eval(a.read())
+                with open("header","r") as h:
+                    H = ast.literal_eval(h.read())
+                if Taal == "EN":
+                    op = menuEN["5"]
+                    warp = textwrap.wrap("You can create savings pots (\"Piggy banks\") on a household account, where a portion of your total balance is reserved for a project of your own choice. A buffer is maintained on the account equal to the budget in category A (currently %s %s). You will receive a notification if you go below that buffer, and then you can no longer add an amount to your savings pot." % (H["Valuta"], int(A[0])*-1), width = w)
+                elif Taal == "IT":
+                    op = menuIT["5"]
+                    warp = textwrap.wrap("Su un conto domestico puoi creare dei salvadanai, in cui una parte del tuo saldo totale viene riservata per un progetto da te scelto. Viene mantenuto un importo di riserva sul conto pari al budget nella categoria A (al momento %s %s). Riceverai un avviso se scendi al di sotto di tale importo e non sarai in grado di aggiungere ulteriori fondi al tuo salvadanaio."% (H["Valuta"], int(A[0])*-1), width = w)
+                else:
+                    op = menu["5"]
+                    warp = textwrap.wrap("U kunt op een huishoudelijke rekening spaarpotten aanmaken, waarin een gedeelte van uw totaalsaldo wordt gereserveerd voor een door u zelf te bepalen project. Er wordt een buffer op de rekening aangehouden ter hoogte van het budget in categorie A (momenteel %s %s). U krijgt een waarschuwing als u onder die buffer komt, en u kunt dan geen bedrag meer aan uw spaarpot toevoegen." % (H["Valuta"], int(A[0])*-1), width = w)
+            except:
+                pass
+        elif wat == ['5','1']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,1"]
+                warp = textwrap.wrap("An overview of your piggy banks, with name and balance.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,1"]
+                warp = textwrap.wrap("Un elenco dei tuoi salvadanai, con nome e saldo.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,1"]
+                warp = textwrap.wrap("Een overzicht van uw spaarpotten, met naam en saldo.", width = w)
+        elif wat == ['5','2']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,2"]
+                warp = textwrap.wrap("Make changes to your piggy bank.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,2"]
+                warp = textwrap.wrap("Apporta modifiche al tuo salvadanaio.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,2"]
+                warp = textwrap.wrap("Breng veranderingen aan in uw spaarpot.", width = w)
+        elif wat == ['5','2','1']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,2"]+" - "+menuEN["5,2,1"]
+                warp = textwrap.wrap("Change the name of your piggy bank.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,2"]+" - "+menuIT["5,2,1"]
+                warp = textwrap.wrap("Modifica il nome del tuo salvadanaio.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,2"]+" - "+menu["5,2,1"]
+                warp = textwrap.wrap("Verander de naam van uw spaarpot.", width = w)
+        elif wat == ['5','2','2']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,2"]+" - "+menuEN["5,2,2"]
+                warp = textwrap.wrap("Change the amount in your piggy bank. If the total amount of all your piggy banks does not provide an adequate buffer (up to the budget in category A), then you cannot add amounts to your piggy banks. However, you can take money out of your piggy banks to replenish your buffer.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,2"]+" - "+menuIT["5,2,2"]
+                warp = textwrap.wrap("Modifica l'importo nel tuo salvadanaio. Se la somma di tutti i tuoi salvadanai non fornisce un'adeguata riserva (al livello di bilancio della categoria A), allora non potrai aggiungere fondi ai tuoi salvadanai. Tuttavia, potrai prelevare denaro dai tuoi salvadanai per integrare la tua riserva.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,2"]+" - "+menu["5,2,2"]
+                warp = textwrap.wrap("Verander het bedrag in uw spaarpot. Als het bedrag van als uw spaarpotten samen onvoldoende buffer laten (ter hoogte van het budget in categorie A), dan kunt u geen bedragen aan uw spaarpotten toevoegen. U kunt wel geld uit uw spaarpotten wegnemen om uw buffer aan te vullen.", width = w)
+        elif wat == ['5','3']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,3"]
+                warp = textwrap.wrap("Create a new piggy bank. If the total amount of all your piggy banks does not provide an adequate buffer (up to the budget in category A), then you cannot add amounts to your piggy banks.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,3"]
+                warp = textwrap.wrap("Crea un nuovo salvadanaio. Se la somma di tutti i tuoi salvadanai non fornisce un'adeguata riserva (al livello di bilancio della categoria A), allora non potrai aggiungere fondi ai tuoi salvadanai.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,3"]
+                warp = textwrap.wrap("Maak een nieuwe spaarpot. Als het bedrag van als uw spaarpotten samen onvoldoende buffer laten (ter hoogte van het budget in categorie A), dan kunt u geen bedragen aan uw spaarpotten toevoegen.", width = w)
+        elif wat == ['5','4']:
+            if Taal == "EN":
+                op = menuEN["5"]+" - "+menuEN["5,4"]
+                warp = textwrap.wrap("The balance in the piggy bank is released again.", width = w)
+            elif Taal == "IT":
+                op = menuIT["5"]+" - "+menuIT["5,4"]
+                warp = textwrap.wrap("Il saldo nel salvadanaio viene nuovamente reso disponibile.", width = w)
+            else:
+                op = menu["5"]+" - "+menu["5,4"]
+                warp = textwrap.wrap("Het saldo in de spaarpot wordt weer vrijgegeven.", width = w)
+        print(coltekst+op+ResetAll)
+        for i in warp:
+            print(i)
+
+if Taal == "EN":
+    print("For help type \"H\"")
+elif Taal == "IT":
+    print("Per aiuto, scrivi \"H\"")
+else:
+    print("Voor hulp, typ \"H\"")
+
 ##### HIER BEGINT HET PROGRAMMA #####
 sel = []
 mimo = "Y"
@@ -1097,6 +1715,8 @@ while mimo == "Y":
         pass
     elif len(keuze1) == 3 and keuze1.upper()[0] in afsluitlijst and keuze1.upper()[2] in afsluitlijst:
         doei()
+    if keuze1.upper() == "H":
+        aid()
     if keuze1 == "": # BEKIJKEN
         keuze1 = "1"
     try:
@@ -3008,6 +3628,7 @@ while mimo == "Y":
                                         print("%sQuesto non è un valore valido%s" % (colslecht,ResetAll))
                                     else:
                                         print("%sDat is geen geldige waarde%s" % (colslecht,ResetAll))
+                            print()
                 elif keuze2 == "4":
                     potverwijder = "Y"
                     while potverwijder == "Y":
@@ -3092,11 +3713,11 @@ while mimo == "Y":
             else:
                 tweedekeus = False
                 if Taal == "EN":
-                    keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch visible account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                    keuze2 = input("Make a choice\n  0 %sPrint version and info%s\n >1 %sCategory management%s\n  2 %sModify account settings%s\n  3 %sShow or hide account%s\n  4 %sSwitch account%s (!)\n  5 %sAdd new account%s\n  6 %sDelete account%s\n  7 %sTransfer account settings%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
                 elif Taal == "IT":
-                    keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto visibile%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                    keuze2 = input("Fai una scelta\n  0 %sPrint versione ed info%s\n >1 %sGestire categorie%s\n  2 %sModificare impostazioni del conto%s\n  3 %sEsporre o nascondere conto%s\n  4 %sPassare ad un\'altro conto%s (!)\n  5 %sAggiungere un nuovo conto%s\n  6 %sEliminare un conto%s\n  7 %sTrasferire impostazioni%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
                 else:
-                    keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van zichtbare rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
+                    keuze2 = input("Maak een keuze\n  0 %sPrint versie en info%s\n >1 %sCategoriebeheer%s\n  2 %sRekeninginstellingen aanpassen%s\n  3 %sToon of verberg rekening%s\n  4 %sWissel van rekening%s (!)\n  5 %sNieuwe rekening toevoegen%s\n  6 %sVerwijder rekening%s\n  7 %sInstellingen overzetten%s\n  : " % (LichtGeel,ResetAll,LichtCyaan,ResetAll,Blauw,ResetAll,Geel,ResetAll,LichtMagenta,ResetAll,LichtGroen,ResetAll,LichtRood,ResetAll,Magenta,ResetAll))
             if keuze2.upper() in afsluitlijst:
                 break
             elif len(keuze2) == 2 and keuze2.upper()[0] in afsluitlijst and keuze2.upper()[1] in afsluitlijst:
